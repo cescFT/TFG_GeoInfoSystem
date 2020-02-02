@@ -21,5 +21,6 @@ class local(models.Model):
     nomLocal=models.CharField(max_length=500)
     puntuacio=models.IntegerField()
     categoria=models.CharField(max_length=200)
+    anyConstruccio=models.IntegerField()
 
 
