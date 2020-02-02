@@ -8,6 +8,7 @@ class puntInteres(models.Model):
     tipus=models.CharField(max_length=700)
     actiu=models.BooleanField()
     superficie=models.FloatField()
+    localitat=models.CharField(max_length=200)
 
 class usuari(models.Model):
     nom=models.CharField(max_length=500)
@@ -22,5 +23,6 @@ class local(models.Model):
     puntuacio=models.IntegerField()
     categoria=models.CharField(max_length=200)
     anyConstruccio=models.IntegerField()
+    descripcio=models.CharField(max_length=600)
 
 
