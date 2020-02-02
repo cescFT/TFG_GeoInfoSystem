@@ -9,6 +9,7 @@ class puntInteres(models.Model):
     actiu=models.BooleanField()
     superficie=models.FloatField()
     localitat=models.CharField(max_length=200)
+    pais=models.CharField(max_length=200)
 
 class usuari(models.Model):
     nom=models.CharField(max_length=500)
