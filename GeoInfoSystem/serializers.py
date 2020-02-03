@@ -13,7 +13,7 @@ class usuariSerializer(serializers.ModelSerializer):
     class Meta:
         model=usuari
         fields='__all__'
-        
+
 class localSerializer(serializers.ModelSerializer):
     class Meta:
         model=local
