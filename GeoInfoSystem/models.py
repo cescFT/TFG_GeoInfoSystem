@@ -10,6 +10,7 @@ class puntInteres(models.Model):
     superficie=models.FloatField()
     localitat=models.CharField(max_length=200)
     pais=models.CharField(max_length=200)
+    idPuntInteres=models.IntegerField()
     def __str__(self):
         return "Punt interes localitzat:["+str(self.latitud)+","+str(self.longitud)+"] actiu="+str(self.actiu)+"de tipus:"+str(self.tipus)
 
@@ -29,6 +30,7 @@ class local(models.Model):
     categoria=models.CharField(max_length=200)
     anyConstruccio=models.IntegerField()
     descripcio=models.CharField(max_length=600)
+    idLocal=models.IntegerField()
     def __str__(self):
         return str(self.nomLocal)+" puntuacio="+str(self.puntuacio)+" categoria="+str(self.categoria)+" any construccio="+str(self.anyConstruccio)
 
