@@ -2,22 +2,31 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Exceptions/NoContingut.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Exceptions/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GeoInfoSystem/migrations/0006_auto_20200204_1847.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GeoInfoSystem/urls.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Script/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Script/insertData.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/TFG_GeoInfoSystem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/TFG_GeoInfoSystem/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Script/insertData.py" beforeDir="false" afterPath="$PROJECT_DIR$/Script/insertData.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand />
+    <select />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -121,7 +130,9 @@
       <workItem from="1580665269538" duration="148000" />
       <workItem from="1580745151337" duration="1063000" />
       <workItem from="1580755896972" duration="2469000" />
-      <workItem from="1580834575877" duration="5822000" />
+      <workItem from="1580834575877" duration="5923000" />
+      <workItem from="1580853419127" duration="223000" />
+      <workItem from="1580896021693" duration="13875000" />
     </task>
     <servers />
   </component>
@@ -132,22 +143,30 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1580836877543">
+    <state width="242" height="189" key="DatabaseViewActions_Filter" timestamp="1580910235326">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580836877543" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1580836877542">
+    <state width="242" height="189" key="DatabaseViewActions_Filter/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910235326" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1580840506910">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580836877542" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1580836877541">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580840506910" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1580840506910">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580836877541" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1580836877542">
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580840506910" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1580840506910">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580836877542" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580840506910" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1580840506910">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580840506910" />
+    <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1580910215140">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910215140" />
     <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1580755898993">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
