@@ -9,5 +9,5 @@ urlpatterns = [
     path('puntInteresByCoordenades/', views.getPuntInteresEspecific, name='pInteresCoordenades'),
     url(r'updatePuntInteres/(?P<latitud>\d+\.\d+)/(?P<longitud>\d+\.\d+)/$', views.updatePuntInteres, name='pInteresUpdate'),
     path('newPuntInteres/', views.postNewPuntInteres, name='pInteresCreate'),
-    path('provaDel/<str:puntInteres>', views.deletePuntInteres, name='provaQueryParamEliminar')
+    path('eliminarPuntInteres/', views.deletePuntInteres, name='pInteresEliminat')
 ]

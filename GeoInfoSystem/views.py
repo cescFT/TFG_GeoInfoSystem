@@ -177,9 +177,20 @@ def postNewPuntInteres(request):
             #return Response('rebotariem el que estava ja')
 
 @api_view(['DELETE',])
-def deletePuntInteres(request,puntInteres): #model.objects.filter(filter1=f).delete()
-    lol=request.query_params.get('fields')
-    return Response(puntInteres+str(lol), status=status.HTTP_200_OK)
+def deletePuntInteres(request):
+    if request.method == 'DELETE':
+        latitud=request.query_params.get('latitud')
+        longitud=request.query_params.get('longitud')
+        if not latitud or not longitud:
+            return Response('Falten parametres per a poder eliminar la instancia', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            p=puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
+            if not p:
+                raise NoContingut
+        except Exception or NoContingut:
+            return Response('No hi ha cap punt d\'interes amb aquestes coordenades.', status=status.HTTP_404_NOT_FOUND)
+        puntInteres.objects.all().filter(latitud=latitud, longitud=longitud).delete()
+        return Response('Punt d\'interes eliminat correctament.', status=status.HTTP_200_OK)
 
 ###################################################################
 # API PER ALS USUARIS.                                            #
