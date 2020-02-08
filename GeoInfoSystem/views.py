@@ -59,8 +59,7 @@ def updatePuntInteres(request, latitud, longitud):
     #per tal de fer un update real en el camp primer el que s'ha de fer es: model.objects.all().filter(filtre_per_quedarnos_amb_1).update(field1=newvalue1, field2=newvalue2, ...)
     if request.method == 'PUT':
         body_decoded=request.body.decode('utf-8')
-        body=json.loads(body_decoded) #json data
-        print(body) #get info --> value=body["key"]
+        body=json.loads(body_decoded) #json data #get info --> value=body["key"]
         keys=body.keys()
         errorsInEntryJSON=""
         for key in keys:
@@ -120,11 +119,65 @@ def updatePuntInteres(request, latitud, longitud):
 
 
 @api_view(['POST',])
-def postNewPuntInteres():
-    pass
+def postNewPuntInteres(request):
+    if request.method == 'POST':
+        body_decoded = request.body.decode('utf-8')
+        body = json.loads(body_decoded)  # json data #get info --> value=body["key"]
+        keys = body.keys()
+        errorsInEntryJSON = ""
+        for key in keys:
+            try:
+                puntInteres._meta.get_field(key)
+            except FieldDoesNotExist:
+                errorsInEntryJSON = errorsInEntryJSON + '[' + str(key) + "] no es un camp correcte."
+        if errorsInEntryJSON:
+            errorsInEntryJSON = errorsInEntryJSON + 'Revisa els camps i torna executar!'
+            return Response(errorsInEntryJSON, status=status.HTTP_400_BAD_REQUEST)
+        latitud=0.0
+        longitud=0.0
+        idMapa=1
+        tipus=""
+        actiu=False
+        superficie=0.0
+        localitat=""
+        pais=""
+        idPuntInteres=100
+        for key in keys:
+            if key == 'latitud':
+                latitud=body[key]
+            elif key == 'longitud':
+                longitud=body[key]
+            elif key == 'idMapa':
+                idMapa=body[key]
+            elif key == 'tipus':
+                tipus=body[key]
+            elif key == 'actiu':
+                if body[key] == 1 or body[key] == 'True':
+                    actiu=True
+                else:
+                    actiu=False
+            elif key == 'superficie':
+                superficie=body[key]
+            elif key == 'localitat':
+                localitat=body[key]
+            elif key == 'pais':
+                pais=body[key]
+            elif key == 'idPuntInteres':
+                idPuntInteres=body[key]
+        pInteresCercat=puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
+        if not pInteresCercat:
+            pInteresNou=puntInteres(latitud=latitud, longitud=longitud, idMapa=idMapa, tipus=tipus, actiu=actiu, superficie=superficie, localitat=localitat, pais=pais, idPuntInteres=idPuntInteres)
+            pInteresNou.save()
+            pINou=puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
+            serializer = puntInteresSerializer(pINou, many=True)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+            #return Response('creariem un nou punt interes')
+        else:
+            return Response(puntInteresSerializer(pInteresCercat, many=True).data, status=status.HTTP_200_OK)
+            #return Response('rebotariem el que estava ja')
 
 @api_view(['DELETE',])
-def deletePuntInteres(request,puntInteres):
+def deletePuntInteres(request,puntInteres): #model.objects.filter(filter1=f).delete()
     lol=request.query_params.get('fields')
     return Response(puntInteres+str(lol), status=status.HTTP_200_OK)
 
