@@ -16,6 +16,7 @@ class puntInteres(models.Model):
 
 class usuari(models.Model):
     nom=models.CharField(max_length=500)
+    alies=models.CharField(max_length=500)
     cognom=models.CharField(max_length=500)
     contrassenya=models.CharField(max_length=500)
     correuElectronic=models.EmailField()

@@ -196,8 +196,17 @@ def deletePuntInteres(request):
 # API PER ALS USUARIS.                                            #
 ###################################################################
 @api_view(['GET',])
-def getUsuaris():
-    pass
+def getUsuaris(request):
+    if request.method == 'GET':
+        try:
+            usuaris = usuari.objects.all()
+            if not usuaris:
+                raise NoContingut
+            serializer = puntInteresSerializer(usuaris, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception or NoContingut:
+            return Response('No hi ha usuaris.', status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['GET',])
 def getUsuariEspecific():
