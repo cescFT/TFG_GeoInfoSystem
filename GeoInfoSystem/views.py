@@ -8,6 +8,7 @@ from GeoInfoSystem.models import *
 from GeoInfoSystem.serializers import *
 from Exceptions import *
 import json
+import re
 # Create your views here.
 ###################################################################
 # API PER ALS PUNTS D'INTERÈS.                                    #
@@ -95,7 +96,11 @@ def updatePuntInteres(request, latitud, longitud):
             elif key == 'tipus':
                 puntInteres.objects.all().filter(latitud=latitud, longitud=longitud).update(tipus=body[key])
             elif key == 'actiu':
-                puntInteres.objects.all().filter(latitud=latitud, longitud=longitud).update(actiu=body[key])
+                if body[key] == 'True' or body[key] == 1:
+                    actiu=True
+                else:
+                    actiu=False
+                puntInteres.objects.all().filter(latitud=latitud, longitud=longitud).update(actiu=actiu)
             elif key == 'superficie':
                 puntInteres.objects.all().filter(latitud=latitud, longitud=longitud).update(superficie=body[key])
             elif key == 'localitat':
@@ -202,27 +207,164 @@ def getUsuaris(request):
             usuaris = usuari.objects.all()
             if not usuaris:
                 raise NoContingut
-            serializer = puntInteresSerializer(usuaris, many=True)
+            serializer = usuariSerializer(usuaris, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception or NoContingut:
             return Response('No hi ha usuaris.', status=status.HTTP_404_NOT_FOUND)
 
+@api_view(['GET',])
+def getSuperUsuaris(request):
+    if request.method=='GET':
+        try:
+            superusuaris=usuari.objects.all().filter(superUsuari=True)
+            if not superusuaris:
+                raise NoContingut
+            serializer = usuariSerializer(superusuaris, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception or NoContingut:
+            return Response('No hi ha superusuaris.', status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET',])
-def getUsuariEspecific():
-    pass
+def getUsuarisNormals(request):
+    if request.method == 'GET':
+        try:
+            usuarisNormals = usuari.objects.all().filter(superUsuari=False)
+            if not usuarisNormals:
+                raise NoContingut
+            serializer = usuariSerializer(usuarisNormals, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception or NoContingut:
+            return Response('No hi ha usuaris normals.', status=status.HTTP_404_NOT_FOUND)
+
+@api_view(['GET',])
+def getUsuariEspecific(request, alias):
+    if request.method == 'GET':
+        try:
+            usuariEspecific=usuari.objects.all().filter(alies=alias)
+            if not usuariEspecific:
+                raise NoContingut
+            serializer = usuariSerializer(usuariEspecific, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception or NoContingut:
+            return Response('No existeix aquest usuari', status=status.HTTP_404_NOT_FOUND)
+
 
 @api_view(['PUT',])
-def updateUsuari():
-    pass
+def updateUsuari(request):
+    if request.method == 'PUT':
+        body_decoded = request.body.decode('utf-8')
+        body=json.loads(body_decoded)
+        keys=body.keys()
+        errorsInEntryJSON=""
+        for key in keys:
+            try:
+                usuari._meta.get_field(key)
+            except FieldDoesNotExist:
+                errorsInEntryJSON=errorsInEntryJSON+'['+key+']'+ 'no es un camp correcte.'
+        if errorsInEntryJSON:
+            errorsInEntryJSON=errorsInEntryJSON+' Revisa els camps i torna a executar!'
+            return Response(errorsInEntryJSON, status=status.HTTP_400_BAD_REQUEST)
+        alies=request.query_params.get('alies')
+        if not alies:
+            return Response('Falta el alies.', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            usrEspecific=usuari.objects.all().filter(alies=alies)
+            if not usrEspecific:
+                raise NoContingut
+        except Exception or NoContingut:
+            return Response('No hi ha cap usuari amb aquest àlies. S\'aborta la actualització', status=status.HTTP_400_BAD_REQUEST)
+
+
+        aliasChanged = False
+        nouAlies =""
+        for key in keys:
+            if key == 'nom':
+                usuari.objects.all().filter(alies=alies).update(nom=body[key])
+            elif key == 'alies':
+                aliasChanged=True
+                nouAlies=body[key]
+                usuari.objects.all().filter(alies=alies).update(alies=body[key])
+            elif key == 'cognom':
+                usuari.objects.all().filter(alies=alies).update(cognom=body[key])
+            elif key == 'contrassenya':
+                usuari.objects.all().filter(alies=alies).update(contrassenya=body[key])
+            elif key == 'correuElectronic':
+                regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+                if re.search(regex, body[key]):
+                    usuari.objects.all().filter(alies=alies).update(correuElectronic=body[key])
+            elif key == 'superUsuari':
+                if body[key] == 'True' or body[key] == 1:
+                    superusr=True
+                else:
+                    superusr=False
+                usuari.objects.all().filter(alies=alies).update(superUsuari=superusr)
+
+        #modificacions fetes
+        usuariCercat = usuari.objects.all().filter(alies=alies)
+        if aliasChanged:
+            usuariCercat=usuari.objects.all().filter(alies=nouAlies)
+
+        serializer = usuariSerializer(usuariCercat, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 @api_view(['POST',])
-def postNewUsuari():
-    pass
+def postNewUsuari(request):
+    if request.method == 'POST':
+        body_decoded = request.body.decode('utf-8')
+        body = json.loads(body_decoded)
+        keys=body.keys()
+        errorsInEntryJSON = ""
+        for key in keys:
+            try:
+                usuari._meta.get_field(key)
+            except FieldDoesNotExist:
+                errorsInEntryJSON = errorsInEntryJSON + '[' + str(key) + "] no es un camp correcte."
+        if errorsInEntryJSON:
+            errorsInEntryJSON = errorsInEntryJSON + 'Revisa els camps i torna executar!'
+            return Response(errorsInEntryJSON, status=status.HTTP_400_BAD_REQUEST)
+        nom=""
+        alies=""
+        cognom=""
+        contrassenya=""
+        correuElectronic="initialMail@mail.com"
+        superUsuari=False
+        for key in keys:
+            if key == 'nom':
+                nom=body[key]
+            elif key == 'alies':
+                alies=body[key]
+            elif key == 'cognom':
+                cognom=body[key]
+            elif key == 'contrassenya':
+                contrassenya=body[key]
+            elif key == 'correuElectronic':
+                regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+                if re.search(regex, body[key]):
+                    correuElectronic=body[key]
+            elif key == 'superUsuari':
+                if body[key] == 'True' or body[key] == 1:
+                    superUsuari=True
+        usuariSpec = usuari.objects.all().filter(alies=alies)
+        if not usuariSpec:
+            newUsr = usuari(nom=nom, alies=alies, cognom=cognom, contrassenya=contrassenya, correuElectronic=correuElectronic, superUsuari=superUsuari)
+            newUsr.save()
+            newUsrCercat = usuari.objects.all().filter(alies=alies)
+            serializer = usuariSerializer(newUsrCercat, many=True)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['DELETE',])
-def deleteUsuari():
-    pass
+def deleteUsuari(request, alias):           #no provat. sha de provar
+    if request.method=='DELETE':
+        if not alias:
+            return Response('Falta el alies per a poder eliminar la instancia.', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            usuariCercat = usuari.objects.all().filter(alies=alias)
+            if not usuariCercat:
+                raise NoContingut
+        except Exception or NoContingut:
+            return Response('No hi ha cap usuari amb aquest alies.', status=status.HTTP_404_NOT_FOUND)
+        usuari.objects.all().filter(alies=alias).delete()
+        return Response('Usuari eliminat correctament.', status=status.HTTP_200_OK)
 
 ###################################################################
 # API PER ALS Locals.                                             #
