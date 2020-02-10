@@ -19,4 +19,5 @@ urlpatterns = [
     path('updateUsuari/', views.updateUsuari, name='updateUsuari'),
     path('createUsuari/', views.postNewUsuari, name='createNewUsuari'),
     path('deleteUsuari/<str:alias>/', views.deleteUsuari, name='deleteUsuari')
+    # API LOCALS
 ]

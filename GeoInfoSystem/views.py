@@ -370,8 +370,16 @@ def deleteUsuari(request, alias):           #no provat. sha de provar
 # API PER ALS Locals.                                             #
 ###################################################################
 @api_view(['GET',])
-def getLocals():
-    pass
+def getLocals(request):
+    if request.method == 'GET':
+        try:
+            locals = local.object.all()
+            if not locals:
+                raise NoContingut
+            serializer = localSerializer(locals, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception or NoContingut:
+            return Response('No hi ha locals.', status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET',])
 def getLocalEspecific():
