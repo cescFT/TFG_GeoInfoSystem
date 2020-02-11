@@ -3,6 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
     </list>
@@ -140,7 +141,9 @@
       <workItem from="1581416142568" duration="2340000" />
       <workItem from="1581418868139" duration="1212000" />
       <workItem from="1581421761579" duration="1609000" />
-      <workItem from="1581423455353" duration="1536000" />
+      <workItem from="1581423455353" duration="8065000" />
+      <workItem from="1581440919547" duration="1909000" />
+      <workItem from="1581443263023" duration="3775000" />
     </task>
     <servers />
   </component>
@@ -175,10 +178,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910215140" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1581423459619">
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1581443625888">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1581423459619" />
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1581443625888" />
     <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1580755898993" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">

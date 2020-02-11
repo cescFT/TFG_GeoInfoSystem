@@ -24,5 +24,8 @@ urlpatterns = [
     url(r'getLocalByLatLong/(?P<latitud>\d+\.\d+)/(?P<longitud>\d+\.\d+)/$', views.getLocalEspecificByLatLong, name='getLocalByLatLong'),
     path('getLocalByName/<str:nomLocal>/', views.getLocalEspecificByName, name='getLocalByName'),
     url(r'updateLocalByLatLong/(?P<latitud>\d+\.\d+)/(?P<longitud>\d+\.\d+)/$', views.updateLocalByLatLong, name='updateLocalByLatLong'),
-    path('updateLocalByName/<str:nomLocal>', views.updateLocalByName, name='updateLocalByName')
+    path('updateLocalByName/<str:nomLocal>/', views.updateLocalByName, name='updateLocalByName'),
+    path('createLocal/', views.postNewLocal, name='createLocal'),
+    path('deleteLocalByLatLong/', views.deleteLocalByLatLong, name='deleteByLatLong'),
+    path('deleteLocalByNom/', views.deleteLocalByName, name='deleteByName')
 ]
