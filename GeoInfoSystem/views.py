@@ -31,6 +31,8 @@ def getPuntInteresByCity(request):
     if request.method == 'GET':
         try:
             localitat=request.query_params.get('ciutat')
+            if not localitat:
+                return Response('Falta el parametre ciutat per a poder executar la operació.', status=status.HTTP_400_BAD_REQUEST)
             puntsInteres = puntInteres.objects.all().filter(localitat=localitat)
             if not puntsInteres:
                 raise NoContingut
@@ -46,6 +48,8 @@ def getPuntInteresEspecific(request):
         try:
             latitud=request.query_params.get('latitud')
             longitud=request.query_params.get('longitud')
+            if not latitud or not longitud:
+                return Response('Falten la latitud i/o la longitud per a poder executar la operació.', status=status.HTTP_400_BAD_REQUEST)
             puntInteresCercat= puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
             if not puntInteresCercat:
                 raise NoContingut
@@ -59,6 +63,10 @@ def getPuntInteresEspecific(request):
 def updatePuntInteres(request, latitud, longitud):
     #per tal de fer un update real en el camp primer el que s'ha de fer es: model.objects.all().filter(filtre_per_quedarnos_amb_1).update(field1=newvalue1, field2=newvalue2, ...)
     if request.method == 'PUT':
+        if not request.body:
+            return Response('Falta passar-li informacio al cos del missatge.', status=status.HTTP_400_BAD_REQUEST)
+        if not latitud or not longitud:
+            return Response('Falten la latitud i/o la longitud per a poder executar la operació.', status=status.HTTP_400_BAD_REQUEST)
         body_decoded=request.body.decode('utf-8')
         body=json.loads(body_decoded) #json data #get info --> value=body["key"]
         keys=body.keys()
@@ -126,6 +134,8 @@ def updatePuntInteres(request, latitud, longitud):
 @api_view(['POST',])
 def postNewPuntInteres(request):
     if request.method == 'POST':
+        if not request.body:
+            return Response('Falta passar-li informacio al cos del missatge.', status=status.HTTP_400_BAD_REQUEST)
         body_decoded = request.body.decode('utf-8')
         body = json.loads(body_decoded)  # json data #get info --> value=body["key"]
         keys = body.keys()
@@ -239,6 +249,8 @@ def getUsuarisNormals(request):
 @api_view(['GET',])
 def getUsuariEspecific(request, alias):
     if request.method == 'GET':
+        if not alias:
+            return Response('Falta el alies per a poder cercar el usuari especific.', status=status.HTTP_400_BAD_REQUEST)
         try:
             usuariEspecific=usuari.objects.all().filter(alies=alias)
             if not usuariEspecific:
@@ -252,6 +264,8 @@ def getUsuariEspecific(request, alias):
 @api_view(['PUT',])
 def updateUsuari(request):
     if request.method == 'PUT':
+        if not request.body:
+            return Response('Falta passar-li informacio al cos del missatge.', status=status.HTTP_400_BAD_REQUEST)
         body_decoded = request.body.decode('utf-8')
         body=json.loads(body_decoded)
         keys=body.keys()
@@ -310,6 +324,8 @@ def updateUsuari(request):
 @api_view(['POST',])
 def postNewUsuari(request):
     if request.method == 'POST':
+        if not request.body:
+            return Response('Falta passarli informacio al cos del missatge.', status=status.HTTP_400_BAD_REQUEST)
         body_decoded = request.body.decode('utf-8')
         body = json.loads(body_decoded)
         keys=body.keys()
@@ -353,7 +369,7 @@ def postNewUsuari(request):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 @api_view(['DELETE',])
-def deleteUsuari(request, alias):           #no provat. sha de provar
+def deleteUsuari(request, alias):
     if request.method=='DELETE':
         if not alias:
             return Response('Falta el alies per a poder eliminar la instancia.', status=status.HTTP_400_BAD_REQUEST)
@@ -373,7 +389,7 @@ def deleteUsuari(request, alias):           #no provat. sha de provar
 def getLocals(request):
     if request.method == 'GET':
         try:
-            locals = local.object.all()
+            locals = local.objects.all()
             if not locals:
                 raise NoContingut
             serializer = localSerializer(locals, many=True)
@@ -387,7 +403,7 @@ def getLocalEspecificByLatLong(request, latitud, longitud):
         if not latitud or not longitud:
             return Response('Falten els parametres per a poder executar la operacio.', status=status.HTTP_400_BAD_REQUEST)
         try:
-            punt1=puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
+            punt1=puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
             if not punt1:
                 raise NoContingut
             localCercat = local.objects.all().filter(localitzacio=punt1)
@@ -396,6 +412,7 @@ def getLocalEspecificByLatLong(request, latitud, longitud):
             return Response(localSerializer(localCercat, many=True).data, status=status.HTTP_200_OK)
         except Exception or NoContingut:
             return Response('No hi ha cap local en aquestes coordenades.', status=status.HTTP_404_NOT_FOUND)
+
 @api_view(['GET',])
 def getLocalEspecificByName(request, nomLocal):
     if request.method == 'GET':
@@ -422,7 +439,8 @@ def updateLocalByLatLong(request, latitud, longitud):
             try:
                 local._meta.get_field(key)
             except FieldDoesNotExist:
-                errorsInEntryJSON = errorsInEntryJSON + '[' + str(key) + "] no es un camp correcte."
+                if key != 'latitud' or key!='longitud':
+                    errorsInEntryJSON = errorsInEntryJSON + '[' + str(key) + "] no es un camp correcte."
         if errorsInEntryJSON:
             errorsInEntryJSON = errorsInEntryJSON + 'Revisa els camps i torna executar!'
             return Response(errorsInEntryJSON, status=status.HTTP_400_BAD_REQUEST)
@@ -436,11 +454,52 @@ def updateLocalByLatLong(request, latitud, longitud):
         except Exception or NoContingut:
             return Response('No hi ha cap local en aquestes coordenades.', status=status.HTTP_404_NOT_FOUND)
         # No hi ha error en les dades dentrada
-        
+        puntInteresCercat = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
+        local.objects.all().filter(localitzacio=puntInteresCercat)
+        novaLatitud=0.0
+        novaLongitud=0.0
+        for key in keys:
+            if key == 'nomLocal':
+                local.objects.all().filter(localitzacio=puntInteresCercat).update(nomLocal=body[key])
+            elif key == 'puntuacio':
+                local.objects.all().filter(localitzacio=puntInteresCercat).update(puntuacio=body[key])
+            elif key == 'categoria':
+                local.objects.all().filter(localitzacio=puntInteresCercat).update(categoria=body[key])
+            elif key == 'anyConstruccio':
+                local.objects.all().filter(localitzacio=puntInteresCercat).update(anyConstruccio=body[key])
+            elif key == 'descripcio':
+                local.objects.all().filter(localitzacio=puntInteresCercat).update(descripcio=body[key])
+            elif key == 'idLocal':
+                local.objects.all().filter(localitzacio=puntInteresCercat).update(idLocal=body[key])
+            elif key == 'latitud':
+                novaLatitud=body[key]
+            elif key == 'longitud':
+                novaLongitud=body[key]
+
+        if novaLatitud != 0.0 and novaLongitud != 0.0:
+            try:
+                pInteresNou = puntInteres.objects.all().filter(latitud=novaLatitud, longitud=novaLongitud)[0]
+                if not pInteresNou:
+                    raise NoContingut
+                local.objects.all().filter(localitzacio=puntInteresCercat).update(localitzacio=pInteresNou)
+                localNou = local.objects.all().filter(localitzacio=pInteresNou)
+                return Response(localSerializer(localNou, many=True).data, status=status.HTTP_200_OK)
+            except Exception or NoContingut:
+                return Response('Actualizat correctament els camps passats, pero la localitzacio es la mateixa perque no hi ha cap punt interes amb aquestes caracteristiques.', status=status.HTTP_200_OK)
+        else:
+            #en altre cas, hi ha la mateixa latitud i longitud, per tant no canvia en punt de interes.
+            localSearched = local.objects.all().filter(localitzacio=puntInteresCercat)
+            return Response(localSerializer(localSearched, many=True).data, status=status.HTTP_200_OK)
+
+
+
 
 @api_view(['PUT',])
-def updateLocalByName(request, name):
-    pass
+def updateLocalByName(request, nomLocal):
+    if request.method == 'PUT':
+        if not nomLocal:
+            return Response('Falta el nom del local, s\'aborta la operacio d\'actualització', status=status.HTTP_400_BAD_REQUEST)
+        
 
 @api_view(['POST',])
 def postNewLocal():

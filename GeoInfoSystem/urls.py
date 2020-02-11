@@ -20,8 +20,9 @@ urlpatterns = [
     path('createUsuari/', views.postNewUsuari, name='createNewUsuari'),
     path('deleteUsuari/<str:alias>/', views.deleteUsuari, name='deleteUsuari'),
     # API LOCALS
+    path('getLocals/', views.getLocals, name='allLocals'),
     url(r'getLocalByLatLong/(?P<latitud>\d+\.\d+)/(?P<longitud>\d+\.\d+)/$', views.getLocalEspecificByLatLong, name='getLocalByLatLong'),
     path('getLocalByName/<str:nomLocal>/', views.getLocalEspecificByName, name='getLocalByName'),
     url(r'updateLocalByLatLong/(?P<latitud>\d+\.\d+)/(?P<longitud>\d+\.\d+)/$', views.updateLocalByLatLong, name='updateLocalByLatLong'),
-    path('updateLocalByName/', views.updateLocalByName, name='updateLocalByName')
+    path('updateLocalByName/<str:nomLocal>', views.updateLocalByName, name='updateLocalByName')
 ]
