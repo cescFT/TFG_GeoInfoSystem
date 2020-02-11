@@ -382,11 +382,64 @@ def getLocals(request):
             return Response('No hi ha locals.', status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['GET',])
-def getLocalEspecific():
-    pass
+def getLocalEspecificByLatLong(request, latitud, longitud):
+    if request.method == 'GET':
+        if not latitud or not longitud:
+            return Response('Falten els parametres per a poder executar la operacio.', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            punt1=puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
+            if not punt1:
+                raise NoContingut
+            localCercat = local.objects.all().filter(localitzacio=punt1)
+            if not localCercat:
+                raise NoContingut
+            return Response(localSerializer(localCercat, many=True).data, status=status.HTTP_200_OK)
+        except Exception or NoContingut:
+            return Response('No hi ha cap local en aquestes coordenades.', status=status.HTTP_404_NOT_FOUND)
+@api_view(['GET',])
+def getLocalEspecificByName(request, nomLocal):
+    if request.method == 'GET':
+        if not nomLocal:
+            return Response('Falta el parametre per a poder executar la operacio.', status=status.HTTP_400_BAD_REQUEST)
+        try:
+            localCercat=local.objects.all().filter(nomLocal=nomLocal)
+            if not localCercat:
+                raise NoContingut
+            return Response(localSerializer(localCercat, many=True).data, status=status.HTTP_200_OK)
+        except Exception or NoContingut:
+            return Response('No hi ha cap local amb aquest nom.', status=status.HTTP_404_NOT_FOUND)
 
 @api_view(['PUT',])
-def updateLocal():
+def updateLocalByLatLong(request, latitud, longitud):
+    if request.method == 'PUT':
+        if not latitud or not longitud:
+            return Response('Falten els parametres per a executar la operacio d\'actualització del local.', status=status.HTTP_400_BAD_REQUEST)
+        body_decoded = request.body.decode('utf-8')
+        body = json.loads(body_decoded)
+        keys = body.keys()
+        errorsInEntryJSON = ""
+        for key in keys:
+            try:
+                local._meta.get_field(key)
+            except FieldDoesNotExist:
+                errorsInEntryJSON = errorsInEntryJSON + '[' + str(key) + "] no es un camp correcte."
+        if errorsInEntryJSON:
+            errorsInEntryJSON = errorsInEntryJSON + 'Revisa els camps i torna executar!'
+            return Response(errorsInEntryJSON, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            puntInteresCercat = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
+            if not puntInteresCercat:
+                raise NoContingut
+            localCercat=local.objects.all().filter(localitzacio=puntInteresCercat)
+            if not localCercat:
+                raise NoContingut
+        except Exception or NoContingut:
+            return Response('No hi ha cap local en aquestes coordenades.', status=status.HTTP_404_NOT_FOUND)
+        # No hi ha error en les dades dentrada
+        
+
+@api_view(['PUT',])
+def updateLocalByName(request, name):
     pass
 
 @api_view(['POST',])
