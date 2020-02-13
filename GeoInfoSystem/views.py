@@ -9,6 +9,7 @@ from GeoInfoSystem.serializers import *
 from Exceptions import *
 import json
 import re
+import urllib.parse
 # Create your views here.
 ###################################################################
 # API PER ALS PUNTS D'INTERÈS.                                    #
@@ -460,7 +461,7 @@ Mètode que permet recuperar tota la informació referent als locals que hi ha p
 En cas que no en trobi retornara un 404 NOT FOUND, en altre cas, retorna un 200 OK amb la informació demanada.
 """
 @api_view(['GET',])
-def getLocals(request):                 #No provat. sha de provar
+def getLocals(request):
     if request.method == 'GET':
         try:
             locals = local.objects.all()
@@ -478,7 +479,7 @@ En cas que no hi hagi un dels dos o cap, retorna un 400 BAD REQUEST. En cas que 
 En altre cas, retorna un 200 OK amb la informació demanada.
 """
 @api_view(['GET',])
-def getLocalEspecificByLatLong(request, latitud, longitud):     #No provat. sha de provar
+def getLocalEspecificByLatLong(request, latitud, longitud):
     if request.method == 'GET':
         if not latitud or not longitud:
             return Response('Falten els parametres per a poder executar la operacio.', status=status.HTTP_400_BAD_REQUEST)
@@ -500,7 +501,7 @@ En cas que aquest paràmetre no existeixi retorna un 400 BAD REQUEST. En altre c
 En altre cas retorna un 200 OK amb la informació referent a la que s'ha demanat.
 """
 @api_view(['GET',])
-def getLocalEspecificByName(request, nomLocal):             #No provat. sha de provar
+def getLocalEspecificByName(request, nomLocal):
     if request.method == 'GET':
         if not nomLocal:
             return Response('Falta el parametre per a poder executar la operacio.', status=status.HTTP_400_BAD_REQUEST)
@@ -513,16 +514,18 @@ def getLocalEspecificByName(request, nomLocal):             #No provat. sha de p
             return Response('No hi ha cap local amb aquest nom.', status=status.HTTP_404_NOT_FOUND)
 
 """
-PUT /v1/geoInfoSystem/updateLocalByLatLong/<latitud>/<longitud>/
+PUT /v1/geoInfoSystem/updateLocalByLatLong/<nomLocal>/<latitud>/<longitud>/
 Mètode que permet actualitzar la informació del local situat en la latitud=<latitud> i longitud=<longitud>. Ambdós són path param.
 En cas que no existeixi algun dels dos o cap, retorna un 400 BAD REQUEST. Juntament en què no hi hagi el cos del missatge HTTP PUT.
 En cas que hi hagi algun problema en el cos del missatge, també retornarà un 400 BAD REQUEST i informarà sobre els problemes presents en el cos.
 En altre cas, tot va bé i per tant actualitzarà els camps i retornarà un 200 OK i el local actualitzat.
+
+La idea d'aquest PUT és que també permet la modificacio de la latitud i la longitud del local si aquestes coordenades conformen un punt d'interes emmagatzemat prèviament.
 """
 @api_view(['PUT',])
-def updateLocalByLatLong(request, latitud, longitud):           #No provat. sha de provar
+def updateLocalByLatLong(request, nomLocal, latitud, longitud):
     if request.method == 'PUT':
-        if not latitud or not longitud:
+        if not latitud or not longitud or not nomLocal:
             return Response('Falten els parametres per a executar la operacio d\'actualització del local.', status=status.HTTP_400_BAD_REQUEST)
         body_decoded = request.body.decode('utf-8')
         body = json.loads(body_decoded)
@@ -530,24 +533,24 @@ def updateLocalByLatLong(request, latitud, longitud):           #No provat. sha 
         errorsInEntryJSON = ""
         for key in keys:
             try:
-                local._meta.get_field(key)
+                if key != 'latitud' and key != 'longitud':
+                    local._meta.get_field(key)
             except FieldDoesNotExist:
-                if key != 'latitud' or key!='longitud':
-                    errorsInEntryJSON = errorsInEntryJSON + '[' + str(key) + "] no es un camp correcte."
+                errorsInEntryJSON = errorsInEntryJSON + '[' + str(key) + "] no es un camp correcte."
         if errorsInEntryJSON:
             errorsInEntryJSON = errorsInEntryJSON + 'Revisa els camps i torna executar!'
             return Response(errorsInEntryJSON, status=status.HTTP_400_BAD_REQUEST)
         try:
-            puntInteresCercat = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
+            puntInteresCercat = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
             if not puntInteresCercat:
                 raise NoContingut
-            localCercat=local.objects.all().filter(localitzacio=puntInteresCercat)
+            localCercat=local.objects.all().filter(localitzacio=puntInteresCercat, nomLocal=nomLocal)
             if not localCercat:
                 raise NoContingut
         except Exception or NoContingut:
             return Response('No hi ha cap local en aquestes coordenades.', status=status.HTTP_404_NOT_FOUND)
         # No hi ha error en les dades dentrada
-        puntInteresCercat = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
+        puntInteresCercat = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
         novaLatitud=0.0
         novaLongitud=0.0
         for key in keys:
@@ -648,21 +651,21 @@ En cas que no es trobi un local en la latitud i longitud donada, retornara un 40
 En cas que tot estigui bé, es crearà la nova fila a la base de dades i retornarà un 201 CREATED amb el nou local.
 """
 @api_view(['POST',])
-def postNewLocal(request):                      #No provat. sha de provar
+def postNewLocal(request):
     if request.method == 'POST':
         if not request.body:
             return Response('Falta afegir dades en el cos del missatge.', status=status.HTTP_400_BAD_REQUEST)
         body_decoded = request.body.decode('utf-8')
         body = json.loads(body_decoded)
         keys = body.keys()
-        if 'latitud' or 'longitud' not in keys:
+        if 'latitud' and 'longitud' not in keys:
             return Response('Per a crear la la nova instancia cal afegir la latitud i la longitud.', status=status.HTTP_400_BAD_REQUEST)
         errorsInEntryJSON = ""
         for key in keys:
             try:
-                local._meta.get_field(key)
+                if key != 'latitud' and key != 'longitud':
+                    local._meta.get_field(key)
             except FieldDoesNotExist:
-                if key != 'latitud' or key != 'longitud':
                     errorsInEntryJSON = errorsInEntryJSON + '[' + str(key) + "] no es un camp correcte."
         if errorsInEntryJSON:
             errorsInEntryJSON = errorsInEntryJSON + 'Revisa els camps i torna executar!'
@@ -707,24 +710,26 @@ def postNewLocal(request):                      #No provat. sha de provar
         return Response(localSerializer(localSeached, many=True).data, status=status.HTTP_201_CREATED)
 
 """
-DELETE /v1/geoInfoSystem/deleteLocalByLatLong/?latitud=l&longitud=lo
-Mètode que permet eliminar el local situat en la latitud=l i la longitud=lo. En cas que no hi siguin aquests query param
+DELETE /v1/geoInfoSystem/deleteLocalByLatLong/?latitud=l&longitud=lo&local=nom
+Mètode que permet eliminar el local situat en la latitud=l, la longitud=lo i local=nom. En cas que no hi siguin aquests query param
 es retornarà un 400 BAD REQUEST.
 En cas que no es trobi cap local en aquestes coordenades, es retornarà un 404 NOT FOUND. En altre cas s'eliminarà el local i es retornarà un 200 OK
 i un missatge informant de la eliminació.
 """
 @api_view(['DELETE',])
-def deleteLocalByLatLong(request):              #No provat. sha de provar
+def deleteLocalByLatLong(request):
     if request.method == 'DELETE':
         latitud = request.query_params.get('latitud')
         longitud = request.query_params.get('longitud')
-        if not latitud or not longitud:
+        nomLocal = request.query_params.get('local')
+        nomLocal=urllib.parse.unquote(nomLocal)
+        if not latitud or not longitud or not nomLocal:
             return Response('Falta la latitud i/o la longitud per a eliminar el local. S\'aborta la operacio.', status=status.HTTP_400_BAD_REQUEST)
         try:
             p=puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
             if not p:
                 raise NoContingut
-            local.objects.all().filter(localitzacio=p).delete()
+            local.objects.all().filter(localitzacio=p, nomLocal=nomLocal).delete()
             return Response('Local eliminat correctament.', status=status.HTTP_200_OK)
         except Exception or NoContingut:
             return Response('No hi ha cap punt d\'interes en aquestes coordenades.', status=status.HTTP_404_NOT_FOUND)
@@ -736,9 +741,10 @@ En cas que no hi hagi el nom del local retornarà un 400 BAD REQUEST. En cas que
 retornarà un 404 NOT FOUND. En altre cas retornarà un 200 OK i informant que s'ha eliminat el local correctament.
 """
 @api_view(['DELETE',])
-def deleteLocalByName(request):                 #No provat. sha de provar
+def deleteLocalByName(request):
     if request.method == 'DELETE':
         nomLocal=request.query_params.get('local')
+        nomLocal = urllib.parse.unquote(nomLocal)
         if not nomLocal:
             return Response('Falta el nom del local', status=status.HTTP_400_BAD_REQUEST)
         try:
