@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/GeoInfoSystem/migrations/0008_delete_usuari.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/admin.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Script/insertData.py" beforeDir="false" afterPath="$PROJECT_DIR$/Script/insertData.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -144,7 +148,8 @@
       <workItem from="1581423455353" duration="8065000" />
       <workItem from="1581440919547" duration="1909000" />
       <workItem from="1581443263023" duration="3883000" />
-      <workItem from="1581614175179" duration="4469000" />
+      <workItem from="1581614175179" duration="4701000" />
+      <workItem from="1581671900393" duration="7901000" />
     </task>
     <servers />
   </component>
@@ -155,6 +160,10 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="765" y="239" key="#com.intellij.ide.util.MemberChooser" timestamp="1581684768753">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="765" y="239" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1581684768753" />
     <state width="242" height="189" key="DatabaseViewActions_Filter" timestamp="1580910235326">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -179,10 +188,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910215140" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1581614179553">
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1581671902174">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1581443625888" />
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1581671902174" />
     <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581614179553" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">

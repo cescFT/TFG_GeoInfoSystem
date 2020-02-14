@@ -1,4 +1,6 @@
 from django.core.exceptions import FieldDoesNotExist
+from django.contrib.auth.models import User
+from django.contrib.auth.hashers import make_password
 from django.shortcuts import render
 from rest_framework import status, request
 from rest_framework.decorators import api_view
@@ -137,8 +139,7 @@ def updatePuntInteres(request, latitud, longitud):
                 puntInteres.objects.all().filter(latitud=latitud, longitud=longitud).update(localitat=body[key])
             elif key == 'pais':
                 puntInteres.objects.all().filter(latitud=latitud, longitud=longitud).update(pais=body[key])
-            elif key == 'idPuntInteres':
-                puntInteres.objects.all().filter(latitud=latitud, longitud=longitud).update(idPuntInteres=body[key])
+
 
         puntInteresCercat = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
         if latitudModificada and longitudModificada:
@@ -183,7 +184,6 @@ def postNewPuntInteres(request):
         superficie=0.0
         localitat=""
         pais=""
-        idPuntInteres=100
         for key in keys:
             if key == 'latitud':
                 latitud=body[key]
@@ -204,11 +204,9 @@ def postNewPuntInteres(request):
                 localitat=body[key]
             elif key == 'pais':
                 pais=body[key]
-            elif key == 'idPuntInteres':
-                idPuntInteres=body[key]
         pInteresCercat=puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
         if not pInteresCercat:
-            pInteresNou=puntInteres(latitud=latitud, longitud=longitud, idMapa=idMapa, tipus=tipus, actiu=actiu, superficie=superficie, localitat=localitat, pais=pais, idPuntInteres=idPuntInteres)
+            pInteresNou=puntInteres(latitud=latitud, longitud=longitud, idMapa=idMapa, tipus=tipus, actiu=actiu, superficie=superficie, localitat=localitat, pais=pais)
             pInteresNou.save()
             pINou=puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
             serializer = puntInteresSerializer(pINou, many=True)
@@ -250,10 +248,10 @@ Si no n'hi ha retorna un 404 NOT FOUND, altre cas retorna un 200 OK amb les dade
 def getUsuaris(request):
     if request.method == 'GET':
         try:
-            usuaris = usuari.objects.all()
+            usuaris = User.objects.all()
             if not usuaris:
                 raise NoContingut
-            serializer = usuariSerializer(usuaris, many=True)
+            serializer = UserSerializer(usuaris, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception or NoContingut:
             return Response('No hi ha usuaris.', status=status.HTTP_404_NOT_FOUND)
@@ -267,10 +265,10 @@ Retorna un 404 NOT FOUND en cas que no n'hi hagi, en altre cas un 200 OK amb la 
 def getSuperUsuaris(request):
     if request.method=='GET':
         try:
-            superusuaris=usuari.objects.all().filter(superUsuari=True)
+            superusuaris=User.objects.all().filter(is_superuser=True)
             if not superusuaris:
                 raise NoContingut
-            serializer = usuariSerializer(superusuaris, many=True)
+            serializer = UserSerializer(superusuaris, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception or NoContingut:
             return Response('No hi ha superusuaris.', status=status.HTTP_404_NOT_FOUND)
@@ -284,10 +282,10 @@ Retorna un 404 NOT FOUND en cas que no n'hi hagi, en altre cas un 200 OK amb la 
 def getUsuarisNormals(request):
     if request.method == 'GET':
         try:
-            usuarisNormals = usuari.objects.all().filter(superUsuari=False)
+            usuarisNormals = User.objects.all().filter(is_superuser=False)
             if not usuarisNormals:
                 raise NoContingut
-            serializer = usuariSerializer(usuarisNormals, many=True)
+            serializer = UserSerializer(usuarisNormals, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception or NoContingut:
             return Response('No hi ha usuaris normals.', status=status.HTTP_404_NOT_FOUND)
@@ -305,10 +303,10 @@ def getUsuariEspecific(request, alias):
         if not alias:
             return Response('Falta el alies per a poder cercar el usuari especific.', status=status.HTTP_400_BAD_REQUEST)
         try:
-            usuariEspecific=usuari.objects.all().filter(alies=alias)
+            usuariEspecific=User.objects.all().filter(username=alias)
             if not usuariEspecific:
                 raise NoContingut
-            serializer = usuariSerializer(usuariEspecific, many=True)
+            serializer = UserSerializer(usuariEspecific, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception or NoContingut:
             return Response('No existeix aquest usuari', status=status.HTTP_404_NOT_FOUND)
@@ -332,7 +330,7 @@ def updateUsuari(request):
         errorsInEntryJSON=""
         for key in keys:
             try:
-                usuari._meta.get_field(key)
+                User._meta.get_field(key)
             except FieldDoesNotExist:
                 errorsInEntryJSON=errorsInEntryJSON+'['+key+']'+ 'no es un camp correcte.'
         if errorsInEntryJSON:
@@ -342,42 +340,50 @@ def updateUsuari(request):
         if not alies:
             return Response('Falta el alies.', status=status.HTTP_400_BAD_REQUEST)
         try:
-            usrEspecific=usuari.objects.all().filter(alies=alies)
+            usrEspecific=User.objects.all().filter(username=alies)
             if not usrEspecific:
                 raise NoContingut
         except Exception or NoContingut:
             return Response('No hi ha cap usuari amb aquest àlies. S\'aborta la actualització', status=status.HTTP_404_NOT_FOUND)
         aliasChanged = False
         nouAlies =""
+        novaContrassenya=""
+        hasher=""
+        salt=""
         for key in keys:
-            if key == 'nom':
-                usuari.objects.all().filter(alies=alies).update(nom=body[key])
-            elif key == 'alies':
+            if key == 'first_name':
+                User.objects.all().filter(username=alies).update(first_name=body[key])
+            elif key == 'username':
                 aliasChanged=True
                 nouAlies=body[key]
-                usuari.objects.all().filter(alies=alies).update(alies=body[key])
-            elif key == 'cognom':
-                usuari.objects.all().filter(alies=alies).update(cognom=body[key])
-            elif key == 'contrassenya':
-                usuari.objects.all().filter(alies=alies).update(contrassenya=body[key])
-            elif key == 'correuElectronic':
+                User.objects.all().filter(username=alies).update(username=body[key])
+            elif key == 'last_name':
+                User.objects.all().filter(username=alies).update(last_name=body[key])
+            elif key == 'password':
+                novaContrassenya=body[key]
+                first_pass = User.objects.all().filter(username=alies)[0].password.split('$')
+                hasher = first_pass[0]
+                salt = first_pass[1]  # grabbing salt from the first password of the database
+                User.objects.all().filter(username=alies).update(password=make_password(novaContrassenya, salt, hasher))
+            elif key == 'email':
                 regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
                 if re.search(regex, body[key]):
-                    usuari.objects.all().filter(alies=alies).update(correuElectronic=body[key])
+                    User.objects.all().filter(username=alies).update(email=body[key])
             elif key == 'superUsuari':
                 if body[key] == 'True' or body[key] == 1:
                     superusr=True
                 else:
                     superusr=False
-                usuari.objects.all().filter(alies=alies).update(superUsuari=superusr)
+                User.objects.all().filter(username=alies).update(is_superuser=superusr)
 
         #modificacions fetes
-        usuariCercat = usuari.objects.all().filter(alies=alies)
+        usuariCercat = User.objects.all().filter(username=alies)
         if aliasChanged:
-            usuariCercat=usuari.objects.all().filter(alies=nouAlies)
+            usuariCercat=User.objects.all().filter(username=nouAlies)
 
-        serializer = usuariSerializer(usuariCercat, many=True)
+        serializer = UserSerializer(usuariCercat, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
 
 """
 POST /v1/geoInfoSystem/createUsuari/
@@ -388,49 +394,12 @@ En altre cas, tot està bé i processa la operació, genera la nova fila en la b
 @api_view(['POST',])
 def postNewUsuari(request):
     if request.method == 'POST':
-        if not request.body:
-            return Response('Falta passarli informacio al cos del missatge.', status=status.HTTP_400_BAD_REQUEST)
-        body_decoded = request.body.decode('utf-8')
-        body = json.loads(body_decoded)
-        keys=body.keys()
-        errorsInEntryJSON = ""
-        for key in keys:
-            try:
-                usuari._meta.get_field(key)
-            except FieldDoesNotExist:
-                errorsInEntryJSON = errorsInEntryJSON + '[' + str(key) + "] no es un camp correcte."
-        if errorsInEntryJSON:
-            errorsInEntryJSON = errorsInEntryJSON + 'Revisa els camps i torna executar!'
-            return Response(errorsInEntryJSON, status=status.HTTP_400_BAD_REQUEST)
-        nom=""
-        alies=""
-        cognom=""
-        contrassenya=""
-        correuElectronic="initialMail@mail.com"
-        superUsuari=False
-        for key in keys:
-            if key == 'nom':
-                nom=body[key]
-            elif key == 'alies':
-                alies=body[key]
-            elif key == 'cognom':
-                cognom=body[key]
-            elif key == 'contrassenya':
-                contrassenya=body[key]
-            elif key == 'correuElectronic':
-                regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-                if re.search(regex, body[key]):
-                    correuElectronic=body[key]
-            elif key == 'superUsuari':
-                if body[key] == 'True' or body[key] == 1:
-                    superUsuari=True
-        usuariSpec = usuari.objects.all().filter(alies=alies)
-        if not usuariSpec:
-            newUsr = usuari(nom=nom, alies=alies, cognom=cognom, contrassenya=contrassenya, correuElectronic=correuElectronic, superUsuari=superUsuari)
-            newUsr.save()
-            newUsrCercat = usuari.objects.all().filter(alies=alies)
-            serializer = usuariSerializer(newUsrCercat, many=True)
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 """
 DELETE /v1/geoInfoSystem/deleteUsuari/<alias>/
@@ -444,12 +413,12 @@ def deleteUsuari(request, alias):
         if not alias:
             return Response('Falta el alies per a poder eliminar la instancia.', status=status.HTTP_400_BAD_REQUEST)
         try:
-            usuariCercat = usuari.objects.all().filter(alies=alias)
+            usuariCercat = User.objects.all().filter(username=alias)
             if not usuariCercat:
                 raise NoContingut
         except Exception or NoContingut:
             return Response('No hi ha cap usuari amb aquest alies.', status=status.HTTP_404_NOT_FOUND)
-        usuari.objects.all().filter(alies=alias).delete()
+        User.objects.all().filter(username=alias).delete()
         return Response('Usuari eliminat correctament.', status=status.HTTP_200_OK)
 
 ###################################################################
@@ -564,8 +533,6 @@ def updateLocalByLatLong(request, nomLocal, latitud, longitud):
                 local.objects.all().filter(localitzacio=puntInteresCercat).update(anyConstruccio=body[key])
             elif key == 'descripcio':
                 local.objects.all().filter(localitzacio=puntInteresCercat).update(descripcio=body[key])
-            elif key == 'idLocal':
-                local.objects.all().filter(localitzacio=puntInteresCercat).update(idLocal=body[key])
             elif key == 'latitud':
                 novaLatitud=body[key]
             elif key == 'longitud':
@@ -631,8 +598,6 @@ def updateLocalByName(request, nomLocal):           #No provat. sha de provar
                 local.objects.all().filter(nomLocal=nomLocal).update(anyConstruccio=body[key])
             elif key == 'descripcio':
                 local.objects.all().filter(nomLocal=nomLocal).update(descripcio=body[key])
-            elif key == 'idLocal':
-                local.objects.all().filter(nomLocal=nomLocal).update(idLocal=body[key])
 
         localSeached = local.objects.all().filter(nomLocal=nomLocal)
         if nouNomLocal:
@@ -682,7 +647,6 @@ def postNewLocal(request):
         categoria=""
         anyConstruccio=0
         descripcio=""
-        idLocal=40
         latitud=0.0
         longitud=0.0
         for key in keys:
@@ -696,15 +660,13 @@ def postNewLocal(request):
                 anyConstruccio=body[key]
             elif key == 'descripcio':
                 descripcio=body[key]
-            elif key == 'idLocal':
-                idLocal=body[key]
             elif key == 'latitud':
                 latitud=body[key]
             elif key == 'longitud':
                 longitud=body[key]
 
         punt_to_assign = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
-        newLocal = local(localitzacio=punt_to_assign, nomLocal=nomLocal,puntuacio=puntuacio,categoria=categoria,anyConstruccio=anyConstruccio,descripcio=descripcio,idLocal=idLocal)
+        newLocal = local(localitzacio=punt_to_assign, nomLocal=nomLocal,puntuacio=puntuacio,categoria=categoria,anyConstruccio=anyConstruccio,descripcio=descripcio)
         newLocal.save()
         localSeached = local.objects.all().filter(localitzacio=punt_to_assign)
         return Response(localSerializer(localSeached, many=True).data, status=status.HTTP_201_CREATED)
