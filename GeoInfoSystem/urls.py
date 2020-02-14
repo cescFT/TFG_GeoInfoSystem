@@ -27,5 +27,12 @@ urlpatterns = [
     path('updateLocalByName/<str:nomLocal>/', views.updateLocalByName, name='updateLocalByName'),
     path('createLocal/', views.postNewLocal, name='createLocal'),
     path('deleteLocalByLatLong/', views.deleteLocalByLatLong, name='deleteByLatLong'),
-    path('deleteLocalByNom/', views.deleteLocalByName, name='deleteByName')
+    path('deleteLocalByNom/', views.deleteLocalByName, name='deleteByName'),
+
+    #############################################################
+    #   VISTES DES DE LA WEB                                    #
+    #############################################################
+
+    path('registrar_nou_usuari/', views.regitrarse, name='Registrar')
+
 ]

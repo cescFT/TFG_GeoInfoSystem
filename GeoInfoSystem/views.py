@@ -1,7 +1,8 @@
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.auth.models import User
+from .forms import RegisterForm
 from django.contrib.auth.hashers import make_password
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework import status, request
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -719,3 +720,26 @@ def deleteLocalByName(request):
             return Response('No hi ha cap punt d\'interes amb aquest nom.', status=status.HTTP_404_NOT_FOUND)
 
 
+
+
+
+##################################################################################
+#
+# Secció per a crear totes les vistes que seràn d'entrada de dades
+#
+##################################################################################
+
+def home(response):
+    return render(response, "home/home.html",{})
+
+def regitrarse(response):
+    if response.method=='POST':
+        #Aquest tros de codi el que fa es generar el nou usuari amb les dades que li passem nosaltres
+        form = RegisterForm(response.POST)
+        if form.is_valid():
+            form.save()
+        return redirect("/")
+    else:
+        #En cas que sigui que entres per registrar-te pos entres a registrar-se per tant seria GET
+        form=RegisterForm()
+    return render(response, "usuaris/registrar.html", {"form":form})

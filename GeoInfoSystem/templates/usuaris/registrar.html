@@ -1,0 +1,15 @@
+{% extends 'home/base.html' %}
+{% block title %} Registrar-se {% endblock %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<h1>Registra't a la pàgina</h1>
+    <div>
+        <form method="POST" class ="form-group">
+            {% csrf_token %}
+            {{ form | crispy }}
+            <button type="submit" class="btn btn-success">Registra't</button>
+        </form>
+    </div>
+
+{% endblock %}
