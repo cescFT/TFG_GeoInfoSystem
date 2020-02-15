@@ -33,6 +33,8 @@ urlpatterns = [
     #   VISTES DES DE LA WEB                                    #
     #############################################################
 
-    path('registrar_nou_usuari/', views.regitrarse, name='Registrar')
+    path('registrar_nou_usuari/', views.paginaRegistrarse, name='Registrar'),
+    path('processar_nou_usuari/', views.processar_info_nou_usuari, name='nouform'),
+    path('map/', views.mostrarMapa, name='mapa')
 
 ]

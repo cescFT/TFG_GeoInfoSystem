@@ -1,6 +1,6 @@
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.auth.models import User
-from .forms import RegisterForm
+from .forms import *
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
 from rest_framework import status, request
@@ -720,26 +720,63 @@ def deleteLocalByName(request):
             return Response('No hi ha cap punt d\'interes amb aquest nom.', status=status.HTTP_404_NOT_FOUND)
 
 
+################################################################
+# Secció per a cridar la vista d'entrada/registre/login/logout #
+################################################################
 
-
-
-##################################################################################
-#
-# Secció per a crear totes les vistes que seràn d'entrada de dades
-#
-##################################################################################
-
+""" 
+Mètode que permet visualitzar la pàgina d'inici
+"""
 def home(response):
     return render(response, "home/home.html",{})
 
-def regitrarse(response):
-    if response.method=='POST':
-        #Aquest tros de codi el que fa es generar el nou usuari amb les dades que li passem nosaltres
-        form = RegisterForm(response.POST)
-        if form.is_valid():
-            form.save()
-        return redirect("/")
-    else:
-        #En cas que sigui que entres per registrar-te pos entres a registrar-se per tant seria GET
-        form=RegisterForm()
-    return render(response, "usuaris/registrar.html", {"form":form})
+"""
+Mètode que mostra la pàgina per a registrar un nou usuari
+"""
+def paginaRegistrarse(response):
+    return render(response, "usuaris/registrar1.html", {'errors': []})
+
+"""
+Mètode que permet el processament i creació d'un nou usuari
+"""
+def processar_info_nou_usuari(response):
+    errors=[]
+    if response.method == 'POST':
+        if User.objects.all().filter(username=response.POST.get('username')):
+            errors+=["El nom d'usuari ja està agafat."]
+        password1=response.POST.get('password1')
+        password2=response.POST.get('password2')
+        if password1 != password2:
+            errors+=["Les contrassenyes no coincideixen."]
+
+        if response.POST.get('email'):
+            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+            if not re.search(regex, response.POST.get('email')):
+                errors+=["El mail no té format de correu electrònic"]
+
+        if errors:
+            return render(response, 'usuaris/registrar1.html', {'errors':errors})
+
+        if not errors:
+            nou_usuari = User()
+            nou_usuari.username=response.POST.get('username')
+            if response.POST.get('first_name'):
+                nou_usuari.first_name=response.POST.get('first_name')
+            if response.POST.get('last_name'):
+                nou_usuari.last_name = response.POST.get('last_name')
+            nou_usuari.email=response.POST.get('email')
+            nou_usuari.set_password(response.POST.get(password1))
+            nou_usuari.save()
+            return redirect("/")
+    return render(response, 'usuaris/registrar1.html', {})
+
+
+
+
+
+#############################################################################
+# MÈTODES REFERENTS A LA VISTA ON TREBALLAREM AMB EL MAPA                   #
+#############################################################################
+def mostrarMapa(response):
+    return render(response, "puntsGeografics/map.html", {})
+

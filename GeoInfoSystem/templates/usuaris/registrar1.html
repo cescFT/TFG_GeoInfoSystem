@@ -1,0 +1,32 @@
+{% extends 'home/base.html' %}
+{% block title %} Registra't a la pàgina {% endblock %}
+
+{% block content %}
+
+{% if errors|length > 0 %}
+    <p>HI HA ELS SEGÜENTS ERRORS:</p>
+        {% for error in errors %}
+            <p> * {{ error }}</p>
+        {% endfor %}
+{% else %}
+
+{% endif %}
+
+<h1>Registra't a la web</h1>
+<form method="POST" action="/v1/geoInfoSystem/processar_nou_usuari/">
+    {% csrf_token %}
+    <div><p>Nom d'usuari:</p></div>
+    <input type="text" id="nomUsuari" name="username" placeholder="Nom d'usuari" required>
+    <div><p>Correu electrònic:</p></div>
+    <input type="email" id="correuE" name="email" placeholder="correu@exemple.com" required>
+    <div><p>Nom:</p></div>
+    <input type="text" name="first_name" placeholder="Nom">
+    <div><p>Cognom:</p></div>
+    <input type="text" name="last_name" placeholder="Cognom">
+    <div><p>Contrassenya:</p></div>
+    <input type="password" id="passwd1" name="password1" placeholder="Contrassenya" required>
+    <div><p>Repeteix contrassenya:</p></div>
+    <input type="password" id="passwd2" name="password2" placeholder="Repeteix contrassenya" required>
+    <button type="submit" id="submit_registre" name="submit_new_user" class="btn btn-success">Registra't</button>
+</form>
+{% endblock %}

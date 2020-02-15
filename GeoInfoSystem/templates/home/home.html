@@ -1,11 +1,46 @@
 {% extends 'home/base.html' %}
 {% block title %} Sistema de Geolocalització {% endblock %}
 {% block content %}
-<h1>Treball fi de grau</h1>
-<p>POSAR INFO ...</p>
-<ul>
+<head>
+    <style>
+        h1#titol{
+            text-align: center;
+        }
+        h2#subtitol{
+            text-align: center;
+        }
+        div#centrarTitol{
+            margin-left: 50px;
+        }
+        div#centrarSubtitol{
+            margin-left: 20px;
+        }
+
+
+
+    </style>
+</head>
+
+<div id="centrarTitol">
+    <h1 id="titol">Treball fi de grau</h1>
+    <div id="centrarSubtitol">
+        <h2 id="subtitol">Sistema d'informació Geogràfica per a l'estudi d'usos de les ciutats</h2>
+    </div>
+</div>
+
+
+<div>
+    <p class="info">POSAR INFO ...</p>
+    <ul>
             {% for i in "paraula" %}
             <li>{{i}}</li>
             {% endfor %}
 </ul>
+</div>
+
+<div>
+    <p>Les accions permeses en aquesta pàgina web són les següents:</p>
+    <a href="/v1/geoInfoSystem/map/" type="button">Click per a veure el mapa</a>
+</div>
+
 {% endblock %}
