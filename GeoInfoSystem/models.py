@@ -14,7 +14,7 @@ class puntInteres(models.Model):
     localitat=models.CharField(max_length=200)
     pais=models.CharField(max_length=200)
     def __str__(self):
-        return "Punt interes localitzat:["+str(self.latitud)+","+str(self.longitud)+"] actiu="+str(self.actiu)+"de tipus:"+str(self.tipus)
+        return "{"+"latitud:\"" + str(self.latitud) + "\", longitud:\"" + str(self.longitud) + "\", idMapa:\"" + str(self.idMapa) + "\", tipus:\"" + str(self.tipus) + "\", actiu:\"" + str(self.actiu)+ "\", superficie:\"" + str(self.superficie) + "\", localitat:\"" + str(self.localitat) + "\", pais:\"" + str(self.pais)+"\""+"}";
 
 
 """

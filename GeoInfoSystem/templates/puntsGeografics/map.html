@@ -67,7 +67,7 @@
 
 
 </head>
-<body>
+<body onload="veurecontingutvariable()">
     <div class="header">
         <a href="/" class="logo">Sistema d'informació Geogràfica</a>
         <div class="header-right">
@@ -83,9 +83,13 @@
         <button type="submit" id="searchButton" onclick="enviarDadesMaps()">Cerca</button>
 
     </form>
+
+
     <div id="map"></div>
 
-
+    <div id="contingutvariable">
+        {{ puntsInteres }}
+    </div>
 
     <script>
         function enviarDadesMaps(){
@@ -95,6 +99,19 @@
 
         }
     </script>
+
+
+    <script>
+        function veurecontingutvariable(){
+            var divSortida = document.getElementById("contingutvariable");
+            var punts=JSON.parse('{{ puntsInteres | safe }}');
+            for (punt of punts){
+                divSortida.innerHTML=punt.fields.latitud;
+            }
+        }
+
+    </script>
+
 
 
 <script>

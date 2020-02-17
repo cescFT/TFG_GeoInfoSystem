@@ -10,6 +10,7 @@ from Exceptions import NoContingut
 from GeoInfoSystem.models import *
 from GeoInfoSystem.serializers import *
 from Exceptions import *
+from django.core import serializers
 import json
 import re
 import urllib.parse
@@ -778,5 +779,8 @@ def processar_info_nou_usuari(response):
 # MÈTODES REFERENTS A LA VISTA ON TREBALLAREM AMB EL MAPA                   #
 #############################################################################
 def mostrarMapa(response):
-    return render(response, "puntsGeografics/map.html", {})
+    puntsInteresCercats = puntInteres.objects.all()
+    punts = serializers.serialize("json", puntsInteresCercats)
+    print(punts)
+    return render(response, "puntsGeografics/map.html", {'puntsInteres': punts})
 
