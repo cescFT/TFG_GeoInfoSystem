@@ -121,12 +121,23 @@ function initMap() {
     //Localitzem en el món Catalunya
     var catalunya = {lat: 41.8204600, lng: 1.8676800};
     // Mapa centrat a Catalunya
-    var map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: catalunya});
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: catalunya});
     // Marquem els punts en el mapa.
     var punts=JSON.parse('{{ puntsInteres | safe }}');
     for (punt of punts){
         var posicioPuntInteres={lat:punt.fields.latitud, lng:punt.fields.longitud};
-        var marker = new google.maps.Marker({position: posicioPuntInteres, map: map});
+        var infoToShow = "INFORMACIÓ DEL LLOC:";
+        infoToShow+=" - Latitud: "+String.valueOf(punt.fields.latitud)+"\n";
+        infoToShow+=" - Longitud: "+String.valueOf(punt.fields.longitud)+"\n";
+        infoToShow+=" - Tipus: "+punt.fields.tipus+"\n";
+        infoToShow+=" - Superficie: "+String.valueOf(punt.fields.superficie)+"\n";
+        infoToShow+=" - Localitat: "+punt.fields.localitat+"\n";
+        infoToShow+=" - Pais: "+tipus.fields.pais;
+        var marker = new google.maps.Marker({position: posicioPuntInteres, map: map, customInfo: infoToShow});
+        google.maps.event.addListener(marker, 'click', function() {
+            alert(marker.customInfo);
+        });
+        infoToShow="";
     }
 
 
