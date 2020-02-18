@@ -88,7 +88,8 @@
     <div id="map"></div>
 
     <div id="contingutvariable">
-        {{ puntsInteres }}
+        "{{ puntsInteres| safe }}"
+
     </div>
 
     <script>
@@ -106,7 +107,7 @@
             var divSortida = document.getElementById("contingutvariable");
             var punts=JSON.parse('{{ puntsInteres | safe }}');
             for (punt of punts){
-                divSortida.innerHTML=punt.fields.latitud;
+                divSortida.innerHTML+=punt.fields.latitud;
             }
         }
 
@@ -117,18 +118,19 @@
 <script>
 // Initialize and add the map
 function initMap() {
+    //Localitzem en el món Catalunya
+    var catalunya = {lat: 41.8204600, lng: 1.8676800};
+    // Mapa centrat a Catalunya
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 4, center: catalunya});
+    // Marquem els punts en el mapa.
+    var punts=JSON.parse('{{ puntsInteres | safe }}');
+    for (punt of punts){
+        var posicioPuntInteres={lat:punt.fields.latitud, lng:punt.fields.longitud};
+        var marker = new google.maps.Marker({position: posicioPuntInteres, map: map});
+    }
 
-    //aqui caldra passarli la informacio referent als punts d'interes que tinguem :)
 
 
-
-  // The location of Uluru
-  var catalunya = {lat: 41.8204600, lng: 1.8676800};
-  // The map, centered at Uluru
-  var map = new google.maps.Map(
-      document.getElementById('map'), {zoom: 4, center: catalunya});
-  // The marker, positioned at Uluru
-  //var marker = new google.maps.Marker({position: uluru, map: map});
 }
     </script>
     <!--Load the API from the specified URL
