@@ -124,24 +124,55 @@ function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: catalunya});
     // Marquem els punts en el mapa.
     var punts=JSON.parse('{{ puntsInteres | safe }}');
-    for (punt of punts){
-        var posicioPuntInteres={lat:punt.fields.latitud, lng:punt.fields.longitud};
-        var infoToShow = "INFORMACIÓ DEL LLOC:\n";
-        infoToShow+=" - Latitud: "+punt.fields.latitud.toString()+"\n";
-        infoToShow+=" - Longitud: "+punt.fields.longitud.toString()+"\n";
-        infoToShow+=" - Tipus: "+punt.fields.tipus.toString()+"\n";
-        infoToShow+=" - Superficie: "+punt.fields.superficie.toString()+"\n";
-        infoToShow+=" - Localitat: "+punt.fields.localitat.toString()+"\n";
-        infoToShow+=" - Pais: "+punt.fields.pais.toString();
-        var marker = new google.maps.Marker({position: posicioPuntInteres, map: map, customInfo: infoToShow});
-        google.maps.event.addListener(marker, 'click', function() {
-            alert(marker.customInfo);
+
+    var posicioPuntInteres;
+    var pointsToDo=[];
+
+    for(punt of punts){
+        pointsToDo.push({
+            "position" : new google.maps.LatLng(punt.fields.latitud, punt.fields.longitud),
+            "latitud" : punt.fields.latitud,
+            "longitud" : punt.fields.longitud,
+            "latitudS" : punt.fields.latitud.toString(),
+            "longitudS" : punt.fields.longitud.toString(),
+            "Tipus" : punt.fields.tipus.toString(),
+            "Superficie" : punt.fields.superficie.toString(),
+            "Localitat" : punt.fields.localitat.toString(),
+            "Pais":punt.fields.pais.toString()
         });
-        infoToShow="";
     }
 
+    console.log(pointsToDo);
 
+    for(var i=0; i<pointsToDo.length; i++){
+        console.log(pointsToDo[i]['position']);
+        var string ="INFORMACIÓ DEL PUNT D'INTERÈS:\n";
+            string +="\t- Coordenades: ("+pointsToDo[i]['latitudS'];
+            string += ","+ pointsToDo[i]['longitudS']+")";
+            string +="\t- Tipus: "+pointsToDo[i]['Tipus'];
+            string +="\t- Superficie: "+pointsToDo[i]['Superficie'];
+            string +="\t- Localitat: "+pointsToDo[i]['Localitat'];
+            string +="\t- Pais:"+pointsToDo[i]['Pais'];
 
+        let contentString = '<div id="content">'+
+    '<div id="siteNotice">'+
+    '</div>'+
+    '<h1 id="firstHeading" class="firstHeading">NOM PUNT INTERES</h1>'+
+    '<div id="bodyContent">'+
+    '<p><b>NOM PUNT INTERES</b>' +
+    'DESCRIPCIO</p>'+
+    string+
+    '</div>'+
+    '</div>';
+
+        let infowindow= new google.maps.InfoWindow({
+            content: contentString
+        });
+       let marker = new google.maps.Marker({position: pointsToDo[i]['position'], map: map, title:'Punt interes'});
+        marker.addListener('click', function () {
+            infowindow.open(map, marker);
+        });
+    }
 }
     </script>
     <!--Load the API from the specified URL
