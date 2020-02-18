@@ -126,13 +126,13 @@ function initMap() {
     var punts=JSON.parse('{{ puntsInteres | safe }}');
     for (punt of punts){
         var posicioPuntInteres={lat:punt.fields.latitud, lng:punt.fields.longitud};
-        var infoToShow = "INFORMACIÓ DEL LLOC:";
-        infoToShow+=" - Latitud: "+String.valueOf(punt.fields.latitud)+"\n";
-        infoToShow+=" - Longitud: "+String.valueOf(punt.fields.longitud)+"\n";
-        infoToShow+=" - Tipus: "+punt.fields.tipus+"\n";
-        infoToShow+=" - Superficie: "+String.valueOf(punt.fields.superficie)+"\n";
-        infoToShow+=" - Localitat: "+punt.fields.localitat+"\n";
-        infoToShow+=" - Pais: "+tipus.fields.pais;
+        var infoToShow = "INFORMACIÓ DEL LLOC:\n";
+        infoToShow+=" - Latitud: "+punt.fields.latitud.toString()+"\n";
+        infoToShow+=" - Longitud: "+punt.fields.longitud.toString()+"\n";
+        infoToShow+=" - Tipus: "+punt.fields.tipus.toString()+"\n";
+        infoToShow+=" - Superficie: "+punt.fields.superficie.toString()+"\n";
+        infoToShow+=" - Localitat: "+punt.fields.localitat.toString()+"\n";
+        infoToShow+=" - Pais: "+punt.fields.pais.toString();
         var marker = new google.maps.Marker({position: posicioPuntInteres, map: map, customInfo: infoToShow});
         google.maps.event.addListener(marker, 'click', function() {
             alert(marker.customInfo);
