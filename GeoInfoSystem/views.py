@@ -780,7 +780,13 @@ def processar_info_nou_usuari(response):
 #############################################################################
 def mostrarMapa(response):
     puntsInteresCercats = puntInteres.objects.all()
+    localsimp = local.objects.all()
+    locals = serializers.serialize("json", localsimp)
     punts = serializers.serialize("json", puntsInteresCercats)
+    print('Punts d\'interès:')
     print(punts)
-    return render(response, "puntsGeografics/map.html", {'puntsInteres': punts})
+    print('\n')
+    print('Locals:')
+    print(locals)
+    return render(response, "puntsGeografics/map.html", {'puntsInteres': punts, 'locals': locals})
 

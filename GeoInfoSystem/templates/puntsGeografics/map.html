@@ -89,6 +89,7 @@
 
     <div id="contingutvariable">
         "{{ puntsInteres| safe }}"
+        "{{ locals | safe }}"
 
     </div>
 
@@ -106,8 +107,12 @@
         function veurecontingutvariable(){
             var divSortida = document.getElementById("contingutvariable");
             var punts=JSON.parse('{{ puntsInteres | safe }}');
+            //var locals = JSON.parse('{{ locals | safe }}');
             for (punt of punts){
                 divSortida.innerHTML+=punt.fields.latitud;
+            }
+            for(local of JSON.parse("{{ locals | safe }}")){
+                divSortida.innerHTML+=local.fields.nomLocal;
             }
         }
 
@@ -124,13 +129,30 @@ function initMap() {
     var map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: catalunya});
     // Marquem els punts en el mapa.
     var punts=JSON.parse('{{ puntsInteres | safe }}');
+    var locals = JSON.parse(`{{ locals | safe }}`);
 
     var posicioPuntInteres;
     var pointsToDo=[];
+    var localsToDo=[];
 
+
+    for(local of locals){
+        localsToDo.push({
+            "localitzacio" : local.fields.localitzacio,
+            "nomLocal" : local.fields.nomLocal,
+            "puntuacio" : local.fields.puntuacio,
+            "puntuacioS" : local.fields.puntuacio.toString(),
+            "categoria" : local.fields.categoria,
+            "anyConstruccio" : local.fields.anyConstruccio,
+            "anyConstruccioS" : local.fields.anyConstruccio.toString(),
+            "descripcio" : local.fields.descripcio
+        });
+    }
+    console.log(localsToDo);
     for(punt of punts){
         pointsToDo.push({
             "position" : new google.maps.LatLng(punt.fields.latitud, punt.fields.longitud),
+            "pk" : punt.pk ,
             "latitud" : punt.fields.latitud,
             "longitud" : punt.fields.longitud,
             "latitudS" : punt.fields.latitud.toString(),
@@ -142,36 +164,41 @@ function initMap() {
         });
     }
 
-    console.log(pointsToDo);
+    //console.log(pointsToDo);
 
     for(var i=0; i<pointsToDo.length; i++){
-        console.log(pointsToDo[i]['position']);
-        var string ="INFORMACIÓ DEL PUNT D'INTERÈS:\n";
-            string +="\t- Coordenades: ("+pointsToDo[i]['latitudS'];
-            string += ","+ pointsToDo[i]['longitudS']+")";
-            string +="\t- Tipus: "+pointsToDo[i]['Tipus'];
-            string +="\t- Superficie: "+pointsToDo[i]['Superficie'];
-            string +="\t- Localitat: "+pointsToDo[i]['Localitat'];
-            string +="\t- Pais:"+pointsToDo[i]['Pais'];
+        for(var j=0; j<localsToDo.length; j++){
+            if(pointsToDo[i]['pk'] == localsToDo[j]['localitzacio']){
+                console.log(localsToDo[j]['descripcio']);
+                var string ="INFORMACIÓ DEL PUNT D'INTERÈS:\n";
+                    string +="\t- Coordenades: ("+pointsToDo[i]['latitudS'];
+                    string += ","+ pointsToDo[i]['longitudS']+")";
+                    string +="\t- Tipus: "+pointsToDo[i]['Tipus'];
+                    string +="\t- Superficie: "+pointsToDo[i]['Superficie'];
+                    string +="\t- Localitat: "+pointsToDo[i]['Localitat'];
+                    string +="\t- Pais:"+pointsToDo[i]['Pais'];
 
-        let contentString = '<div id="content">'+
-    '<div id="siteNotice">'+
-    '</div>'+
-    '<h1 id="firstHeading" class="firstHeading">NOM PUNT INTERES</h1>'+
-    '<div id="bodyContent">'+
-    '<p><b>NOM PUNT INTERES</b>' +
-    'DESCRIPCIO</p>'+
-    string+
-    '</div>'+
-    '</div>';
+            let contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">'+localsToDo[j]['nomLocal']+'</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>'+localsToDo[j]['nomLocal']+'</b>'+localsToDo[j]['descripcio']+'</p>'+
+            string+
+            '</div>'+
+            '</div>';
 
-        let infowindow= new google.maps.InfoWindow({
-            content: contentString
-        });
-       let marker = new google.maps.Marker({position: pointsToDo[i]['position'], map: map, title:'Punt interes'});
-        marker.addListener('click', function () {
-            infowindow.open(map, marker);
-        });
+            let infowindow= new google.maps.InfoWindow({
+                content: contentString
+            });
+           let marker = new google.maps.Marker({position: pointsToDo[i]['position'], map: map, title:localsToDo[j]['nomLocal']});
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+        }
+    }
+
+
     }
 }
     </script>

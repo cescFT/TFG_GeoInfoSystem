@@ -30,6 +30,6 @@ class local(models.Model):
     anyConstruccio=models.IntegerField()
     descripcio=models.CharField(max_length=600)
     def __str__(self):
-        return str(self.nomLocal)+" puntuacio="+str(self.puntuacio)+" categoria="+str(self.categoria)+" any construccio="+str(self.anyConstruccio)
+        return "{"+"nomLocal:\"" + str(self.nomLocal) + "\", puntuacio:\"" + str(self.puntuacio) + "\", categoria:\"" + str(self.categoria) + "\", anyConstruccio:\"" + str(self.anyConstruccio) + "\", descripcio:\"" + str(self.descripcio)+ "\", superficie:\""+"}";
 
 

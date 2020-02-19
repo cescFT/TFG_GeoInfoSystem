@@ -3,7 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/models.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +153,8 @@
       <workItem from="1581933605381" duration="7559000" />
       <workItem from="1581947837502" duration="326000" />
       <workItem from="1582023594324" duration="4664000" />
-      <workItem from="1582040938283" duration="6354000" />
+      <workItem from="1582040938283" duration="6587000" />
+      <workItem from="1582098797130" duration="5366000" />
     </task>
     <servers />
   </component>
@@ -190,15 +193,16 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910215140" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1582040938712">
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1582098833838">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1582040938712" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1581947839533" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1581766984851">
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582098833838" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1582101027832">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1581766984851" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582101027832" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
