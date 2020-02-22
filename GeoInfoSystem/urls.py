@@ -35,6 +35,7 @@ urlpatterns = [
 
     path('registrar_nou_usuari/', views.paginaRegistrarse, name='Registrar'),
     path('processar_nou_usuari/', views.processar_info_nou_usuari, name='nouform'),
-    path('map/', views.mostrarMapa, name='mapa')
+    path('map/', views.mostrarMapa, name='mapa'),
+    url(r'info_especifica/(?P<nomLocal>[^/]+)/(?P<latitud>\d+\.\d+)/(?P<longitud>\d+\.\d+)/$', views.mostrarPuntEspecific, name='informacio')
 
 ]

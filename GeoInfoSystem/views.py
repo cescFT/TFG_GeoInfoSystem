@@ -788,5 +788,39 @@ def mostrarMapa(response):
     print('\n')
     print('Locals:')
     print(locals)
+    #LIMITACIO DE NO PAGAR API: NO PUC FER CERQUES.... (searchbox item de google)
     return render(response, "puntsGeografics/map.html", {'puntsInteres': punts, 'locals': locals})
+
+
+def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
+    nomLocal = urllib.parse.unquote(nomLocal)
+    try:
+        punt = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
+        if not punt:
+            raise NoContingut
+        loc = local.objects.all().filter(nomLocal=nomLocal, localitzacio=punt)
+        if not loc:
+            raise NoContingut
+    except Exception or NoContingut:
+        return render(response, "errors/ErrorFile.html",{})
+    puntInteresC = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
+    p = puntInteresC[0]
+    localEspecific = local.objects.all().filter(nomLocal=nomLocal)
+
+    altresPuntsInteres = puntInteres.objects.all().filter(localitat=p.localitat).exclude(latitud=latitud, longitud=longitud)
+    punts=[]
+    for punt in altresPuntsInteres:
+        punts+=[punt]
+    locals = local.objects.all().exclude(nomLocal=nomLocal)
+    altresLocals=[]
+    for punt in punts:
+        for l in locals:
+            if l.localitzacio.localitat == punt.localitat:
+                altresLocals+=[l]
+
+    punt = serializers.serialize("json", puntInteresC)
+    localE = serializers.serialize("json", localEspecific)
+    altresLocals = serializers.serialize("json", altresLocals)
+    punts = serializers.serialize("json", punts)
+    return render(response, "puntsGeografics/informacioDetallada.html", {'puntInteres':punt, 'local': localE, 'altresLocals' : altresLocals, 'altresPuntsInteres': punts})
 

@@ -63,6 +63,8 @@
         width: 100%;  /* The width is the width of the web page */
        }
 
+
+
     </style>
 
 
@@ -72,17 +74,11 @@
         <a href="/" class="logo">Sistema d'informació Geogràfica</a>
         <div class="header-right">
             <a class="active" href="/">Pàgina d'inici</a>
-            <a href="/">Registra't</a>
+            <a href="/v1/geoInfoSystem/registrar_nou_usuari/">Registra't</a>
             <a href="/">Inicia sessió</a>
         </div>
     </div>
 
-    <form method="POST" id="cercarCiutat" >
-        {% csrf_token %}
-        <input type="text" name="cercador" id="ciutat" placeholder="Cerca ciutat">
-        <button type="submit" id="searchButton" onclick="enviarDadesMaps()">Cerca</button>
-
-    </form>
 
 
     <div id="map"></div>
@@ -90,17 +86,7 @@
     <div id="contingutvariable">
         "{{ puntsInteres| safe }}"
         "{{ locals | safe }}"
-
     </div>
-
-    <script>
-        function enviarDadesMaps(){
-            var boto=document.getElementById("searchButton");
-            var input=document.getElementById("ciutat").value;
-            //ni idea de com pasarli la ciutat buscada, de moment...
-
-        }
-    </script>
 
 
     <script>
@@ -111,7 +97,7 @@
             for (punt of punts){
                 divSortida.innerHTML+=punt.fields.latitud;
             }
-            for(local of JSON.parse("{{ locals | safe }}")){
+            for(local of JSON.parse(`{{ locals | safe }}`)){
                 divSortida.innerHTML+=local.fields.nomLocal;
             }
         }
@@ -121,12 +107,13 @@
 
 
 <script>
+    var map;
 // Initialize and add the map
 function initMap() {
     //Localitzem en el món Catalunya
     var catalunya = {lat: 41.8204600, lng: 1.8676800};
     // Mapa centrat a Catalunya
-    var map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: catalunya});
+    map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: catalunya});
     // Marquem els punts en el mapa.
     var punts=JSON.parse('{{ puntsInteres | safe }}');
     var locals = JSON.parse(`{{ locals | safe }}`);
@@ -148,7 +135,7 @@ function initMap() {
             "descripcio" : local.fields.descripcio
         });
     }
-    console.log(localsToDo);
+    //console.log(localsToDo);
     for(punt of punts){
         pointsToDo.push({
             "position" : new google.maps.LatLng(punt.fields.latitud, punt.fields.longitud),
@@ -169,7 +156,7 @@ function initMap() {
     for(var i=0; i<pointsToDo.length; i++){
         for(var j=0; j<localsToDo.length; j++){
             if(pointsToDo[i]['pk'] == localsToDo[j]['localitzacio']){
-                console.log(localsToDo[j]['descripcio']);
+                //console.log(localsToDo[j]['descripcio']);
                 var string ="INFORMACIÓ DEL PUNT D'INTERÈS:\n";
                     string +="\t- Coordenades: ("+pointsToDo[i]['latitudS'];
                     string += ","+ pointsToDo[i]['longitudS']+")";
@@ -178,6 +165,9 @@ function initMap() {
                     string +="\t- Localitat: "+pointsToDo[i]['Localitat'];
                     string +="\t- Pais:"+pointsToDo[i]['Pais'];
 
+                var url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+localsToDo[j]['nomLocal']+"/"+pointsToDo[i]['latitud']+"/"+pointsToDo[i]['longitud']+"/";
+                url = encodeURI(url);
+
             let contentString = '<div id="content">'+
             '<div id="siteNotice">'+
             '</div>'+
@@ -185,6 +175,7 @@ function initMap() {
             '<div id="bodyContent">'+
             '<p><b>'+localsToDo[j]['nomLocal']+'</b>'+localsToDo[j]['descripcio']+'</p>'+
             string+
+             '<a href='+url+'>Click aquí per a més informació</a>'+
             '</div>'+
             '</div>';
 
@@ -197,8 +188,6 @@ function initMap() {
             });
         }
     }
-
-
     }
 }
     </script>

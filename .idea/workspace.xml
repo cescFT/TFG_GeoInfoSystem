@@ -2,9 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/errors/ErrorFIle.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/models.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/home/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/home/base.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -154,7 +158,12 @@
       <workItem from="1581947837502" duration="326000" />
       <workItem from="1582023594324" duration="4664000" />
       <workItem from="1582040938283" duration="6587000" />
-      <workItem from="1582098797130" duration="5366000" />
+      <workItem from="1582098797130" duration="5534000" />
+      <workItem from="1582107922887" duration="4146000" />
+      <workItem from="1582116073843" duration="262000" />
+      <workItem from="1582125016816" duration="687000" />
+      <workItem from="1582127727680" duration="319000" />
+      <workItem from="1582371192176" duration="14220000" />
     </task>
     <servers />
   </component>
@@ -193,15 +202,15 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910215140" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1582098833838">
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1582371196588">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1582040938712" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582098833838" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1582101027832">
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1582371196588" />
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1582127739431" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1582384257026">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1581766984851" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1582384257026" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1582101027832" />
   </component>
   <component name="XDebuggerManager">
