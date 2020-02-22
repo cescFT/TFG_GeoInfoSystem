@@ -817,10 +817,14 @@ def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
         for l in locals:
             if l.localitzacio.localitat == punt.localitat:
                 altresLocals+=[l]
-
+    print(punts)
+    print(altresLocals)
     punt = serializers.serialize("json", puntInteresC)
     localE = serializers.serialize("json", localEspecific)
     altresLocals = serializers.serialize("json", altresLocals)
     punts = serializers.serialize("json", punts)
-    return render(response, "puntsGeografics/informacioDetallada.html", {'puntInteres':punt, 'local': localE, 'altresLocals' : altresLocals, 'altresPuntsInteres': punts})
+    if altresLocals != "[]" and punts!= "[]":
+        return render(response, "puntsGeografics/informacioDetallada.html", {'puntInteres':punt, 'local': localE, 'altresLocals' : altresLocals, 'altresPuntsInteres': punts, 'altres': True})
+    else:
+        return render(response, "puntsGeografics/informacioDetallada.html", {'puntInteres': punt, 'local': localE, 'altresLocals': altresLocals, 'altresPuntsInteres': punts, 'altres': False})
 

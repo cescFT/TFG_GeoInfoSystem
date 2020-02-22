@@ -84,17 +84,14 @@
 
     <h1>{{ puntInteres }}</h1>
     <h2>{{ local }}</h2>
+    {{ altresLocals }}
+    {{ altresPuntsInteres }}
 
-    {% if altresLocals|length <= 0 or altresPuntsInteres|length <= 0 %}
-        <div id="altres">
-            <p>No hi ha més punts d'interès en aquesta localitat.</p>
-        </div>
-    {% else %}
+    {% if altres %}
     <!-- Button trigger modal -->
     <button type="button" class="btn btn-success" data-toggle="modal" data-target="#exampleModal">
       Altres punts d'interès...
     </button>
-
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
       <div class="modal-dialog" role="document">
@@ -114,6 +111,10 @@
         </div>
       </div>
     </div>
+    {% else %}
+    <div id="altres">
+            <p>No hi ha més punts d'interès en aquesta localitat.</p>
+        </div>
     {% endif %}
 <script>
     function mostrarInformacio(){
