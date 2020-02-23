@@ -34,8 +34,11 @@ urlpatterns = [
     #############################################################
 
     path('registrar_nou_usuari/', views.paginaRegistrarse, name='Registrar'),
-    path('processar_nou_usuari/', views.processar_info_nou_usuari, name='nouform'),
     path('map/', views.mostrarMapa, name='mapa'),
-    url(r'info_especifica/(?P<nomLocal>[^/]+)/(?P<latitud>\d+\.\d+)/(?P<longitud>\d+\.\d+)/$', views.mostrarPuntEspecific, name='informacio')
-
+    url(r'info_especifica/(?P<nomLocal>[^/]+)/(?P<latitud>\d+\.\d+)/(?P<longitud>\d+\.\d+)/$', views.mostrarPuntEspecific, name='informacio'),
+    path('inicia_sessio/', views.loginPage, name='inicia sessio'),
+    path('tancar_sessio/', views.logout, name='Tancar sessio'),
+    path('el_meu_espai/', views.profilePage, name='Espai'),
+    path('actualitzar_camps/<str:codi>/', views.updateUsuari, name='Actualitzacio'),
+    path('baixa_usuari/', views.baixa, name='baixa')
 ]

@@ -2,6 +2,20 @@
 {% block title %} Inicia la sessió{% endblock %}
 {% block content %}
 
+{% if errors|length > 0%}
+    {% for i in errors %}
+        <div>{{ i }}</div>
+    {% endfor %}
+{% endif %}
 
+<form method="POST" action="/v1/geoInfoSystem/inicia_sessio/" class="form-group">
+    {% csrf_token %}
+    <label>Nom d'usuari:</label>
+    <input type="text" id="username" name="username"  placeholder="Username" required>
+    <label>Contrassenya:</label>
+    <input type="password" name="password" id="password" placeholder="Password" required>
+    <p>No tens compte? <a href="/v1/geoInfoSystem/registrar_nou_usuari/">Crea un compte</a></p>
+    <button type="submit" class="btn btn-success">Inicia sessió</button>
+</form>
 
 {% endblock %}

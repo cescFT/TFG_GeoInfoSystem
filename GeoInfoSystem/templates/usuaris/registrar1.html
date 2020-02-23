@@ -13,7 +13,7 @@
 {% endif %}
 
 <h1>Registra't a la web</h1>
-<form method="POST" action="/v1/geoInfoSystem/processar_nou_usuari/">
+<form method="POST" action="/v1/geoInfoSystem/registrar_nou_usuari/">
     {% csrf_token %}
     <div><p>Nom d'usuari:</p></div>
     <input type="text" id="nomUsuari" name="username" placeholder="Nom d'usuari" required>
@@ -29,4 +29,7 @@
     <input type="password" id="passwd2" name="password2" placeholder="Repeteix contrassenya" required>
     <button type="submit" id="submit_registre" name="submit_new_user" class="btn btn-success">Registra't</button>
 </form>
+<p>Ja tens un compte? <a href="/v1/geoInfoSystem/inicia_sessio/">Inicia sessió</a></p>
+
+
 {% endblock %}

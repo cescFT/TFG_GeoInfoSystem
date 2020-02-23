@@ -1,0 +1,57 @@
+{% extends 'home/base.html' %}
+{% block title %} Canvis en l'usuari: {{ user.username }}{% endblock %}
+{% block content %}
+
+<h1>Actualització dels camps:</h1>
+
+{%if errors|length > 0%}
+    {%for error in errors%}
+        <p>* {{ error }}</p>
+    {% endfor %}
+{% endif %}
+{%if chMail %}
+    <h1>CANVI DE CORREU ELECTRÒNIC:</h1>
+<form method="POST" action="/v1/geoInfoSystem/actualitzar_camps/actualitzaMail/">
+    {% csrf_token %}
+    <div><p>Nou correu electrònic:</p></div>
+    <input type="email" name="email" placeholder="correu@exemple.com" required>
+    <div><p>Repeteix el nou correu electrònic:</p></div>
+    <input type="email" name="email1" placeholder="correu@exemple.com" required>
+    <button type="submit" name="submit_update" class="btn btn-success">Actualitza el correu</button>
+</form>
+{%elif chNom %}
+    <h1>CANVI DE NOM:</h1>
+<form method="POST" action="/v1/geoInfoSystem/actualitzar_camps/actualitzaNom/">
+    {% csrf_token %}
+    <div><p>Nou nom:</p></div>
+    <input type="text" name="first_name" placeholder="Nom" required>
+    <div><p>Repeteix el nou Nom:</p></div>
+    <input type="text" name="first_name1" placeholder="Nom" required>
+    <button type="submit"  name="submit_update" class="btn btn-success">Actualitza el nom</button>
+</form>
+{%elif chCog %}
+    <h1> CANVI DE COGNOM:</h1>
+<form method="POST" action="/v1/geoInfoSystem/actualitzar_camps/actualitzaCognom/">
+    {% csrf_token %}
+    <div><p>Nou cognom:</p></div>
+    <input type="text" name="last_name" placeholder="Cognom" required>
+    <div><p>Repeteix el nou cognom:</p></div>
+    <input type="text" name="last_name1" placeholder="Cognom" required>
+    <button type="submit" name="submit_update" class="btn btn-success">Actualitza el Cognom</button>
+</form>
+{%elif chPass %}
+    <h1>CANVI DE CONTRASSENYA:</h1>
+<form method="POST" action="/v1/geoInfoSystem/actualitzar_camps/actualitzaContrassenya/">
+    {% csrf_token %}
+    <div><p>Nova contrassenya:</p></div>
+    <input type="password" name="password" placeholder="Contrassenya" required>
+    <div><p>Repeteix la nova contrassenya:</p></div>
+    <input type="password" name="password1" placeholder="Repeteix contrassenya" required>
+    <button type="submit" name="submit_update" class="btn btn-success">Canvia la contrassenya</button>
+</form>
+{%endif%}
+
+
+
+
+{%endblock%}

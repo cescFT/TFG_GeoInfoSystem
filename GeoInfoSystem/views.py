@@ -1,5 +1,8 @@
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout as do_logout
+from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import render, redirect
@@ -734,45 +737,34 @@ def home(response):
 """
 Mètode que mostra la pàgina per a registrar un nou usuari
 """
-def paginaRegistrarse(response):
-    return render(response, "usuaris/registrar1.html", {'errors': []})
-
-"""
-Mètode que permet el processament i creació d'un nou usuari
-"""
-def processar_info_nou_usuari(response):
-    errors=[]
-    if response.method == 'POST':
-        if User.objects.all().filter(username=response.POST.get('username')):
+def paginaRegistrarse(request):
+    if request.method == 'POST':
+        errors=[]
+        if User.objects.all().filter(username=request.POST['username']):
             errors+=["El nom d'usuari ja està agafat."]
-        password1=response.POST.get('password1')
-        password2=response.POST.get('password2')
+        password1=request.POST['password1']
+        password2=request.POST['password2']
         if password1 != password2:
             errors+=["Les contrassenyes no coincideixen."]
 
-        if response.POST.get('email'):
+        if request.POST['email']:
             regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-            if not re.search(regex, response.POST.get('email')):
+            if not re.search(regex, request.POST['email']):
                 errors+=["El mail no té format de correu electrònic"]
-
         if errors:
-            return render(response, 'usuaris/registrar1.html', {'errors':errors})
-
+            return render(request, 'usuaris/registrar1.html', {'errors':errors})
         if not errors:
             nou_usuari = User()
-            nou_usuari.username=response.POST.get('username')
-            if response.POST.get('first_name'):
-                nou_usuari.first_name=response.POST.get('first_name')
-            if response.POST.get('last_name'):
-                nou_usuari.last_name = response.POST.get('last_name')
-            nou_usuari.email=response.POST.get('email')
-            nou_usuari.set_password(response.POST.get(password1))
+            nou_usuari.username=request.POST['username']
+            if request.POST['first_name']:
+                nou_usuari.first_name=request.POST['first_name']
+            if request.POST['last_name']:
+                nou_usuari.last_name = request.POST['last_name']
+            nou_usuari.email=request.POST['email']
+            nou_usuari.set_password(request.POST.get(password1))
             nou_usuari.save()
             return redirect("/")
-    return render(response, 'usuaris/registrar1.html', {})
-
-
-
+    return render(request, "usuaris/registrar1.html", {'errors': []})
 
 
 #############################################################################
@@ -828,3 +820,103 @@ def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
     else:
         return render(response, "puntsGeografics/informacioDetallada.html", {'puntInteres': punt, 'local': localE, 'altresLocals': altresLocals, 'altresPuntsInteres': punts, 'altres': False})
 
+def loginPage(request):
+    if request.method == 'POST':
+        errors=[]
+        username = request.POST['username']
+        password = request.POST['password']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                return redirect("/")
+        else:
+            errors+=["usuari o contrassenya incorrectes."]
+            return render(request, 'usuaris/login.html', {'errors': errors})
+    return render(request, 'usuaris/login.html', {'errors': []})
+
+def logout(request):
+    do_logout(request)
+    return redirect("/")
+
+
+@login_required(login_url='/v1/geoInfoSystem/inicia_sessio/')
+def profilePage(request):
+    return render(request, "usuaris/profilePage.html", {})
+
+
+@login_required(login_url='/v1/geoInfoSystem/inicia_sessio/')
+def updateUsuari(request, codi):
+    errors = []
+    if request.method == 'POST':
+        user_name=request.user
+        err_mail=False
+        err_Nom = False
+        err_cognom = False
+        err_passwd = False
+        if codi == 'actualitzaMail':
+            mail1 = request.POST['email']
+            mail2 = request.POST['email1']
+            if mail1 != mail2:
+                err_mail = True
+                errors+=['Els dos correus no coincideixen, siusplau, torna a intentar-ho.']
+            else:
+                User.objects.all().filter(username=user_name).update(email = mail1)
+        elif codi == 'actualitzaNom':
+            nom1 = request.POST['first_name']
+            nom2 = request.POST['first_name1']
+            if nom1 != nom2:
+                err_Nom = True
+                errors+=['Els dos noms no coincideixen, siusplau, torna a intentar-ho.']
+            else:
+                if nom1 == user_name:
+                    err_Nom = True
+                    errors+=['El nom no pot coincidir amb el nom d\'usuari.']
+                else:
+                    User.objects.all().filter(username=user_name).update(first_name=nom1)
+        elif codi== 'actualitzaCognom':
+            cognom1 = request.POST['last_name']
+            cognom2 = request.POST['last_name1']
+            if cognom1 != cognom2:
+                err_cognom = True
+                errors+=['Els cognoms no coincideixen, siusplau, torna a intentar-ho.']
+            else:
+                User.objects.all().filter(username=user_name).update(last_name=cognom1)
+
+        elif codi == 'actualitzaContrassenya':
+            password1=request.POST['password']
+            password2=request.POST['password1']
+            if password1 != password2:
+                err_passwd = True
+                errors+=['Les contrassenyes no coincideixen, siusplau, torna a intentar-ho.']
+            else:
+                first_pass = User.objects.all().filter(username=user_name)[0].password.split('$')
+                hasher = first_pass[0]
+                salt = first_pass[1]  # grabbing salt from the first password of the database
+                User.objects.all().filter(username=user_name).update(password=make_password(password1, salt, hasher))
+        if not errors:
+            return redirect("/v1/geoInfoSystem/el_meu_espai/")
+        else:
+            return render(request, "usuaris/updateUsuari.html", {'chMail': err_mail, 'chNom': err_Nom, 'chCog': err_cognom, 'chPass': err_passwd, 'errors': errors})
+
+    else:
+        codi = urllib.parse.unquote(codi)
+        codiTallat = codi.split()
+        chMail = False
+        if codiTallat[0].isupper():
+            chMail = True
+        chNom = False
+        if codiTallat[1].isupper():
+            chNom=True
+        chCog = False
+        if codiTallat[2].isupper():
+            chCog = True
+        chPass = False
+        if codiTallat[3].isupper():
+            chPass = True
+        return render(request, "usuaris/updateUsuari.html",{'chMail':chMail, 'chNom':chNom, 'chCog':chCog, 'chPass':chPass, 'errors': errors})
+
+def baixa(request):
+    curr_usr = request.user
+    User.objects.all().filter(username=curr_usr).delete()
+    return redirect("/")
