@@ -40,5 +40,6 @@ urlpatterns = [
     path('tancar_sessio/', views.logout, name='Tancar sessio'),
     path('el_meu_espai/', views.profilePage, name='Espai'),
     path('actualitzar_camps/<str:codi>/', views.updateUsuari, name='Actualitzacio'),
-    path('baixa_usuari/', views.baixa, name='baixa')
+    path('baixa_usuari/', views.baixa, name='baixa'),
+    path('nouPunt/', views.crearNouPuntInteres, name='nou punt')
 ]

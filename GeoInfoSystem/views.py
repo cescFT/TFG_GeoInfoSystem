@@ -920,3 +920,20 @@ def baixa(request):
     curr_usr = request.user
     User.objects.all().filter(username=curr_usr).delete()
     return redirect("/")
+
+
+def crearNouPuntInteres(request):
+    if request.method == 'POST':
+        #em ve nomPunt,lat<espai>lng
+        #la idea es que ara aixo em redigeixi a un altre lloc i que em pregunti les altres coses referents al punt d'interes marcat en la pantalla anterior.
+        return redirect("/")
+    return render(request, "puntsGeografics/afegirNouPunt.html", {})
+
+"""
+AIXO ES PERQ AIXI ES COMPROVA SI ÉS SUPERUSUARI, EN ALTRE CAS NO ENTRARA
+from django.contrib.auth.decorators import user_passes_test
+
+@user_passes_test(lambda u: u.is_superuser)
+def score_reset(self,...):
+    ...
+"""

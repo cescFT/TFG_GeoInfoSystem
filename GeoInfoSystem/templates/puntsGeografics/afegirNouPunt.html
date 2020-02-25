@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear nou punt</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <style>
+        /* Style the header with a grey background and some padding */
+    .header {
+      overflow: hidden;
+      background-color: #f1f1f1;
+      padding: 20px 10px;
+    }
+
+    /* Style the header links */
+    .header a {
+      float: left;
+      color: black;
+      text-align: center;
+      padding: 12px;
+      text-decoration: none;
+      font-size: 18px;
+      line-height: 25px;
+      border-radius: 4px;
+    }
+
+    /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
+    .header a.logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    /* Change the background color on mouse-over */
+    .header a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    /* Style the active/current link*/
+    .header a.active {
+      background-color: dodgerblue;
+      color: white;
+    }
+
+    /* Float the link section to the right */
+    .header-right {
+      float: right;
+    }
+
+    /* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+    @media screen and (max-width: 500px) {
+      .header a {
+        float: none;
+        display: block;
+        text-align: left;
+      }
+      .header-right {
+        float: none;
+      }
+    }
+    #map {
+        height: 400px;  /* The height is 400 pixels */
+        width: 100%;  /* The width is the width of the web page */
+       }
+
+
+
+    </style>
+
+
+</head>
+<body>
+    <div class="header">
+        <a href="/" class="logo">Sistema d'informació Geogràfica</a>
+        <div class="header-right">
+            <a class="active" href="/">Pàgina d'inici</a>
+            {% if user.is_authenticated %}
+                <a href="/v1/geoInfoSystem/el_meu_espai/">{{ user.username }}</a>
+                <a href="/v1/geoInfoSystem/tancar_sessio/">Tanca la sessió</a>
+            {% else %}
+                <a href="/v1/geoInfoSystem/registrar_nou_usuari/">Registra't</a>
+                <a href="/v1/geoInfoSystem/inicia_sessio/">Inicia sessió</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div id="map"></div>
+    <button onclick="mostraLesCoordenadesUsuari()">Centrar mapa</button>
+    <button onclick="eliminarTotsPuntsInteresNous()" id="boto_eliminarPunts">Esborrar els punts marcats</button>
+    <button onclick="mostrarCoordenades()" id="boto_mostrarDades">Mostra els punts</button>
+    <p id="InformatiuNoPunts"></p>
+    <div id="nousPunts" hidden>
+        <p>Coordenades dels punts marcats:</p>
+        <label for="puntsNous">Escull els que vols processar com a nous punts:</label>
+        <select id="puntsNous" name="punts">
+        </select>
+        <form id="form_guardar_nou_punt" onsubmit="return checkValue()" method="POST" action="/v1/geoInfoSystem/nouPunt/">
+            {%csrf_token%}
+            <input type="hidden" name="puntPerProcessar1" id="puntNou" value="a">
+            <button onclick="guardarSeleccionat()">Emmagatzemar punt</button>
+        </form>
+        <button onclick="tancarSeleccio()">Tancar la selecció de punts</button>
+    </div>
+
+<script>
+    var map;
+    var llistatNousMarkers=[];
+    var llistatTitolsNousMarkers=[];
+function initMap() {
+    //Localitzem en el món Catalunya
+    var catalunya = {lat: 41.8204600, lng: 1.8676800};
+    // Mapa centrat a Catalunya
+    map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: catalunya});
+    google.maps.event.addListener(map, 'click', function (event) {
+        let midaLlista = llistatNousMarkers.length;
+        let marker = new google.maps.Marker({
+            position: event.latLng,
+            title:"Punt "+(midaLlista+1).toString(),
+            map: map,
+        });
+        llistatNousMarkers.push(marker);
+        llistatTitolsNousMarkers.push({
+            "titol" : "Punt "+(midaLlista+1).toString(),
+            "pInteres" : marker
+        });
+
+        let contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">'+llistatTitolsNousMarkers[llistatTitolsNousMarkers.length-1]['titol']+'</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>'+"Latitud:"+'</b>'+llistatTitolsNousMarkers[llistatTitolsNousMarkers.length-1]['pInteres'].getPosition().lat()+'</p>'+
+            '<p><b>'+"Longitud:"+'</b>'+llistatTitolsNousMarkers[llistatTitolsNousMarkers.length-1]['pInteres'].getPosition().lng()+'</p>'+
+            '</div>'+
+            '</div>';
+        let infowindow= new google.maps.InfoWindow({
+                content: contentString
+            });
+        marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+    });
+}
+
+function checkValue(){
+    var input=document.getElementById("puntNou").value;
+    if (input=='a')
+        return false;
+    else
+        return true;
+}
+
+function tancarSeleccio() {
+    var div = document.getElementById("nousPunts");
+    div.hidden=true;
+    var seleccio = document.getElementById("puntsNous");
+    seleccio.innerHTML='';
+    var btnMostrarPunts = document.getElementById("boto_mostrarDades");
+    btnMostrarPunts.innerHTML="Mostra els punts";
+}
+
+function guardarSeleccionat(){
+    var input=document.getElementById("puntNou");
+    var seleccio = document.getElementById("puntsNous");
+    var llistatNodes = seleccio.childNodes;
+
+    console.log(seleccio.childNodes);
+    var malament=1;
+    seleccio.childNodes.forEach(node => {
+        if(node.selected){
+            if(node.value == "selectcard"){
+                alert('Selecciona un punt pel qual vulguis crear.');
+                malament = 0;
+            }else{
+                input.value = node.text+","+node.value; //nomPunt,lat lng
+            }
+        }
+	});
+    console.log(input.value);
+    console.log(malament);
+    if(malament===1){
+        document.getElementById("form_guardar_nou_punt").submit();
+    }
+}
+
+
+function mostrarCoordenades(){
+    var div = document.getElementById("nousPunts");
+    var seleccio = document.getElementById("puntsNous");
+    var btnMostrarPunts = document.getElementById("boto_mostrarDades");
+    var p=document.getElementById("InformatiuNoPunts");
+    if(llistatNousMarkers.length!== 0){
+        p.innerHTML='';
+        div.hidden=false;
+        if(div.hidden === false){
+            seleccio.innerHTML='';
+            btnMostrarPunts.innerHTML="Actualitza llistat de punts";
+        }
+        for(var i = 0; i< llistatNousMarkers.length; i++){
+            seleccio.innerHTML+=`<option id="`+i+`" value="`+llistatTitolsNousMarkers[i]['pInteres'].getPosition().lat().toString()+" "+llistatTitolsNousMarkers[i]['pInteres'].getPosition().lng().toString()+`">`+llistatTitolsNousMarkers[i]['titol']+`</option>`;
+        }
+        seleccio.innerHTML+=`<option value="selectcard" id="seleccionat" selected>--- Siusplau selecciona un punt ---</option>`;
+    }else{
+        p.innerHTML='<b>No hi ha cap punt marcat en el mapa. Primer marca els punts nous.</b>';
+    }
+}
+
+function eliminarTotsPuntsInteresNous(){
+    var seleccio = document.getElementById("puntsNous");
+    seleccio.innerHTML='';
+    var div = document.getElementById("nousPunts");
+    var btnMostrarPunts = document.getElementById("boto_mostrarDades");
+    btnMostrarPunts.innerHTML="Mostra els punts";
+    div.hidden=true;
+    for(var i=0; i< llistatNousMarkers.length; i++){
+        llistatNousMarkers[i].setMap(null);
+    }
+    llistatNousMarkers=[];
+}
+
+function mostraLesCoordenadesUsuari(){
+    if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(centrarMapa);
+  } else {
+    alert("La geolocalització no és suportada per aquest navegador. No es pot centrar el mapa.");
+  }
+}
+
+function centrarMapa(position){
+    var punt = new google.maps.LatLng(position.coords.latitude, position.coords.longitude);
+    map.setCenter(punt);
+    map.setZoom(13);
+}
+    </script>
+    <!--Load the API from the specified URL
+    * The async attribute allows the browser to render the page while the API loads
+    * The key parameter will contain your own API key (which is not needed for this tutorial)
+    * The callback parameter executes the initMap() function
+    -->
+    <script async defer
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZYY_D7EaLWIBwLuuXQOM2PSpsTD-5kMs&callback=initMap">
+</script>
+
+
+</body>
+</html>
