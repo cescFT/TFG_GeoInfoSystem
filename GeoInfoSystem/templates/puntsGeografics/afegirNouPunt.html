@@ -94,14 +94,47 @@
         <label for="puntsNous">Escull els que vols processar com a nous punts:</label>
         <select id="puntsNous" name="punts">
         </select>
-        <form id="form_guardar_nou_punt" onsubmit="return checkValue()" method="POST" action="/v1/geoInfoSystem/nouPunt/">
-            {%csrf_token%}
-            <input type="hidden" name="puntPerProcessar1" id="puntNou" value="a">
-            <button onclick="guardarSeleccionat()">Emmagatzemar punt</button>
-        </form>
+        <button onclick="dadesSeguents()">Següent...</button>
         <button onclick="tancarSeleccio()">Tancar la selecció de punts</button>
     </div>
+    <div id="dadesSeguents" hidden>
+        <form id="form_guardar_nou_punt" onsubmit="return checkValues()" method="POST" action="/v1/geoInfoSystem/nouPunt/">
+            {%csrf_token%}
+            <label>Nom del local:</label>
+            <input type="text" name="nomLocal" id="nomLocal" placeholder="Ex: Bar El Sindicat" required>
+            <label>Descripció del lloc:</label>
+            <textarea name="descripcioLocal" id="descripcio" placeholder="Breu descripció del lloc."></textarea>
+            <label>Tipus:</label>
+            <input type="text" name="tipus" id="tipusPunt" placehoder="Ex: Restaurant" required>
+            <label>És actiu?</label>
+            <input type="checkbox" onclick="canviEstat()" name="actiu" id="esActiu">
+            <label>Superficie:</label>
+            <input type="text" name="superficie" id="superficie" placeholder="Ex: 25.45" required>
+            <label>Localitat:</label>
+            <input type="text" name="localitat" id="localitat" placeholder="Ex: Barcelona" required>
+            <label>Pais:</label>
+            <input type="text" name="pais" id="pais" placeholder="Ex: Catalunya" required>
+            <label>Puntuacio [0 a 5]:</label>
+            <select id="puntuacioLloc" onchange="emmagatzemarPuntuacio()">
+                <option value="0">0</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
 
+            <label>Any de construcció:</label>
+            <input type="text" name="any" id="any" placeholder="Ex: 1714" required>
+
+            <input type="hidden" name="llocActiu" id="botoActiu" value="False">
+            <input type="hidden" name="p" id="puntuacio" value="0">
+            <input type="hidden" name="puntPerProcessar1" id="puntNou" value="a">
+            <input type="hidden" name="puntprocessarAux" id="puntAux" value="">
+            <input type="hidden" name="altresPunts" id="altresPunsNous" value="">
+            <button onclick="guardarSeleccionat()">Desar.</button>
+        </form>
+    </div>
 <script>
     var map;
     var llistatNousMarkers=[];
@@ -142,12 +175,37 @@ function initMap() {
     });
 }
 
-function checkValue(){
+
+
+function canviEstat(){
+    var checkbox = document.getElementById("esActiu");
+    var actiu = document.getElementById("botoActiu");
+    if(checkbox.checked == true){
+        actiu.value="True";
+    }else{
+        actiu.value="False";
+    }
+}
+
+function dadesSeguents() {
+    var x = document.getElementById("dadesSeguents");
+    x.hidden = false;
+}
+
+function emmagatzemarPuntuacio(){
+    var puntuacio = document.getElementById("puntuacio");
+    var pActual = document.getElementById("puntuacioLloc");
+    puntuacio.value=pActual.value;
+    console.log(puntuacio.value);
+}
+
+
+function checkValues(){
     var input=document.getElementById("puntNou").value;
     if (input=='a')
         return false;
-    else
-        return true;
+    else return true;
+
 }
 
 function tancarSeleccio() {
@@ -160,10 +218,11 @@ function tancarSeleccio() {
 }
 
 function guardarSeleccionat(){
+    var llistatPunts=[];
     var input=document.getElementById("puntNou");
     var seleccio = document.getElementById("puntsNous");
-    var llistatNodes = seleccio.childNodes;
-
+    var altresPunts = document.getElementById("altresPunsNous");
+    var pAux = document.getElementById("puntAux");
     console.log(seleccio.childNodes);
     var malament=1;
     seleccio.childNodes.forEach(node => {
@@ -173,11 +232,19 @@ function guardarSeleccionat(){
                 malament = 0;
             }else{
                 input.value = node.text+","+node.value; //nomPunt,lat lng
+                pAux.value=node.text; //punt X
             }
         }
 	});
-    console.log(input.value);
-    console.log(malament);
+    seleccio.childNodes.forEach(node =>{
+        if(node.text !== pAux.value){
+            llistatPunts.push(node.text+","+node.value);
+        }
+    });
+
+    var json = JSON.stringify(llistatPunts);
+    altresPunts.value = json;
+    console.log(altresPunts.value);
     if(malament===1){
         document.getElementById("form_guardar_nou_punt").submit();
     }

@@ -924,8 +924,31 @@ def baixa(request):
 
 def crearNouPuntInteres(request):
     if request.method == 'POST':
+        errors = []
+        nomLocal = request.POST['nomLocal']
+        descripcioLocal = request.POST['descripcioLocal']
+        tipus = request.POST['tipus']
+        llocActiu = request.POST['llocActiu']
+        superficie = request.POST['superficie']
+        localitat = request.POST['localitat']
+        pais = request.POST['pais']
+        puntuacio = request.POST['p']
+        any = request.POST['any']
+
+        print(nomLocal)
+        print(descripcioLocal)
+        print(tipus)
+        print(llocActiu)
+        print(superficie)
+        print(localitat)
+        print(pais)
+        print(puntuacio)
+        print(any)
         #em ve nomPunt,lat<espai>lng
-        #la idea es que ara aixo em redigeixi a un altre lloc i que em pregunti les altres coses referents al punt d'interes marcat en la pantalla anterior.
+        altresPuntsPerProcessar = json.loads(request.POST['altresPunts'])
+        print(type(altresPuntsPerProcessar))
+        puntNou = request.POST['puntPerProcessar1']
+        print(puntNou)
         return redirect("/")
     return render(request, "puntsGeografics/afegirNouPunt.html", {})
 
