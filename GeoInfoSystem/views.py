@@ -925,6 +925,9 @@ def baixa(request):
 def crearNouPuntInteres(request):
     if request.method == 'POST':
         errors = []
+        # em ve nomPunt,lat<espai>lng
+        altresPuntsPerProcessar = json.loads(request.POST['altresPunts'])
+        puntNou = request.POST['puntPerProcessar1']
         nomLocal = request.POST['nomLocal']
         descripcioLocal = request.POST['descripcioLocal']
         tipus = request.POST['tipus']
@@ -934,23 +937,64 @@ def crearNouPuntInteres(request):
         pais = request.POST['pais']
         puntuacio = request.POST['p']
         any = request.POST['any']
+        midaLlistaString = request.POST['midaLlista']
 
-        print(nomLocal)
-        print(descripcioLocal)
-        print(tipus)
-        print(llocActiu)
-        print(superficie)
-        print(localitat)
-        print(pais)
-        print(puntuacio)
-        print(any)
-        #em ve nomPunt,lat<espai>lng
-        altresPuntsPerProcessar = json.loads(request.POST['altresPunts'])
-        print(type(altresPuntsPerProcessar))
-        puntNou = request.POST['puntPerProcessar1']
-        print(puntNou)
-        return redirect("/")
-    return render(request, "puntsGeografics/afegirNouPunt.html", {})
+        if not nomLocal:
+            errors+=['Cal posar un nom al punt d\'intereres.']
+        if not descripcioLocal:
+            errors+=['Cal afegir una descripció.']
+        if not tipus:
+            errors+=['Cal afegir un tipus.']
+        if not superficie:
+            errors+=['Cal afegir la superficie.']
+        if not localitat:
+            errors+=['Cal afegir la localitat']
+        if not pais:
+            errors+=['Cal afegir el pais.']
+        if not any:
+            errors+=['Cal afegir un any.']
+
+        if not errors:
+            try:
+                any = int(any)
+            except Exception or ValueError:
+                errors+=['L\'any no té un format correcte.']
+            if any<0:
+                errors+=['L\'any és negatiu.']
+            try:
+                superficie=float(superficie)
+            except Exception or ValueError:
+                errors+=['El valor indicat en la superfície no té un format correcte.']
+        if errors:
+            altresPuntsPerProcessar+=[puntNou]
+            dict={}
+            llista=[]
+            i=0
+            for punt in altresPuntsPerProcessar:
+                puntSplit=punt.split(",")
+                dict["punt"] = puntSplit[0]+","+puntSplit[1]
+                i=i+1
+                llista += [dict]
+                dict={}
+            midaLlista = int(midaLlistaString)
+            punts = json.dumps(llista)
+            return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'punts': punts, 'errors':errors, 'lenLlista':midaLlista})
+        else:
+            puntSplit = puntNou.split(",") #tinc el nom del punt, q no el vull per a res[0] <-> lat lng [1]
+            coordenades = puntSplit.split(" ") #lat[0] long[1] en format string
+            latitud=float(coordenades[0])
+            longitud=float(coordenades[1])
+            idMapa=1
+            actiu=False
+            if llocActiu == "True":
+                actiu=True
+            nouPunt = puntInteres(latitud=latitud, longitud=longitud, idMapa=idMapa, tipus=tipus, actiu=actiu, superficie=superficie, localitat=localitat, pais=pais)
+            nouPunt.save()
+            p = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
+            localNou = local(localitzacio=p, nomLocal=nomLocal, puntuacio=int(puntuacio), categoria=tipus, anyConstruccio=any, descripcio=descripcioLocal)
+            localNou.save()
+            return redirect("/v1/geoInfoSystem/map/")
+    return render(request, "puntsGeografics/afegirNouPunt.html", {'punts':[], 'errors':[], 'lenLlista':0})
 
 """
 AIXO ES PERQ AIXI ES COMPROVA SI ÉS SUPERUSUARI, EN ALTRE CAS NO ENTRARA

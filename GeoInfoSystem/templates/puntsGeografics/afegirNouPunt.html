@@ -63,10 +63,7 @@
         width: 100%;  /* The width is the width of the web page */
        }
 
-
-
     </style>
-
 
 </head>
 <body>
@@ -88,6 +85,16 @@
     <button onclick="mostraLesCoordenadesUsuari()">Centrar mapa</button>
     <button onclick="eliminarTotsPuntsInteresNous()" id="boto_eliminarPunts">Esborrar els punts marcats</button>
     <button onclick="mostrarCoordenades()" id="boto_mostrarDades">Mostra els punts</button>
+
+    {% if errors|length > 0 %}
+        <div>
+            <p>HI HA ELS SEGÜENTS ERRORS:</p>
+            {% for error in errors %}
+                <p>* {{error}}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
     <p id="InformatiuNoPunts"></p>
     <div id="nousPunts" hidden>
         <p>Coordenades dels punts marcats:</p>
@@ -126,12 +133,12 @@
 
             <label>Any de construcció:</label>
             <input type="text" name="any" id="any" placeholder="Ex: 1714" required>
-
             <input type="hidden" name="llocActiu" id="botoActiu" value="False">
             <input type="hidden" name="p" id="puntuacio" value="0">
             <input type="hidden" name="puntPerProcessar1" id="puntNou" value="a">
             <input type="hidden" name="puntprocessarAux" id="puntAux" value="">
             <input type="hidden" name="altresPunts" id="altresPunsNous" value="">
+            <input type="hidden" name="midaLlista" id="midaLlistatPunts" value="">
             <button onclick="guardarSeleccionat()">Desar.</button>
         </form>
     </div>
@@ -139,12 +146,59 @@
     var map;
     var llistatNousMarkers=[];
     var llistatTitolsNousMarkers=[];
+    var llistaPuntsPendents = JSON.parse(`{{punts | safe}}`);
 function initMap() {
     //Localitzem en el món Catalunya
     var catalunya = {lat: 41.8204600, lng: 1.8676800};
+    var llistaPuntsPerPosar=[];
     // Mapa centrat a Catalunya
     map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: catalunya});
-    google.maps.event.addListener(map, 'click', function (event) {
+    if (llistaPuntsPendents.length !== 0){
+        var midaLlista = `{{ lenLlista }}`;
+        for(var j=0; j< llistaPuntsPendents.length; j++){
+            for (var i = 0, keys = Object.keys(llistaPuntsPendents[j]), ii = keys.length; i < ii; i++) {
+                let nomPunt = llistaPuntsPendents[j][keys[i]].split(",")[0];
+                if(nomPunt !== "--- Siusplau selecciona un punt ---"){
+                    let coordenades = llistaPuntsPendents[j][keys[i]].split(",")[1];
+                    let coordenadesT = coordenades.split(" ");
+                    let latitud = coordenadesT[0];
+                    let longitud = coordenadesT[1];
+                    llistaPuntsPerPosar.push({
+                        "infoPunt": nomPunt,
+                        "latitudS" : latitud,
+                        "longitudS" : longitud,
+                        "latitudF" : parseFloat(latitud),
+                        "longitudF" : parseFloat(longitud)
+                    });
+                }
+            }
+        }
+        for(var k = 0; k<llistaPuntsPerPosar.length; k++){
+            let position = new google.maps.LatLng(llistaPuntsPerPosar[k]['latitudF'], llistaPuntsPerPosar[k]['longitudF']);
+            let dadesAMostrar = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">'+llistaPuntsPerPosar[k]['infoPunt']+'</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>'+"Latitud:"+'</b>'+llistaPuntsPerPosar[k]['latitudS']+'</p>'+
+            '<p><b>'+"Longitud:"+'</b>'+llistaPuntsPerPosar[k]['longitudS']+'</p>'+
+            '</div>'+
+            '</div>';
+            let infowindow= new google.maps.InfoWindow({
+                content: dadesAMostrar
+            });
+           let marker = new google.maps.Marker({position: position, map: map, title:llistaPuntsPerPosar[k]['infoPunt']});
+            marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+            llistatNousMarkers.push(marker);
+            llistatTitolsNousMarkers.push({
+                "titol" : llistaPuntsPerPosar[k]['infoPunt'],
+                "pInteres" : marker
+            });
+        }
+
+        google.maps.event.addListener(map, 'click', function (event) {
         let midaLlista = llistatNousMarkers.length;
         let marker = new google.maps.Marker({
             position: event.latLng,
@@ -173,8 +227,39 @@ function initMap() {
                 infowindow.open(map, marker);
             });
     });
-}
+    }else{
+        google.maps.event.addListener(map, 'click', function (event) {
+        let midaLlista = llistatNousMarkers.length;
+        let marker = new google.maps.Marker({
+            position: event.latLng,
+            title:"Punt "+(midaLlista+1).toString(),
+            map: map,
+        });
+        llistatNousMarkers.push(marker);
+        llistatTitolsNousMarkers.push({
+            "titol" : "Punt "+(midaLlista+1).toString(),
+            "pInteres" : marker
+        });
 
+        let contentString = '<div id="content">'+
+            '<div id="siteNotice">'+
+            '</div>'+
+            '<h1 id="firstHeading" class="firstHeading">'+llistatTitolsNousMarkers[llistatTitolsNousMarkers.length-1]['titol']+'</h1>'+
+            '<div id="bodyContent">'+
+            '<p><b>'+"Latitud:"+'</b>'+llistatTitolsNousMarkers[llistatTitolsNousMarkers.length-1]['pInteres'].getPosition().lat()+'</p>'+
+            '<p><b>'+"Longitud:"+'</b>'+llistatTitolsNousMarkers[llistatTitolsNousMarkers.length-1]['pInteres'].getPosition().lng()+'</p>'+
+            '</div>'+
+            '</div>';
+        let infowindow= new google.maps.InfoWindow({
+                content: contentString
+            });
+        marker.addListener('click', function () {
+                infowindow.open(map, marker);
+            });
+    });
+    }
+
+}
 
 
 function canviEstat(){
@@ -189,7 +274,19 @@ function canviEstat(){
 
 function dadesSeguents() {
     var x = document.getElementById("dadesSeguents");
-    x.hidden = false;
+    var seleccio = document.getElementById("puntsNous");
+    var malament = 1;
+    seleccio.childNodes.forEach(node => {
+        if(node.selected){
+            if(node.value == "selectcard"){
+                alert('Selecciona un punt pel qual vulguis crear.');
+                malament = 0;
+            }
+        }
+	});
+    if (malament ===1){
+        x.hidden = false;
+    }
 }
 
 function emmagatzemarPuntuacio(){
@@ -223,6 +320,7 @@ function guardarSeleccionat(){
     var seleccio = document.getElementById("puntsNous");
     var altresPunts = document.getElementById("altresPunsNous");
     var pAux = document.getElementById("puntAux");
+    var midaLlistaPunts = document.getElementById("midaLlistatPunts");
     console.log(seleccio.childNodes);
     var malament=1;
     seleccio.childNodes.forEach(node => {
@@ -242,6 +340,7 @@ function guardarSeleccionat(){
         }
     });
 
+    midaLlistaPunts.value=llistatTitolsNousMarkers.length.toString();
     var json = JSON.stringify(llistatPunts);
     altresPunts.value = json;
     console.log(altresPunts.value);
@@ -257,6 +356,7 @@ function mostrarCoordenades(){
     var btnMostrarPunts = document.getElementById("boto_mostrarDades");
     var p=document.getElementById("InformatiuNoPunts");
     if(llistatNousMarkers.length!== 0){
+        console.log(llistatTitolsNousMarkers);
         p.innerHTML='';
         div.hidden=false;
         if(div.hidden === false){
