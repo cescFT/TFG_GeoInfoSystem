@@ -930,8 +930,12 @@ def baixa(request):
     User.objects.all().filter(username=curr_usr).delete()
     return redirect("/")
 
+def unauthorizedpage(response):
+    return render(response, "errors/NoAutoritzat.html", {})
+
+
 @user_passes_test(lambda u: u.is_superuser)
-def crearNouPuntInteres(request):
+def crearNouPuntInteres(request):       #Només pots entrar si és administrador de la pàgina
     if request.method == 'POST':
         errors = []
         # em ve nomPunt,lat<espai>lng
