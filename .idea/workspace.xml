@@ -4,6 +4,8 @@
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/TFG_GeoInfoSystem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/TFG_GeoInfoSystem/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db.sqlite3" beforeDir="false" afterPath="$PROJECT_DIR$/db.sqlite3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +172,7 @@
       <workItem from="1582721260232" duration="1150000" />
       <workItem from="1582726479519" duration="150000" />
       <workItem from="1582737956138" duration="9817000" />
-      <workItem from="1582795283899" duration="3451000" />
+      <workItem from="1582795283899" duration="5804000" />
     </task>
     <servers />
   </component>

@@ -20,5 +20,7 @@ from GeoInfoSystem import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='Pagina Inici'),
+    path('accounts/login/', views.loginPage, name='login1'),
     path('v1/geoInfoSystem/', include('GeoInfoSystem.urls'))
+
 ]

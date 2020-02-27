@@ -2,9 +2,9 @@ from django.core.exceptions import FieldDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth import logout as do_logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import *
-from django.contrib.auth.hashers import make_password
+from django.contrib.auth.hashers import make_password, check_password
 from django.shortcuts import render, redirect
 from rest_framework import status, request
 from rest_framework.decorators import api_view
@@ -761,7 +761,8 @@ def paginaRegistrarse(request):
             if request.POST['last_name']:
                 nou_usuari.last_name = request.POST['last_name']
             nou_usuari.email=request.POST['email']
-            nou_usuari.set_password(request.POST.get(password1))
+            nou_usuari.set_password(password1)
+            print(nou_usuari)
             nou_usuari.save()
             return redirect("/")
     return render(request, "usuaris/registrar1.html", {'errors': []})
@@ -831,8 +832,16 @@ def loginPage(request):
                 login(request, user)
                 return redirect("/")
         else:
-            errors+=["usuari o contrassenya incorrectes."]
-            return render(request, 'usuaris/login.html', {'errors': errors})
+            user = User.objects.all().filter(username=username)
+            if not user:
+                errors+=["usuari o contrassenya incorrectes."]
+                return render(request, 'usuaris/login.html', {'errors': errors})
+            else:
+                user=user[0]
+                if user.check_password(password):
+                    if user.is_active:
+                        login(request,user)
+                        return redirect("/")
     return render(request, 'usuaris/login.html', {'errors': []})
 
 def logout(request):
@@ -921,7 +930,7 @@ def baixa(request):
     User.objects.all().filter(username=curr_usr).delete()
     return redirect("/")
 
-
+@user_passes_test(lambda u: u.is_superuser)
 def crearNouPuntInteres(request):
     if request.method == 'POST':
         errors = []
