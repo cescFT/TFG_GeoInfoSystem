@@ -981,7 +981,7 @@ def crearNouPuntInteres(request):
             return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'punts': punts, 'errors':errors, 'lenLlista':midaLlista})
         else:
             puntSplit = puntNou.split(",") #tinc el nom del punt, q no el vull per a res[0] <-> lat lng [1]
-            coordenades = puntSplit.split(" ") #lat[0] long[1] en format string
+            coordenades = puntSplit[1].split(" ") #lat[0] long[1] en format string
             latitud=float(coordenades[0])
             longitud=float(coordenades[1])
             idMapa=1
@@ -993,7 +993,24 @@ def crearNouPuntInteres(request):
             p = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
             localNou = local(localitzacio=p, nomLocal=nomLocal, puntuacio=int(puntuacio), categoria=tipus, anyConstruccio=any, descripcio=descripcioLocal)
             localNou.save()
-            return redirect("/v1/geoInfoSystem/map/")
+            dict = {}
+            llista = []
+            i = 0
+            for punt in altresPuntsPerProcessar:
+                puntSplit = punt.split(",")
+                dict["punt"] = puntSplit[0] + "," + puntSplit[1]
+                i = i + 1
+                llista += [dict]
+                dict = {}
+            midaLlista = int(midaLlistaString)
+            punts = json.dumps(llista)
+            if len(altresPuntsPerProcessar) == 1:
+                if altresPuntsPerProcessar[0].split(',')[0] == '--- Siusplau selecciona un punt ---':
+                    return redirect("/v1/geoInfoSystem/map/")
+            else:
+                midaLlista = int(midaLlistaString)
+                punts = json.dumps(llista)
+                return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'punts': punts, 'errors':[], 'lenLlista':midaLlista})
     return render(request, "puntsGeografics/afegirNouPunt.html", {'punts':[], 'errors':[], 'lenLlista':0})
 
 """

@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,7 +51,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../SIO_Practica1_Grafiques" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -170,7 +169,8 @@
       <workItem from="1582709632854" duration="8814000" />
       <workItem from="1582721260232" duration="1150000" />
       <workItem from="1582726479519" duration="150000" />
-      <workItem from="1582737956138" duration="9686000" />
+      <workItem from="1582737956138" duration="9817000" />
+      <workItem from="1582795283899" duration="3451000" />
     </task>
     <servers />
   </component>
@@ -189,10 +189,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="242" height="189" key="DatabaseViewActions_Filter/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910235326" />
-    <state x="739" y="265" key="FileChooserDialogImpl" timestamp="1582670392238">
+    <state x="739" y="265" key="FileChooserDialogImpl" timestamp="1582754460179">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1582670392238" />
+    <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1582754460179" />
     <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1582561744134" />
     <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1580840506910">
       <screen x="0" y="0" width="1920" height="1040" />
