@@ -774,15 +774,31 @@ def paginaRegistrarse(request):
 def mostrarMapa(response):
     puntsInteresCercats = puntInteres.objects.all()
     localsimp = local.objects.all()
+
+    claus_foranes_categories_local = local.objects.all().values_list('categoria', flat=True)
+    categoriesCercades = categoriaLocal.objects.all().filter(pk__in = claus_foranes_categories_local)
+
+    claus_foranes_localitzacio_puntInteres = puntInteres.objects.all().values_list('localitat', flat=True)
+    localitzacionsC = localitzacio.objects.all().filter(pk__in=claus_foranes_localitzacio_puntInteres)
+
+
     locals = serializers.serialize("json", localsimp)
     punts = serializers.serialize("json", puntsInteresCercats)
+    categories = serializers.serialize("json", categoriesCercades)
+    localitzacions = serializers.serialize("json", localitzacionsC)
     print('Punts d\'interès:')
     print(punts)
     print('\n')
     print('Locals:')
     print(locals)
+    print('\n')
+    print('Categories:')
+    print(categories)
+    print('\n')
+    print('Localitzacions:')
+    print(localitzacions)
     #LIMITACIO DE NO PAGAR API: NO PUC FER CERQUES.... (searchbox item de google)
-    return render(response, "puntsGeografics/map.html", {'puntsInteres': punts, 'locals': locals})
+    return render(response, "puntsGeografics/map.html", {'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions})
 
 
 def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
@@ -798,8 +814,11 @@ def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
         return render(response, "errors/ErrorFile.html",{})
     puntInteresC = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
     p = puntInteresC[0]
+    localitat  = p.localitat
+    print(localitat)
     localEspecific = local.objects.all().filter(nomLocal=nomLocal)
-
+    categoria = localEspecific[0].categoria
+    print(categoria)
     altresPuntsInteres = puntInteres.objects.all().filter(localitat=p.localitat).exclude(latitud=latitud, longitud=longitud)
     punts=[]
     for punt in altresPuntsInteres:
@@ -817,9 +836,9 @@ def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
     altresLocals = serializers.serialize("json", altresLocals)
     punts = serializers.serialize("json", punts)
     if altresLocals != "[]" and punts!= "[]":
-        return render(response, "puntsGeografics/informacioDetallada.html", {'puntInteres':punt, 'local': localE, 'altresLocals' : altresLocals, 'altresPuntsInteres': punts, 'altres': True})
+        return render(response, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat,'puntInteres':punt, 'local': localE, 'altresLocals' : altresLocals, 'altresPuntsInteres': punts, 'altres': True})
     else:
-        return render(response, "puntsGeografics/informacioDetallada.html", {'puntInteres': punt, 'local': localE, 'altresLocals': altresLocals, 'altresPuntsInteres': punts, 'altres': False})
+        return render(response, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat, 'puntInteres': punt, 'local': localE, 'altresLocals': altresLocals, 'altresPuntsInteres': punts, 'altres': False})
 
 def loginPage(request):
     if request.method == 'POST':

@@ -91,6 +91,8 @@
     <div id="contingutvariable">
         "{{ puntsInteres| safe }}"
         "{{ locals | safe }}"
+        "{{categoriesMapa | safe}}"
+        "{{ localitzacionsMapa | safe }}"
     </div>
 
 
@@ -122,18 +124,41 @@ function initMap() {
     // Marquem els punts en el mapa.
     var punts=JSON.parse('{{ puntsInteres | safe }}');
     var locals = JSON.parse(`{{ locals | safe }}`);
+    var localitzacions = JSON.parse(`{{ localitzacionsMapa | safe }}`);
+    var categories = JSON.parse(`{{ categoriesMapa | safe }}`);
 
     var posicioPuntInteres;
     var pointsToDo=[];
     var localsToDo=[];
+    var localitzacionsToDo = [];
+    var categoriesToDo = [];
 
+
+    for(categoria of categories){
+        categoriesToDo.push({
+            "pk": categoria.pk,
+           "categoria" : categoria.fields.categoria
+        });
+    }
+
+    //console.log(categoriesToDo);
+
+    for (localitzacio of localitzacions){
+        localitzacionsToDo.push({
+            "pk" : localitzacio.pk,
+            "ciutat" :localitzacio.fields.ciutat,
+            "comarca":localitzacio.fields.comarca,
+            "provincia":localitzacio.fields.provincia
+        });
+    }
+    console.log(localitzacionsToDo);
 
     for(local of locals){
         localsToDo.push({
             "localitzacio" : local.fields.localitzacio,
             "nomLocal" : local.fields.nomLocal,
-            "puntuacio" : local.fields.puntuacio,
-            "puntuacioS" : local.fields.puntuacio.toString(),
+            "puntuacio" : local.fields.estat_conservacio,
+            "puntuacioS" : local.fields.estat_conservacio.toString(),
             "categoria" : local.fields.categoria,
             "anyConstruccio" : local.fields.anyConstruccio,
             "anyConstruccioS" : local.fields.anyConstruccio.toString(),
@@ -149,10 +174,8 @@ function initMap() {
             "longitud" : punt.fields.longitud,
             "latitudS" : punt.fields.latitud.toString(),
             "longitudS" : punt.fields.longitud.toString(),
-            "Tipus" : punt.fields.tipus.toString(),
             "Superficie" : punt.fields.superficie.toString(),
-            "Localitat" : punt.fields.localitat.toString(),
-            "Pais":punt.fields.pais.toString()
+            "Localitat" : punt.fields.localitat.toString()
         });
     }
 
@@ -162,14 +185,23 @@ function initMap() {
         for(var j=0; j<localsToDo.length; j++){
             if(pointsToDo[i]['pk'] == localsToDo[j]['localitzacio']){
                 //console.log(localsToDo[j]['descripcio']);
-                var string ="INFORMACIÓ DEL PUNT D'INTERÈS:\n";
-                    string +="\t- Coordenades: ("+pointsToDo[i]['latitudS'];
-                    string += ","+ pointsToDo[i]['longitudS']+")";
-                    string +="\t- Tipus: "+pointsToDo[i]['Tipus'];
-                    string +="\t- Superficie: "+pointsToDo[i]['Superficie'];
-                    string +="\t- Localitat: "+pointsToDo[i]['Localitat'];
-                    string +="\t- Pais:"+pointsToDo[i]['Pais'];
-
+                let fkLocalitat = pointsToDo[i]['Localitat'];
+                let ciutat = localitzacionsToDo.find(x => x.pk == fkLocalitat).ciutat;
+                let comarca = localitzacionsToDo.find(x => x.pk == fkLocalitat).comarca;
+                let provincia = localitzacionsToDo.find(x => x.pk == fkLocalitat).provincia;
+                let fkCategoria = localsToDo[j]['categoria'];
+                let categoria = categoriesToDo.find(x => x.pk == fkCategoria).categoria;
+                var string ="";
+                    string+="<div><br>";
+                    string+="<table>";
+                    string +="<thread><tr><th><b>INFORMACIÓ D'INTERÈS:</b></th></tr></thread>";
+                    string +="<tr><td><b>- Coordenades:</b></td> <td>("+pointsToDo[i]['latitudS']+","+ pointsToDo[i]['longitudS']+")</td></tr>";
+                    string +="<tr><td><b>- Superficie:</b></td> <td> "+pointsToDo[i]['Superficie']+"</td></tr>";
+                    string +="<tr><td><b>- Categoria:</b></td> <td> "+categoria+"</td></tr>";
+                    string +="<tr><td><b>- Any Construcció:</b></td> <td> "+localsToDo[j]['anyConstruccioS']+"</td></tr>";
+                    string +="<tr><td><b>- Localitat:</b></td> <td> "+ciutat+" ("+comarca+"), "+provincia+", Catalunya</td></tr>";
+                    string += "</table>";
+                    string+="</div>";
                 var url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+localsToDo[j]['nomLocal']+"/"+pointsToDo[i]['latitud']+"/"+pointsToDo[i]['longitud']+"/";
                 url = encodeURI(url);
 
@@ -178,7 +210,7 @@ function initMap() {
             '</div>'+
             '<h1 id="firstHeading" class="firstHeading">'+localsToDo[j]['nomLocal']+'</h1>'+
             '<div id="bodyContent">'+
-            '<p><b>'+localsToDo[j]['nomLocal']+'</b>'+localsToDo[j]['descripcio']+'</p>'+
+            '<table><tr><p><b>'+localsToDo[j]['nomLocal']+'</b><tr>'+localsToDo[j]['descripcio']+'</p></tr></tr></table>'+
             string+
              '<a target="_blank" rel="noopener noreferrer" href='+url+'>Click aquí per a més informació</a>'+
             '</div>'+
