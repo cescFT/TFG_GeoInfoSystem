@@ -112,15 +112,13 @@
             <label>Descripció del lloc:</label>
             <textarea name="descripcioLocal" id="descripcio" placeholder="Breu descripció del lloc."></textarea>
             <label>Tipus:</label>
-            <input type="text" name="tipus" id="tipusPunt" placehoder="Ex: Restaurant" required>
+            <div id="tipusPunt"></div>
             <label>És actiu?</label>
             <input type="checkbox" onclick="canviEstat()" name="actiu" id="esActiu">
             <label>Superficie:</label>
             <input type="text" name="superficie" id="superficie" placeholder="Ex: 25.45" required>
-            <label>Localitat:</label>
-            <input type="text" name="localitat" id="localitat" placeholder="Ex: Barcelona" required>
-            <label>Pais:</label>
-            <input type="text" name="pais" id="pais" placeholder="Ex: Catalunya" required>
+            <label>Seleccioneu la ubicació:</label>
+            <div id="ubicacio"></div>
             <label>Puntuacio [0 a 5]:</label>
             <select id="puntuacioLloc" onchange="emmagatzemarPuntuacio()">
                 <option value="0">0</option>
@@ -135,6 +133,8 @@
             <input type="text" name="any" id="any" placeholder="Ex: 1714" required>
             <input type="hidden" name="llocActiu" id="botoActiu" value="False">
             <input type="hidden" name="p" id="puntuacio" value="0">
+            <input type="hidden" name="tipus" id="categoriaPunt" value="Restauració"> <!--canviar per la primera categoria quan tingui les bones categories perq ara nse-->
+            <input type="hidden" name="poblacio" id="poblacioG" value="Aiguamúrcia (Alt Camp), Tarragona">
             <input type="hidden" name="puntPerProcessar1" id="puntNou" value="a">
             <input type="hidden" name="puntprocessarAux" id="puntAux" value="">
             <input type="hidden" name="altresPunts" id="altresPunsNous" value="">
@@ -272,10 +272,79 @@ function canviEstat(){
     }
 }
 
+function guardarTipus(){
+    var elem = document.getElementById("tipusSeleccio");
+    var inputOcult = document.getElementById("categoriaPunt");
+    elem.childNodes.forEach(node => {
+        if(node.selected){
+            inputOcult.value=node.value;
+        }
+	});
+}
+
+function guardarPoblacio(){
+    var elem = document.getElementById("poblacioSeleccio");
+    var inputOcult = document.getElementById("poblacioG");
+    elem.childNodes.forEach(node => {
+        if(node.selected){
+            console.log(node.value);
+            inputOcult.value = node.value;
+        }
+	});
+}
+
+
 function dadesSeguents() {
+    var divseleccio = document.getElementById("tipusPunt");
+    var divpoble = document.getElementById("ubicacio");
     var x = document.getElementById("dadesSeguents");
     var seleccio = document.getElementById("puntsNous");
     var malament = 1;
+    var tipusDades = JSON.parse(`{{categories|safe}}`);
+    var categoriesToDo =[];
+    var poblacions = JSON.parse(`{{ poblacions | safe }}`);
+    var poblesToDo = [];
+
+    for (poble of poblacions){
+        poblesToDo.push({
+            "ciutat":poble.fields.ciutat,
+            "comarca":poble.fields.comarca,
+            "provincia":poble.fields.provincia
+        });
+    }
+    console.log(poblesToDo);
+    var sPoble = document.createElement("SELECT");
+    sPoble.setAttribute("id", "poblacioSeleccio");
+    sPoble.setAttribute("onchange", "guardarPoblacio()");
+    divpoble.appendChild(sPoble);
+    for(var j=0; j<poblesToDo.length; j++){
+        let option = document.createElement("option");
+        option.setAttribute("value", poblesToDo[j]['ciutat']+" ("+poblesToDo[j]['comarca']+"), "+poblesToDo[j]['provincia']);
+        let t = document.createTextNode(poblesToDo[j]['ciutat']+" ("+poblesToDo[j]['comarca']+"), "+poblesToDo[j]['provincia']);
+        option.appendChild(t);
+        document.getElementById("poblacioSeleccio").appendChild(option);
+    }
+
+    for(tipus of tipusDades){
+        categoriesToDo.push({
+           "categoria":tipus.fields.categoria,
+        });
+    }
+    console.log(categoriesToDo);
+    var select = document.createElement("SELECT");
+    select.setAttribute("id", "tipusSeleccio");
+    select.setAttribute("onchange", "guardarTipus()");
+    divseleccio.appendChild(select);
+
+    for(var i=0; i<categoriesToDo.length; i++){
+        let option = document.createElement("option");
+        option.setAttribute("value", categoriesToDo[i]['categoria']);
+        let t = document.createTextNode(categoriesToDo[i]['categoria']);
+        option.appendChild(t);
+        document.getElementById("tipusSeleccio").appendChild(option);
+    }
+
+
     seleccio.childNodes.forEach(node => {
         if(node.selected){
             if(node.value == "selectcard"){

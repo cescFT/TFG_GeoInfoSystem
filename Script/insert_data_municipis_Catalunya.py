@@ -51,7 +51,7 @@ cursor.execute("SET NAMES UTF8;")
 for key in barcelona:
     nomCiutat = barcelona[key].split(',')[0]
     nomComarca = barcelona[key].split(',')[1]
-    cursor.execute("INSERT INTO geoinfosystem_localitzacio (ciutat, comarca, provincia) VALUES ('"+nomCiutat+"', '"+nomComarca+"', 'Tarragona');")
+    cursor.execute("INSERT INTO geoinfosystem_localitzacio (ciutat, comarca, provincia) VALUES ('"+nomCiutat+"', '"+nomComarca+"', 'Barcelona');")
     #mariadb_connection.commit()
     conn.commit()
 
@@ -75,7 +75,7 @@ cursor.execute("SET NAMES UTF8;")
 for key in lleida:
     nomCiutat = lleida[key].split(',')[0]
     nomComarca = lleida[key].split(',')[1]
-    cursor.execute("INSERT INTO geoinfosystem_localitzacio (ciutat, comarca, provincia) VALUES ('"+nomCiutat+"', '"+nomComarca+"', 'Tarragona');")
+    cursor.execute("INSERT INTO geoinfosystem_localitzacio (ciutat, comarca, provincia) VALUES ('"+nomCiutat+"', '"+nomComarca+"', 'Lleida');")
     #mariadb_connection.commit()
     conn.commit()
 
@@ -99,6 +99,6 @@ cursor.execute("SET NAMES UTF8;")
 for key in girona:
     nomCiutat = girona[key].split(',')[0]
     nomComarca = girona[key].split(',')[1]
-    cursor.execute("INSERT INTO geoinfosystem_localitzacio (ciutat, comarca, provincia) VALUES ('"+nomCiutat+"', '"+nomComarca+"', 'Tarragona');")
+    cursor.execute("INSERT INTO geoinfosystem_localitzacio (ciutat, comarca, provincia) VALUES ('"+nomCiutat+"', '"+nomComarca+"', 'Girona');")
     #mariadb_connection.commit()
     conn.commit()

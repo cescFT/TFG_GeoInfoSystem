@@ -955,6 +955,10 @@ def unauthorizedpage(response):
 
 @user_passes_test(lambda u: u.is_superuser)
 def crearNouPuntInteres(request):       #Només pots entrar si és administrador de la pàgina
+    categories = categoriaLocal.objects.all()
+    categoriesMostrar = serializers.serialize("json", categories)
+    poblacions = localitzacio.objects.all()
+    poblacionsMostrar = serializers.serialize("json", poblacions)
     if request.method == 'POST':
         errors = []
         # em ve nomPunt,lat<espai>lng
@@ -1042,8 +1046,8 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
             else:
                 midaLlista = int(midaLlistaString)
                 punts = json.dumps(llista)
-                return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'punts': punts, 'errors':[], 'lenLlista':midaLlista})
-    return render(request, "puntsGeografics/afegirNouPunt.html", {'punts':[], 'errors':[], 'lenLlista':0})
+                return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'categories': categoriesMostrar, 'poblacions':poblacionsMostrar, 'punts': punts, 'errors':[], 'lenLlista':midaLlista})
+    return render(request, "puntsGeografics/afegirNouPunt.html", {'categories':categoriesMostrar, 'poblacions':poblacionsMostrar,'punts':[], 'errors':[], 'lenLlista':0})
 
 """
 AIXO ES PERQ AIXI ES COMPROVA SI ÉS SUPERUSUARI, EN ALTRE CAS NO ENTRARA
