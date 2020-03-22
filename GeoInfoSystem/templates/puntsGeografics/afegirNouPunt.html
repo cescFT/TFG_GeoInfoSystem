@@ -336,7 +336,9 @@ function poblacionsPerProvincia(){
 
 function dadesSeguents() {
     var divseleccio = document.getElementById("tipusPunt");
+    divseleccio.innerHTML='';
     var divpoble = document.getElementById("ubicacio");
+    divpoble.innerHTML='';
     var x = document.getElementById("dadesSeguents");
     var seleccio = document.getElementById("puntsNous");
     var malament = 1;
@@ -347,6 +349,7 @@ function dadesSeguents() {
     var provincies = JSON.parse(`{{provincies | safe}}`);
     var provinciesToDo = Object.values(provincies);
     var divprova = document.getElementById("selectProvincia");
+    divprova.innerHTML='';
     //console.log(provinciesToDo);
 
     var sProvincia = document.createElement("SELECT");
@@ -432,7 +435,17 @@ function checkValues(){
 
 function tancarSeleccio() {
     var div = document.getElementById("nousPunts");
+    var divForm = document.getElementById("dadesSeguents");
+    var divTipus = document.getElementById("tipusPunt");
+    var divProv = document.getElementById("selectProvincia");
+    var divUbi = document.getElementById("ubicacio");
+    divTipus.innerHTML='';
+    divProv.innerHTML='';
+    divUbi.innerHTML='';
     div.hidden=true;
+    if(divForm.hidden == false){
+        divForm.hidden = true;
+    }
     var seleccio = document.getElementById("puntsNous");
     seleccio.innerHTML='';
     var btnMostrarPunts = document.getElementById("boto_mostrarDades");
@@ -498,12 +511,22 @@ function mostrarCoordenades(){
 }
 
 function eliminarTotsPuntsInteresNous(){
+    var divForm = document.getElementById("dadesSeguents");
+    var divTipus = document.getElementById("tipusPunt");
+    var divSeleccProv = document.getElementById("selectProvincia");
+    var divUbi = document.getElementById("ubicacio");
     var seleccio = document.getElementById("puntsNous");
     seleccio.innerHTML='';
     var div = document.getElementById("nousPunts");
     var btnMostrarPunts = document.getElementById("boto_mostrarDades");
     btnMostrarPunts.innerHTML="Mostra els punts";
     div.hidden=true;
+    if (divForm.hidden == false){
+        divForm.hidden = true;
+    }
+    divTipus.innerHTML='';
+    divSeleccProv.innerHTML='';
+    divUbi.innerHTML='';
     for(var i=0; i< llistatNousMarkers.length; i++){
         llistatNousMarkers[i].setMap(null);
     }
