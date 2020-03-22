@@ -1,6 +1,7 @@
 from django.core.exceptions import FieldDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
+from django.http import HttpResponse
 from django.contrib.auth import logout as do_logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import *
@@ -953,11 +954,33 @@ def unauthorizedpage(response):
     return render(response, "errors/NoAutoritzat.html", {})
 
 
+def ciutatsPerProvincia(request):
+    if request.method == 'GET':
+        provincia = request.GET['provincia']
+        localitzacions = localitzacio.objects.all().filter(provincia=provincia).values_list('ciutat', 'comarca')
+        dict={}
+        res={}
+        i=1
+        for elem in localitzacions:
+            dict['localitzacio'+str(i)] = elem[0]+" ("+elem[1]+")"
+            i = i +1
+        res['data'] = dict
+        loc = json.dumps(res)
+        return HttpResponse(loc, content_type='json')
+
+
 @user_passes_test(lambda u: u.is_superuser)
 def crearNouPuntInteres(request):       #Només pots entrar si és administrador de la pàgina
+    provincies = localitzacio.objects.all().values_list('provincia', flat=True).distinct()
+    i=1
+    provinciesMostrarAux={}
+    for prov in provincies:
+        provinciesMostrarAux['prov'+str(i)] = prov
+        i = i + 1
+    provinciesMostrar=json.dumps(provinciesMostrarAux)
     categories = categoriaLocal.objects.all()
     categoriesMostrar = serializers.serialize("json", categories)
-    poblacions = localitzacio.objects.all()
+    poblacions = localitzacio.objects.all().filter(provincia='Tarragona')
     poblacionsMostrar = serializers.serialize("json", poblacions)
     if request.method == 'POST':
         errors = []
@@ -1011,7 +1034,7 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
                 dict={}
             midaLlista = int(midaLlistaString)
             punts = json.dumps(llista)
-            return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'categories': categoriesMostrar, 'poblacions': poblacionsMostrar,'punts': punts, 'errors':errors, 'lenLlista':midaLlista})
+            return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'provincies': provinciesMostrar,'categories': categoriesMostrar, 'poblacions': poblacionsMostrar,'punts': punts, 'errors':errors, 'lenLlista':midaLlista})
         else:
             puntSplit = puntNou.split(",") #tinc el nom del punt, q no el vull per a res[0] <-> lat lng [1]
             coordenades = puntSplit[1].split(" ") #lat[0] long[1] en format string
@@ -1046,8 +1069,8 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
             else:
                 midaLlista = int(midaLlistaString)
                 punts = json.dumps(llista)
-                return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'categories': categoriesMostrar, 'poblacions':poblacionsMostrar, 'punts': punts, 'errors':[], 'lenLlista':midaLlista})
-    return render(request, "puntsGeografics/afegirNouPunt.html", {'categories':categoriesMostrar, 'poblacions':poblacionsMostrar,'punts':[], 'errors':[], 'lenLlista':0})
+                return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'provincies':provinciesMostrar ,'categories': categoriesMostrar, 'poblacions':poblacionsMostrar, 'punts': punts, 'errors':[], 'lenLlista':midaLlista})
+    return render(request, "puntsGeografics/afegirNouPunt.html", {'provincies':provinciesMostrar,'categories':categoriesMostrar, 'poblacions':poblacionsMostrar,'punts':[], 'errors':[], 'lenLlista':0})
 
 """
 AIXO ES PERQ AIXI ES COMPROVA SI ÉS SUPERUSUARI, EN ALTRE CAS NO ENTRARA

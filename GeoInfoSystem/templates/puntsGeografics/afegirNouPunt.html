@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Crear nou punt</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <style>
         /* Style the header with a grey background and some padding */
     .header {
@@ -118,6 +119,7 @@
             <label>Superficie:</label>
             <input type="text" name="superficie" id="superficie" placeholder="Ex: 25.45" required>
             <label>Seleccioneu la ubicació:</label>
+            <div id="selectProvincia">Selecciona la provincia:</div>
             <div id="ubicacio"></div>
             <label>Estat de Conservació [0 a 5]:</label>
             <select id="puntuacioLloc" onchange="emmagatzemarPuntuacio()">
@@ -287,12 +289,50 @@ function guardarPoblacio(){
     var inputOcult = document.getElementById("poblacioG");
     elem.childNodes.forEach(node => {
         if(node.selected){
-            console.log(node.value);
+            //console.log(node.value);
             inputOcult.value = node.value;
         }
 	});
 }
 
+function poblacionsPerProvincia(){
+    var elem = document.getElementById("provinciaSeleccio");
+    var inputOcult = document.getElementById("poblacioG");
+    elem.childNodes.forEach(node => {
+      if(node.selected){
+            var defecte=node.value;
+            $.ajax({
+                type: 'GET',
+                url : '/v1/geoInfoSystem/poblacions_per_provincia/',
+                data:{
+                    'provincia' : defecte
+                },
+                dataType:'json',
+                success:
+                    function (data){
+                        var data1 = Object.values(data);
+                        var pobles = Object.values(data1[0]);
+                        var divpoble = document.getElementById("ubicacio");
+                        divpoble.innerHTML="";
+                        //console.log(pobles);
+                        var sPoble = document.createElement("SELECT");
+                        sPoble.setAttribute("id", "poblacioSeleccio");
+                        sPoble.setAttribute("onchange", "guardarPoblacio()");
+                        divpoble.appendChild(sPoble);
+                        for(var j=0; j<pobles.length; j++){
+                            let option = document.createElement("option");
+                            option.setAttribute("value", pobles[j]+", "+defecte);
+                            let t = document.createTextNode(pobles[j]+", "+defecte);
+                            option.appendChild(t);
+                            document.getElementById("poblacioSeleccio").appendChild(option);
+                        }
+                        inputOcult.value = pobles[0]+", "+defecte;
+                    }
+            });
+      }
+    });
+
+}
 
 function dadesSeguents() {
     var divseleccio = document.getElementById("tipusPunt");
@@ -304,6 +344,22 @@ function dadesSeguents() {
     var categoriesToDo =[];
     var poblacions = JSON.parse(`{{ poblacions | safe }}`);
     var poblesToDo = [];
+    var provincies = JSON.parse(`{{provincies | safe}}`);
+    var provinciesToDo = Object.values(provincies);
+    var divprova = document.getElementById("selectProvincia");
+    //console.log(provinciesToDo);
+
+    var sProvincia = document.createElement("SELECT");
+    sProvincia.setAttribute("id", "provinciaSeleccio");
+    sProvincia.setAttribute("onchange", "poblacionsPerProvincia()");
+    divprova.appendChild(sProvincia);
+    for(var k=0; k<provinciesToDo.length; k++){
+        let option = document.createElement("option");
+        option.setAttribute("value", provinciesToDo[k]);
+        let t = document.createTextNode(provinciesToDo[k]);
+        option.appendChild(t);
+        document.getElementById("provinciaSeleccio").appendChild(option);
+    }
 
     for (poble of poblacions){
         poblesToDo.push({
@@ -312,7 +368,7 @@ function dadesSeguents() {
             "provincia":poble.fields.provincia
         });
     }
-    console.log(poblesToDo);
+    //console.log(poblesToDo);
     var sPoble = document.createElement("SELECT");
     sPoble.setAttribute("id", "poblacioSeleccio");
     sPoble.setAttribute("onchange", "guardarPoblacio()");
@@ -330,7 +386,7 @@ function dadesSeguents() {
            "categoria":tipus.fields.categoria,
         });
     }
-    console.log(categoriesToDo);
+    //console.log(categoriesToDo);
     var select = document.createElement("SELECT");
     select.setAttribute("id", "tipusSeleccio");
     select.setAttribute("onchange", "guardarTipus()");
@@ -362,7 +418,7 @@ function emmagatzemarPuntuacio(){
     var puntuacio = document.getElementById("puntuacio");
     var pActual = document.getElementById("puntuacioLloc");
     puntuacio.value=pActual.value;
-    console.log(puntuacio.value);
+    //console.log(puntuacio.value);
 }
 
 
@@ -390,7 +446,7 @@ function guardarSeleccionat(){
     var altresPunts = document.getElementById("altresPunsNous");
     var pAux = document.getElementById("puntAux");
     var midaLlistaPunts = document.getElementById("midaLlistatPunts");
-    console.log(seleccio.childNodes);
+    //console.log(seleccio.childNodes);
     var malament=1;
     seleccio.childNodes.forEach(node => {
         if(node.selected){
@@ -412,7 +468,7 @@ function guardarSeleccionat(){
     midaLlistaPunts.value=llistatTitolsNousMarkers.length.toString();
     var json = JSON.stringify(llistatPunts);
     altresPunts.value = json;
-    console.log(altresPunts.value);
+    //console.log(altresPunts.value);
     if(malament===1){
         document.getElementById("form_guardar_nou_punt").submit();
     }
@@ -425,7 +481,7 @@ function mostrarCoordenades(){
     var btnMostrarPunts = document.getElementById("boto_mostrarDades");
     var p=document.getElementById("InformatiuNoPunts");
     if(llistatNousMarkers.length!== 0){
-        console.log(llistatTitolsNousMarkers);
+        //console.log(llistatTitolsNousMarkers);
         p.innerHTML='';
         div.hidden=false;
         if(div.hidden === false){
