@@ -969,8 +969,7 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
         tipus = request.POST['tipus']
         llocActiu = request.POST['llocActiu']
         superficie = request.POST['superficie']
-        localitat = request.POST['localitat']
-        pais = request.POST['pais']
+        localitat = request.POST['poblacio'] #em ve: poblacio<espai>(comarca),<espai>provincia
         puntuacio = request.POST['p']
         any = request.POST['any']
         midaLlistaString = request.POST['midaLlista']
@@ -985,8 +984,6 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
             errors+=['Cal afegir la superficie.']
         if not localitat:
             errors+=['Cal afegir la localitat']
-        if not pais:
-            errors+=['Cal afegir el pais.']
         if not any:
             errors+=['Cal afegir un any.']
 
@@ -1014,20 +1011,23 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
                 dict={}
             midaLlista = int(midaLlistaString)
             punts = json.dumps(llista)
-            return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'punts': punts, 'errors':errors, 'lenLlista':midaLlista})
+            return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'categories': categoriesMostrar, 'poblacions': poblacionsMostrar,'punts': punts, 'errors':errors, 'lenLlista':midaLlista})
         else:
             puntSplit = puntNou.split(",") #tinc el nom del punt, q no el vull per a res[0] <-> lat lng [1]
             coordenades = puntSplit[1].split(" ") #lat[0] long[1] en format string
             latitud=float(coordenades[0])
             longitud=float(coordenades[1])
-            idMapa=1
             actiu=False
+            sLocalitat = localitat.split(' ')  #em ve: poblacio<espai>(comarca),<espai>provincia
+            poblacio = sLocalitat[0]
+            poblacio = localitzacio.objects.all().filter(ciutat=poblacio)[0]
             if llocActiu == "True":
                 actiu=True
-            nouPunt = puntInteres(latitud=latitud, longitud=longitud, idMapa=idMapa, tipus=tipus, actiu=actiu, superficie=superficie, localitat=localitat, pais=pais)
+            nouPunt = puntInteres(latitud=latitud, longitud=longitud, actiu=actiu, superficie=superficie, localitat=poblacio)
             nouPunt.save()
             p = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
-            localNou = local(localitzacio=p, nomLocal=nomLocal, puntuacio=int(puntuacio), categoria=tipus, anyConstruccio=any, descripcio=descripcioLocal)
+            categoria = categoriaLocal.objects.all().filter(categoria=tipus)[0]
+            localNou = local(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio), categoria=categoria, anyConstruccio=any, descripcio=descripcioLocal)
             localNou.save()
             dict = {}
             llista = []
