@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Mapa</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <style>
         /* Style the header with a grey background and some padding */
     .header {
@@ -69,7 +70,7 @@
 
 
 </head>
-<body onload="veurecontingutvariable()">
+<body onload="iniPagina()">
     <div class="header">
         <a href="/" class="logo">Sistema d'informació Geogràfica</a>
         <div class="header-right">
@@ -88,29 +89,25 @@
 
     <div id="map"></div>
 
-    <div id="contingutvariable">
-        "{{ puntsInteres| safe }}"
-        "{{ locals | safe }}"
-        "{{categoriesMapa | safe}}"
-        "{{ localitzacionsMapa | safe }}"
+    <div id="panellControl">
+        <p>En aquest espai podràs filtrar la informació que apareix en el mapa!<br>A continuació veuràs una sèrie de panells i accions que pots dur a terme!</p>
+
+        <div id="filtres">
+            <form id="formEstadistiques" method="POST" action="/v1/geoInfoSystem/estadistiques/">
+                <p>Provincia:<div id="provincies"></div></p>
+                <p>Ciutat:<div id="ubicacio"></div></p>
+                <p>Tipus:<div id="tipus"></div></p>
+                <p>Actiu: <input type="checkbox" onclick="canviEstat()" name="actiu" id="esActiu"></p>
+
+                <input type="hidden" name="categoria" id="categoriaSeleccionada" value="Restauració">
+                <input type="hidden" name="esActiu" id="estat" value="False">
+                <input type="hidden" name="poblacio" id="pobleSeleccionat" value="Aiguamúrcia (Alt Camp), Tarragona">
+            </form>
+                <button onclick="netejarEstadistiques()">Neteja estadístiques</button>
+                <button type="submit" onclick="executarForm()"> Veure Estadístiques</button>
+        </div>
+        <div id="resultatsCerca"></div>
     </div>
-
-
-    <script>
-        function veurecontingutvariable(){
-            var divSortida = document.getElementById("contingutvariable");
-            var punts=JSON.parse('{{ puntsInteres | safe }}');
-            //var locals = JSON.parse('{{ locals | safe }}');
-            for (punt of punts){
-                divSortida.innerHTML+=punt.fields.latitud;
-            }
-            for(local of JSON.parse(`{{ locals | safe }}`)){
-                divSortida.innerHTML+=local.fields.nomLocal;
-            }
-        }
-
-    </script>
-
 
 
 <script>
@@ -227,6 +224,183 @@ function initMap() {
     }
     }
 }
+
+        function executarForm(){
+            document.getElementById("formEstadistiques").submit();
+        }
+        function canviEstat(){
+            var inputhidden = document.getElementById("estat");
+            if (inputhidden.value == 'False'){
+                inputhidden.value = 'True';
+            }else inputhidden.value = 'False';
+            //TODO ajax
+            $.ajax({
+                        type: 'GET',
+                        url : '/v1/geoInfoSystem/estadistiques/',
+                        data:{
+                            'poblacio' : document.getElementById('pobleSeleccionat').value,
+                            'actiu' : inputhidden.value,
+                            'categoria' : document.getElementById("categoriaSeleccionada").value
+                        },
+                        dataType:'json',
+                        success:
+                            function (data){
+                                var data1 = Object.values(data);
+                                console.log(data1);
+                            }
+                    });
+        }
+        function guardarTipus(){
+            var inputhidden = document.getElementById("categoriaSeleccionada");
+            var elem = document.getElementById("tipusSeleccio");
+            elem.childNodes.forEach(node => {
+                if(node.selected){
+                    //console.log(node.value);
+                    inputhidden.value = node.value;
+                    //TODO ajax
+                    $.ajax({
+                        type: 'GET',
+                        url : '/v1/geoInfoSystem/estadistiques/',
+                        data:{
+                            'poblacio' : document.getElementById('pobleSeleccionat').value,
+                            'actiu' : document.getElementById('estat').value,
+                            'categoria' : inputhidden.value
+                        },
+                        dataType:'json',
+                        success:
+                            function (data){
+                                var data1 = Object.values(data);
+                                console.log(data1);
+                            }
+                    });
+                }
+            });
+        }
+
+        function iniPagina(){
+            var divpobles = document.getElementById("ubicacio");
+            var divtipus =document.getElementById("tipus");
+            var poblesTGN = JSON.parse(`{{poblesTGN | safe}}`);
+            var totescategories = JSON.parse(`{{totesCategories | safe}}`);
+            var divProvincies = document.getElementById("provincies");
+            var provincies =JSON.parse(`{{ provincies | safe }}`);
+            var llProvincies = Object.values(provincies);
+            var llPoblesTGN = Object.values(poblesTGN);
+            var categoriesToDo = [];
+            for(categoria of totescategories)
+            {
+                categoriesToDo.push({
+                    "categoria" : categoria.fields.categoria
+                });
+            }
+
+            //console.log(llPoblesTGN);
+            var sPoble = document.createElement("SELECT");
+            sPoble.setAttribute("id", "poblacioSeleccio");
+            sPoble.setAttribute("onchange", "guardarPoblacio()");
+            divpobles.appendChild(sPoble);
+            for(var j=0; j<llPoblesTGN.length; j++){
+                let option = document.createElement("option");
+                option.setAttribute("value", llPoblesTGN[j]);
+                let t = document.createTextNode(llPoblesTGN[j]);
+                option.appendChild(t);
+                document.getElementById("poblacioSeleccio").appendChild(option);
+            }
+
+            var sCategoria = document.createElement("SELECT");
+            sCategoria.setAttribute("id", "tipusSeleccio");
+            sCategoria.setAttribute("onchange", "guardarTipus()");
+            divtipus.appendChild(sCategoria);
+            for(var i=0; i<categoriesToDo.length; i++){
+                let option = document.createElement("option");
+                option.setAttribute("value", categoriesToDo[i]['categoria']);
+                let t = document.createTextNode(categoriesToDo[i]['categoria']);
+                option.appendChild(t);
+                document.getElementById("tipusSeleccio").appendChild(option);
+            }
+            var sProvincia = document.createElement("SELECT");
+            sProvincia.setAttribute("id", "provinciaSeleccio");
+            sProvincia.setAttribute("onchange", "poblacionsPerProvincia()");
+            divProvincies.appendChild(sProvincia);
+            for(var k=0; k<llProvincies.length; k++){
+                let option = document.createElement("option");
+                option.setAttribute("value", llProvincies[k]);
+                let t = document.createTextNode(llProvincies[k]);
+                option.appendChild(t);
+                document.getElementById("provinciaSeleccio").appendChild(option);
+            }
+        }
+
+        function guardarPoblacio(){
+            var inputOcult = document.getElementById("pobleSeleccionat");
+            var elem = document.getElementById("poblacioSeleccio");
+            var actiu = document.getElementById("estat");
+            var categoria =document.getElementById("categoriaSeleccionada");
+            elem.childNodes.forEach(node => {
+                if(node.selected){
+                    //console.log(node.value);
+                    inputOcult.value = node.value;
+                    var poble=node.value;
+                    $.ajax({
+                        type: 'GET',
+                        url : '/v1/geoInfoSystem/estadistiques/',
+                        data:{
+                            'poblacio' : poble,
+                            'actiu' : actiu.value,
+                            'categoria' : categoria.value
+                        },
+                        dataType:'json',
+                        success:
+                            function (data){
+                                var data1 = Object.values(data);
+                                console.log(data1);
+                            }
+                    });
+                }
+            });
+        }
+
+        function poblacionsPerProvincia(){
+            var elem = document.getElementById("provinciaSeleccio");
+            var inputOcult = document.getElementById("pobleSeleccionat");
+            elem.childNodes.forEach(node => {
+              if(node.selected){
+                    var defecte=node.value;
+                    $.ajax({
+                        type: 'GET',
+                        url : '/v1/geoInfoSystem/poblacions_per_provincia/',
+                        data:{
+                            'provincia' : defecte
+                        },
+                        dataType:'json',
+                        success:
+                            function (data){
+                                var data1 = Object.values(data);
+                                var pobles = Object.values(data1[0]);
+                                var divpoble = document.getElementById("ubicacio");
+                                divpoble.innerHTML="";
+                                //console.log(pobles);
+                                var sPoble = document.createElement("SELECT");
+                                sPoble.setAttribute("id", "poblacioSeleccio");
+                                sPoble.setAttribute("onchange", "guardarPoblacio()");
+                                divpoble.appendChild(sPoble);
+                                for(var j=0; j<pobles.length; j++){
+                                    let option = document.createElement("option");
+                                    option.setAttribute("value", pobles[j]+", "+defecte);
+                                    let t = document.createTextNode(pobles[j]+", "+defecte);
+                                    option.appendChild(t);
+                                    document.getElementById("poblacioSeleccio").appendChild(option);
+                                }
+                                inputOcult.value = pobles[0]+", "+defecte;
+                            }
+                    });
+              }
+            });
+
+        }
+        function netejarEstadistiques(){
+
+        }
     </script>
     <!--Load the API from the specified URL
     * The async attribute allows the browser to render the page while the API loads

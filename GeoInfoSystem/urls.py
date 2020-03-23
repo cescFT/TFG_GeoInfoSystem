@@ -42,5 +42,6 @@ urlpatterns = [
     path('actualitzar_camps/<str:codi>/', views.updateUsuari, name='Actualitzacio'),
     path('baixa_usuari/', views.baixa, name='baixa'),
     path('nouPunt/', views.crearNouPuntInteres, name='nou punt'),
-    path('poblacions_per_provincia/', views.ciutatsPerProvincia, name='ajax1')
+    path('poblacions_per_provincia/', views.ciutatsPerProvincia, name='poblacionsxprovincies'),
+    path('estadistiques/', views.res_ajax_estadistiques, name='ajaxestadistiques')
 ]
