@@ -804,9 +804,83 @@ def mostrarMapa(response):
     poblesDeTgn = json.dumps(dict)
     tipus = categoriaLocal.objects.all()
     categoriesT = serializers.serialize('json', tipus)
+
+
     #LIMITACIO DE NO PAGAR API: NO PUC FER CERQUES.... (searchbox item de google)
     return render(response, "puntsGeografics/map.html", {'totesCategories':categoriesT,'poblesTGN':poblesDeTgn, 'provincies':provincies,'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions})
 
+def estadistiques_inicials(request):
+    resultatsInicials = {}
+    res = {}
+    categoriaInicial = categoriaLocal.objects.all().filter(categoria='Restauració')[0]
+    pobleInicial = localitzacio.objects.all().filter(ciutat='Aiguamúrcia')[0]
+    actiu = False
+    # RESULTAT AMB ELS FILTRES ESTABLERTS
+    punt_filtre1 = puntInteres.objects.all().filter(localitat=pobleInicial, actiu=actiu)
+    llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria=categoriaInicial)
+    res_filtre1 = serializers.serialize('json', llocs_filtre1)
+    res['FiltresAplicats'] = res_filtre1
+    res['numResultats'] = str(len(llocs_filtre1))
+    resultatsInicials['FitresEstablerts'] = res
+
+    res = {}
+    # RESULTAT ON SURTEN TOTS ELS PUNTS/LOCALS DEL MATEIX POBLE (TANT ACTIUS COM NO ACTIUS)
+    punt_filtre1 = puntInteres.objects.all().filter(localitat=pobleInicial)
+    llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1)
+    res_filtre1 = serializers.serialize('json', llocs_filtre1)
+    res['puntsPoble'] = res_filtre1
+    res['numMateixPoble'] = str(len(llocs_filtre1))
+    resultatsInicials['FiltreMateixPoble'] = res
+
+    res = {}
+    # RESULTAT NEGANT EL ACTIU MATEIXA CATEGORIA
+    punt_filtre1 = puntInteres.objects.all().filter(localitat=pobleInicial, actiu=not actiu)
+    llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria=categoriaInicial)
+    res_filtre1 = serializers.serialize('json', llocs_filtre1)
+    res['resNegatActiuMateixaCat'] = res_filtre1
+    res['numResNegatActiuMateixaCat'] = str(len(llocs_filtre1))
+    resultatsInicials['FiltreNegatActiuMateixaCat'] = res
+
+    res = {}
+    # RESULTAT MATEIX POBLE, ACTIU QUE VE I NO MATEIXA CATEGORIA
+    punt_filtre1 = puntInteres.objects.all().filter(localitat=pobleInicial, actiu=actiu)
+    altresCategories_filtre1 = categoriaLocal.objects.all().exclude(categoria=categoriaInicial)
+    llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria__in=altresCategories_filtre1)
+    res_filtre1 = serializers.serialize('json', llocs_filtre1)
+    res['resMateixPobleNoMateixaCat'] = res_filtre1
+    res['numresMateixPobleNoMateixaCat'] = str(len(llocs_filtre1))
+    resultatsInicials['FiltreMateixPobleNoMateixaCat'] = res
+
+    res = {}
+    # RESTULTAT NO MATEIX POBLE, ACTIU QUE VE I MATEIXA CATEGORIA
+    punt_filtre1 = puntInteres.objects.all().exclude(localitat=pobleInicial).filter(actiu=actiu)
+    llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria=categoriaInicial)
+    res_filtre1 = serializers.serialize('json', llocs_filtre1)
+    res['resNoMateixPobleMateixaCat'] = res_filtre1
+    res['numResNoMateixPobleMateixaCat'] = str(len(llocs_filtre1))
+    resultatsInicials['FiltreNoMateixPobleMateixaCat'] = res
+
+    res = {}
+    # RESULTAT NO MATEIX POBLE, ACTIU NEGAT I NO MATEIXA CATEGORIA
+    punt_filtre1 = puntInteres.objects.all().exclude(localitat=pobleInicial).filter(actiu=not actiu)
+    altresCategories_filtre1 = categoriaLocal.objects.all().exclude(categoria=categoriaInicial)
+    llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria__in=altresCategories_filtre1)
+    res_filtre1 = serializers.serialize('json', llocs_filtre1)
+    res['resNoMateixPobleNoMateixaCategoria'] = res_filtre1
+    res['numResNoMateixPobleNoMateixaCategoria'] = str(len(llocs_filtre1))
+    resultatsInicials['FiltreNoMateixPobleNoMateixaCat'] = res
+
+    res = {}
+    # RESULTAT AMB TOTES LES DADES DE LA DB
+    punt_filtre1 = puntInteres.objects.all()
+    llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1)
+    res_filtre1 = serializers.serialize('json', llocs_filtre1)
+    res['infoDB'] = res_filtre1
+    res['numinfoDB'] = str(len(llocs_filtre1))
+    resultatsInicials['FiltreTotaDB'] = res
+
+    initial_statistics_data = json.dumps(resultatsInicials)
+    return HttpResponse(initial_statistics_data, content_type='json')
 
 def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
     nomLocal = urllib.parse.unquote(nomLocal)
@@ -1004,8 +1078,8 @@ def res_ajax_estadistiques(request):
         lloc = local.objects.all().filter(localitzacio__in=punt)
         data = serializers.serialize('json', lloc)
         dict['llocMateixPoble'] = data
-        dict['numLocalsMateixPoble'] = str(len(lloc))
         dict['descripcio'] = 'Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)'
+        dict['numLocalsMateixPoble'] = str(len(lloc))
         res['FilterMateixPoble'] = dict
 
         dict = {}
@@ -1014,8 +1088,8 @@ def res_ajax_estadistiques(request):
         lloc = local.objects.all().filter(localitzacio__in=punt, categoria=categoriaC)
         data = serializers.serialize('json', lloc)
         dict['llocFilterNegat'] = data
-        dict['numLocalsNegantActiuMateixaCategoria'] = str(len(lloc))
         dict['descripcio'] = 'Resultats obtinguts deprès d\'haver negat si és actiu i mantenint la mateixa categoria'
+        dict['numLocalsNegantActiuMateixaCategoria'] = str(len(lloc))
         res['FilterNegantActiu'] = dict
 
 
@@ -1026,8 +1100,8 @@ def res_ajax_estadistiques(request):
         lloc = local.objects.all().filter(localitzacio__in=punt, categoria__in=altresCategories)
         data = serializers.serialize('json', lloc)
         dict['filtreEstrany'] = data
-        dict['numResMateixPobleNotMateixaCategoria'] = str(len(lloc))
         dict['descripcio'] = 'Resultat obtingut de aplicar el mateix poble amb l\'actiu que s\'ha donat i una categoria diferent a la donada.'
+        dict['numResMateixPobleNotMateixaCategoria'] = str(len(lloc))
         res['FiltreResMateixPobleNotCategoriaDonada'] = dict
 
         dict = {}
@@ -1036,8 +1110,8 @@ def res_ajax_estadistiques(request):
         lloc = local.objects.all().filter(localitzacio__in=punt, categoria=categoriaC)
         data = serializers.serialize('json', lloc)
         dict['filtreEstrany']=data
-        dict['numResNoMateixPobleMateixaCategoria'] = str(len(lloc))
         dict['descripcio'] = 'Resultat de aplicar altres pobles i actiu que s\'ha donat i la mateixa categoria donada.'
+        dict['numResNoMateixPobleMateixaCategoria'] = str(len(lloc))
         res['FiltreResNoMateixPobleMateixaCategoria'] = dict
 
         dict = {}
@@ -1047,8 +1121,8 @@ def res_ajax_estadistiques(request):
         lloc = local.objects.all().filter(localitzacio__in=punt, categoria__in=llCategories)
         data = serializers.serialize('json', lloc)
         dict['filtreEstrany'] = data
-        dict['numResNoMateixPobleNoMateixaCategoria'] = str(len(lloc))
         dict['descripcio'] = 'Resultat de aplicar un poble diferent al donat, actiu negat i no mateixa categoria.'
+        dict['numResNoMateixPobleNoMateixaCategoria'] = str(len(lloc))
         res['FiltreResNoMateixPobleNoMateixaCategoria'] = dict
 
         dict = {}
@@ -1057,8 +1131,9 @@ def res_ajax_estadistiques(request):
         lloc = local.objects.all().filter(localitzacio__in=punt)
         data = serializers.serialize('json', lloc)
         dict['llocsDB'] = data
-        dict['numElemsReals'] = str(len(lloc))
         dict['descripcio'] = 'Totes les dades.'
+        dict['numElemsReals'] = str(len(lloc))
+
         res['RealsDB'] = dict
         res_json = json.dumps(res)
         return HttpResponse(res_json, content_type='json')

@@ -104,7 +104,6 @@
                 <input type="hidden" name="poblacio" id="pobleSeleccionat" value="Aiguamúrcia (Alt Camp), Tarragona">
             </form>
                 <button onclick="netejarEstadistiques()">Neteja estadístiques</button>
-                <button type="submit" onclick="executarForm()"> Veure Estadístiques</button>
         </div>
         <div id="resultatsCerca"></div>
     </div>
@@ -225,9 +224,7 @@ function initMap() {
     }
 }
 
-        function executarForm(){
-            document.getElementById("formEstadistiques").submit();
-        }
+
         function canviEstat(){
             var inputhidden = document.getElementById("estat");
             if (inputhidden.value == 'False'){
@@ -284,6 +281,8 @@ function initMap() {
             var totescategories = JSON.parse(`{{totesCategories | safe}}`);
             var divProvincies = document.getElementById("provincies");
             var provincies =JSON.parse(`{{ provincies | safe }}`);
+
+
             var llProvincies = Object.values(provincies);
             var llPoblesTGN = Object.values(poblesTGN);
             var categoriesToDo = [];
@@ -329,6 +328,18 @@ function initMap() {
                 option.appendChild(t);
                 document.getElementById("provinciaSeleccio").appendChild(option);
             }
+
+            $.ajax({
+                    type: 'GET',
+                    url : '/v1/geoInfoSystem/estadistiques_inicials/',
+                    dataType:'json',
+                    success:
+                        function (data){
+                            var data1 = Object.values(data);
+                            console.log(data1);
+                        }
+            });
+
         }
 
         function guardarPoblacio(){
