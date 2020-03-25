@@ -1067,7 +1067,7 @@ def res_ajax_estadistiques(request):
         lloc = local.objects.all().filter(localitzacio__in = punt, categoria = categoriaC)
         data = serializers.serialize('json', lloc)
         dict['resFiltres'] = data
-        dict['descripcio'] = 'Resultat obtingut desprès d\'aplicar tots els filtres'
+        dict['descripcio'] = 'Resultat obtingut desprès d\'aplicar tots els filtres.'
         dict['numlocalsTotsFiltres'] = str(len(lloc))
         res['AllFilters'] = dict
 
@@ -1078,7 +1078,7 @@ def res_ajax_estadistiques(request):
         lloc = local.objects.all().filter(localitzacio__in=punt)
         data = serializers.serialize('json', lloc)
         dict['llocMateixPoble'] = data
-        dict['descripcio'] = 'Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)'
+        dict['descripcio'] = 'Tots els locals que es troben en la mateixa ciutat (tant actius com no actius).'
         dict['numLocalsMateixPoble'] = str(len(lloc))
         res['FilterMateixPoble'] = dict
 
@@ -1088,7 +1088,7 @@ def res_ajax_estadistiques(request):
         lloc = local.objects.all().filter(localitzacio__in=punt, categoria=categoriaC)
         data = serializers.serialize('json', lloc)
         dict['llocFilterNegat'] = data
-        dict['descripcio'] = 'Resultats obtinguts deprès d\'haver negat si és actiu i mantenint la mateixa categoria'
+        dict['descripcio'] = 'Resultats obtinguts deprès d\'haver negat si és actiu i mantenint la mateixa categoria.'
         dict['numLocalsNegantActiuMateixaCategoria'] = str(len(lloc))
         res['FilterNegantActiu'] = dict
 

@@ -64,8 +64,20 @@
         width: 100%;  /* The width is the width of the web page */
        }
 
+    .same-line-block-elem1{
+        display: inline-block;
+        margin-right: 10px;
+    }
+    .same-line-block-elem2{
+        display: inline-block;
+    }
 
-
+    .parent #popup{
+        display: none;
+    }
+    .parent:hover #popup{
+        display: block;
+    }
     </style>
 
 
@@ -85,27 +97,85 @@
         </div>
     </div>
 
-
-
     <div id="map"></div>
 
     <div id="panellControl">
-        <p>En aquest espai podràs filtrar la informació que apareix en el mapa!<br>A continuació veuràs una sèrie de panells i accions que pots dur a terme!</p>
+        <br>
 
-        <div id="filtres">
-            <form id="formEstadistiques" method="POST" action="/v1/geoInfoSystem/estadistiques/">
-                <p>Provincia:<div id="provincies"></div></p>
-                <p>Ciutat:<div id="ubicacio"></div></p>
-                <p>Tipus:<div id="tipus"></div></p>
-                <p>Actiu: <input type="checkbox" onclick="canviEstat()" name="actiu" id="esActiu"></p>
+        <div id="resultatsCerca">
+            <div style="text-align: center">
+                <h1><div>Estadístiques</div></h1>
+                <h2><p>En aquest espai pots filtrar la informació que apareix en el mapa</p></h2>
+                <h3>Fes click damunt de cadascun dels botons per anar veient els resultats obtinguts al aplicar cada filtre</h3>
+            </div>
+
+            <ul class="nav justify-content-center">
+                    <li class="nav-item">
+                        <button  type="button" class="btn btn-light nav-link"  onmouseout="buidarDiv()" onmouseover="showInfo(this.id)" id="bttnconsultes" value="Consultes sobre el sistema GIS." onclick="mostrarPanellIntroduccioDades()">Fer consultes</button>
+                    </li>
+                  <li class="nav-item">
+                    <button type="button" class="btn btn-primary nav-link" onclick="switchStatisticsData(this.id)" id="bttnconsultaActual" onmouseout="buidarDiv()" onmouseover="showInfo(this.id)" value="Resultat de la consulta actual">Consulta Actual</button>
+                  </li>
+                  <li class="nav-item">
+                    <button type="button" class="btn btn-secondary nav-link" onclick="switchStatisticsData(this.id)" id="bttnmateixaCiutat"  onmouseout="buidarDiv()"  onmouseover="showInfo(this.id)" value="Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)">Locals mateixa ciutat</button>
+                  </li>
+                  <li class="nav-item">
+                    <button type="button" class="btn btn-success nav-link" onclick="switchStatisticsData(this.id)" id="bttnactiunegatMateixaCategoria"  onmouseout="buidarDiv()" onmouseover="showInfo(this.id)" value="Resultats obtinguts deprès d'haver negat si és actiu i mantenint la mateixa categoria">Locals mateixa categoria</button>
+                  </li>
+                  <li class="nav-item">
+                    <button type="button" class="btn btn-danger nav-link" onclick="switchStatisticsData(this.id)" id="bttnlocalsdiferents"  onmouseout="buidarDiv()" onmouseover="showInfo(this.id)" value="Resultat obtingut de aplicar el mateix poble amb l'actiu que s'ha donat i una categoria diferent a la donada.">Locals diferent categoria </button>
+                  </li>
+                  <li class="nav-item">
+                    <button  type="button" class="btn btn-warning nav-link" onclick="switchStatisticsData(this.id)" id="bttnlocalsaltrespobles"  onmouseout="buidarDiv()" onmouseover="showInfo(this.id)" value="Resultat de aplicar altres pobles i actiu que s'ha donat i la mateixa categoria donada.">Locals altres pobles i categoria actual</button>
+                  </li>
+                  <li class="nav-item">
+                    <button  type="button" class="btn btn-info nav-link" onclick="switchStatisticsData(this.id)" id="bttntotcontrari" onmouseout="buidarDiv()"  onmouseover="showInfo(this.id)"  value="Resultat d'aplicar un poble diferent al donat, actiu negat i no mateixa categoria.">Resultat contrari</button>
+                  </li>
+                  <li class="nav-item">
+                    <button  type="button" class="btn btn-dark nav-link" onclick="switchStatisticsData(this.id)"  id="bttntotesdades"  onmouseout="buidarDiv()" onmouseover="showInfo(this.id)" value="Totes les dades.">Consultar tota la informació</button>
+                  </li>
+            </ul>
+            <div style="text-align: center"><b><div id="popup"></div></b></div>
+            <div id="resTOT" hidden>
+
+                <ul class="list-group" id="resultats">
+                    <li class="list-group-item" id="li-numElems"><b id="textNumElems">Nombre de resultats: </b></li>
+                </ul>
+
+            </div>
+
+            <div class="container col-md-4"  id="filtres" hidden>
+                <h1 style="text-align: center">Filtres</h1>
+                <p class="same-line-block-elem1">Provincia:<div class="same-line-block-elem2" id="provincies"></div></p>
+                <p class="same-line-block-elem1">Ciutat:<div class="same-line-block-elem2" id="ubicacio"></div></p>
+                <p class="same-line-block-elem1">Tipus:<div class="same-line-block-elem2" id="tipus"></div></p>
+                <p class="same-line-block-elem1">Actiu: <input class="same-line-block-elem2" type="checkbox" onclick="canviEstat()" name="actiu" id="esActiu"></p>
 
                 <input type="hidden" name="categoria" id="categoriaSeleccionada" value="Restauració">
                 <input type="hidden" name="esActiu" id="estat" value="False">
                 <input type="hidden" name="poblacio" id="pobleSeleccionat" value="Aiguamúrcia (Alt Camp), Tarragona">
-            </form>
-                <button onclick="netejarEstadistiques()">Neteja estadístiques</button>
+
+
+                <input type="hidden" name="resStatistics1" id="resStatistics1INI" value="fghjgfdtgh">
+                <input type="hidden" name="resStatistics2" id="resStatistics2INI" value="">
+                <input type="hidden" name="resStatistics3" id="resStatistics3INI" value="">
+                <input type="hidden" name="resStaistics4"  id="resStatistics4INI" value="">
+                <input type="hidden" name="resStatistics5" id="resStatistics5INI" value="">
+                <input type="hidden" name="resStatistics6" id="resStatistics6INI" value="">
+                <input type="hidden" name="resStatistics7" id="resStatistics7INI" value="">
+
+
         </div>
-        <div id="resultatsCerca"></div>
+                <input type="hidden" name="vegades1" id="aux1" value="0">
+                <input type="hidden" name="vegades2" id="aux2" value="0">
+                <input type="hidden" name="vegades3" id="aux3" value="0">
+                <input type="hidden" name="vegades4" id="aux4" value="0">
+                <input type="hidden" name="vegades5" id="aux5" value="0">
+                <input type="hidden" name="vegades6" id="aux6" value="0">
+                <input type="hidden" name="vegades7" id="aux7" value="0">
+
+                <input type="hidden" name="text1" id="text1datastatistics" value="">
+        </div>
     </div>
 
 
@@ -225,6 +295,150 @@ function initMap() {
 }
 
 
+        function showInfo(idbtn){
+            var divInfo = document.getElementById("popup");
+            var aux = idbtn;
+            divInfo.innerHTML = document.getElementById(aux).value;
+            //console.log(aux);
+        }
+
+        function buidarDiv(){
+            document.getElementById("popup").innerHTML='';
+        }
+        function switchStatisticsData(idbtn) {
+            var div = document.getElementById("resTOT");
+            var li = document.getElementById("li-numElems");
+            var b = document.getElementById("textNumElems");
+            if(div.hidden == true){
+                div.hidden = false;
+            }else div.hidden = true;
+            switch (idbtn) {
+                case "bttnconsultaActual":
+                    console.log('consulta actuaaal');
+                    var aux = document.getElementById("aux1");
+                    var vegadesClicat = parseInt(aux.value);
+                    document.getElementById("bttntotcontrari").disabled = document.getElementById("bttntotcontrari").disabled == true ? false : true;
+                    if(div.textContent!=="" || div.textContent!==null){
+                        div.innerHTML='';
+                        var b_numelems = document.createElement("B");
+                        b_numelems.setAttribute("id", "textNumElems");
+                        var t = document.createTextNode("Nombre de resultats: ");
+                        b_numelems.appendChild(t);
+                        var li_info_final = document.createElement("LI");
+                        li_info_final.setAttribute("class", "list-group-item");
+                        li_info_final.setAttribute("id", "li-numElems");
+                        li_info_final.appendChild(b_numelems);
+                        div.appendChild(li_info_final);
+                    }
+                    document.getElementById("li-numElems").setAttribute("style", "background-color: #007bff; color: whitesmoke");
+                    if (vegadesClicat%2 == 0){
+                            if(document.getElementById("resStatistics1INI").value[0]!=='0' && document.getElementById("resStatistics1INI").value[0]!=='-1'){
+                                //b.innerHTML=" "+document.getElementById("resStatistics6INI").value.split("\n").length-1;
+                                console.log(document.getElementById("resStatistics1INI").value);
+                                b.innerHTML+=" "+document.getElementById("resStatistics1INI").value.split("|")[1];
+                                var string = document.getElementById("resStatistics1INI").value;
+                                var stringS = string.split("\n");
+                                for(var i=0; i<stringS.length-1; i++){
+                                    var colorBg = "";
+                                    colorBg = i%2 == 0 ? "#007bff" : "#118bcd";
+                                    let data = stringS[i].split(',');
+                                    for(var j=1; j<=3; j++){
+                                        let li = document.createElement("LI");
+                                        let t = document.createTextNode(data[j]);
+                                        let divNew = document.createElement("DIV");
+                                        //divNew.setAttribute("style", "background-color: blue; color: whitesmoke;");
+                                        divNew.appendChild(t);
+                                        li.appendChild(divNew);
+                                        let item = document.createElement("LI");
+                                        item.setAttribute("class","list-group-item");
+                                        item.setAttribute("style", "background-color: "+colorBg+"; color: whitesmoke;");
+                                        item.appendChild(li);
+                                        document.getElementById("resultats").appendChild(item);
+                                    }
+                                    var separator=document.createElement("LI");
+                                    separator.setAttribute("class", "nav-divider");
+                                    separator.setAttribute("style", "background-color: #2A3B56");
+                                    document.getElementById("resultats").appendChild(separator);
+                                    document.getElementById("resStatistics1INI").value="-1";
+                                }
+                            }else{
+                                document.getElementById("textNumElems").innerHTML="No hi ha resultats en aquesta pestanya.";
+                                console.log("eeooooo");
+                            }
+                            document.getElementById("text1datastatistics").value = document.getElementById("textNumElems").innerHTML;
+                            vegadesClicat= vegadesClicat +1;
+                            aux.value = vegadesClicat.toString();
+                    }else{
+                        document.getElementById("textNumElems").innerText = document.getElementById("text1datastatistics").value;
+                    }
+                    break;
+                case "bttnmateixaCiutat":
+                    console.log('consulta de la mateixa ciutat');
+
+                    break;
+                case "bttnactiunegatMateixaCategoria":
+                    console.log('consulta actiu negat i la mateixa categoria');
+
+                    break;
+                case "bttnlocalsdiferents":
+                    console.log('consulta actiu que em ve categoria diferent mateixa ciutat');
+
+
+                    break;
+                case "bttnlocalsaltrespobles":
+                    console.log('consulta altres pobles amb la mateixa categoria');
+
+
+                    break;
+                case "bttntotcontrari":
+                    console.log('resultat contrari');
+                    var aux = document.getElementById("aux6");
+                    var vegadesClicat = parseInt(aux.value);
+                    if (vegadesClicat%2 == 0){
+                            li.setAttribute("style", "background-color: #17a2b8; color: whitesmoke");
+                            if(document.getElementById("resStatistics6INI").value[0]!=='0' && document.getElementById("resStatistics6INI").value[0]!=='-1'){
+                                //b.innerHTML=" "+document.getElementById("resStatistics6INI").value.split("\n").length-1;
+                                console.log(document.getElementById("resStatistics6INI").value);
+                                b.innerHTML+=" "+document.getElementById("resStatistics6INI").value.split("|")[1];
+                                var string = document.getElementById("resStatistics6INI").value;
+                                var stringS = string.split("\n");
+                                for(var i=0; i<stringS.length-1; i++){
+                                    var colorBg = "";
+                                    colorBg = i%2 == 0 ? "blue" : "#17a2b8";
+                                    let data = stringS[i].split(',');
+                                    for(var j=1; j<=3; j++){
+                                        let li = document.createElement("LI");
+                                        let t = document.createTextNode(data[j]);
+                                        let divNew = document.createElement("DIV");
+                                        //divNew.setAttribute("style", "background-color: blue; color: whitesmoke;");
+                                        divNew.appendChild(t);
+                                        li.appendChild(divNew);
+                                        let item = document.createElement("LI");
+                                        item.setAttribute("class","list-group-item");
+                                        item.setAttribute("style", "background-color: "+colorBg+"; color: whitesmoke;");
+                                        item.appendChild(li);
+                                        document.getElementById("resultats").appendChild(item);
+                                    }
+                                    var separator=document.createElement("LI");
+                                    separator.setAttribute("class", "nav-divider");
+                                    separator.setAttribute("style", "background-color: #2A3B56");
+                                    document.getElementById("resultats").appendChild(separator);
+                                    document.getElementById("resStatistics6INI").value="-1";
+                                }
+                            }else{
+                                b.innerHTML="No hi ha resultats en aquesta pestanya.";
+                            }
+                            vegadesClicat= vegadesClicat +1;
+                            aux.value = vegadesClicat.toString();
+                    }
+                    break;
+                case "bttntotesdades":
+                    console.log('dades db');
+
+                    break;
+            }
+        }
+
         function canviEstat(){
             var inputhidden = document.getElementById("estat");
             if (inputhidden.value == 'False'){
@@ -337,6 +551,30 @@ function initMap() {
                         function (data){
                             var data1 = Object.values(data);
                             console.log(data1);
+                            for(var i = 0; i<7; i++){
+                                let infoReal = Object.values(data1[i]);
+                                if(infoReal[1] !=='0'){
+                                    let info = JSON.parse(infoReal[0]);
+                                    let infoToDo = [];
+                                    for (informacio of info){
+                                        infoToDo.push({
+                                            'nomLocal' : informacio.fields.nomLocal,
+                                            'anyConstruccio' : informacio.fields.anyConstruccio,
+                                            'descripcio' : informacio.fields.descripcio
+                                        });
+                                    }
+                                    let s = "resStatistics"+(i+1)+"INI";
+                                    let hidden = document.getElementById(s);
+                                    for(var j = 0; j<infoToDo.length; j++){
+                                        hidden.value += (j+1)+", Nom del local: "+infoToDo[j]['nomLocal']+", Any de construcció: "+infoToDo[j]['anyConstruccio']+", Descripció: "+infoToDo[j]['descripcio']+"\n";
+                                    }
+                                    hidden.value+="|"+infoToDo.length;
+                                }else{
+                                    let s = "resStatistics"+(i+1)+"INI";
+                                    let hidden = document.getElementById(s);
+                                    hidden.value = "0 No hi ha resultats en la cerca.";
+                                }
+                            }
                         }
             });
 
@@ -409,8 +647,9 @@ function initMap() {
             });
 
         }
-        function netejarEstadistiques(){
-
+        function mostrarPanellIntroduccioDades(){
+            var control = document.getElementById("filtres");
+            control.hidden = control.hidden == true ? false : true;
         }
     </script>
     <!--Load the API from the specified URL
