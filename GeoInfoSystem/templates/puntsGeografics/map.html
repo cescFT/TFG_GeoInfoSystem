@@ -136,12 +136,41 @@
                   </li>
             </ul>
             <div style="text-align: center"><b><div id="popup"></div></b></div>
-            <div id="resTOT" hidden>
 
-                <ul class="list-group" id="resultats">
-                    <li class="list-group-item" id="li-numElems"><b id="textNumElems">Nombre de resultats: </b></li>
+            <div id="resTOT1" hidden>
+                <ul class="list-group" id="resultats1">
+                    <li class="list-group-item" id="li-numElems1"><b id="textNumElems1">Nombre de resultats: </b></li>
                 </ul>
-
+            </div>
+            <div id="resTOT2" hidden>
+                <ul class="list-group" id="resultats2">
+                    <li class="list-group-item" id="li-numElems2"><b id="textNumElems2">Nombre de resultats: </b></li>
+                </ul>
+            </div>
+            <div id="resTOT3" hidden>
+                <ul class="list-group" id="resultats3">
+                    <li class="list-group-item" id="li-numElems3"><b id="textNumElems3">Nombre de resultats: </b></li>
+                </ul>
+            </div>
+            <div id="resTOT4" hidden>
+                <ul class="list-group" id="resultats4">
+                    <li class="list-group-item" id="li-numElems4"><b id="textNumElems4">Nombre de resultats: </b></li>
+                </ul>
+            </div>
+            <div id="resTOT5" hidden>
+                <ul class="list-group" id="resultats5">
+                    <li class="list-group-item" id="li-numElems5"><b id="textNumElems5">Nombre de resultats: </b></li>
+                </ul>
+            </div>
+            <div id="resTOT6" hidden>
+                <ul class="list-group" id="resultats6">
+                    <li class="list-group-item" id="li-numElems6"><b id="textNumElems6">Nombre de resultats: </b></li>
+                </ul>
+            </div>
+            <div id="resTOT7" hidden>
+                <ul class="list-group" id="resultats7">
+                    <li class="list-group-item" id="li-numElems7"><b id="textNumElems7">Nombre de resultats: </b></li>
+                </ul>
             </div>
 
             <div class="container col-md-4"  id="filtres" hidden>
@@ -156,25 +185,16 @@
                 <input type="hidden" name="poblacio" id="pobleSeleccionat" value="Aiguamúrcia (Alt Camp), Tarragona">
 
 
-                <input type="hidden" name="resStatistics1" id="resStatistics1INI" value="fghjgfdtgh">
+                <!--<input type="hidden" name="resStatistics1" id="resStatistics1INI" value="fghjgfdtgh">
                 <input type="hidden" name="resStatistics2" id="resStatistics2INI" value="">
                 <input type="hidden" name="resStatistics3" id="resStatistics3INI" value="">
                 <input type="hidden" name="resStaistics4"  id="resStatistics4INI" value="">
                 <input type="hidden" name="resStatistics5" id="resStatistics5INI" value="">
                 <input type="hidden" name="resStatistics6" id="resStatistics6INI" value="">
-                <input type="hidden" name="resStatistics7" id="resStatistics7INI" value="">
+                <input type="hidden" name="resStatistics7" id="resStatistics7INI" value="">-->
 
 
         </div>
-                <input type="hidden" name="vegades1" id="aux1" value="0">
-                <input type="hidden" name="vegades2" id="aux2" value="0">
-                <input type="hidden" name="vegades3" id="aux3" value="0">
-                <input type="hidden" name="vegades4" id="aux4" value="0">
-                <input type="hidden" name="vegades5" id="aux5" value="0">
-                <input type="hidden" name="vegades6" id="aux6" value="0">
-                <input type="hidden" name="vegades7" id="aux7" value="0">
-
-                <input type="hidden" name="text1" id="text1datastatistics" value="">
         </div>
     </div>
 
@@ -299,144 +319,120 @@ function initMap() {
             var divInfo = document.getElementById("popup");
             var aux = idbtn;
             divInfo.innerHTML = document.getElementById(aux).value;
-            //console.log(aux);
         }
 
         function buidarDiv(){
             document.getElementById("popup").innerHTML='';
         }
         function switchStatisticsData(idbtn) {
-            var div = document.getElementById("resTOT");
-            var li = document.getElementById("li-numElems");
-            var b = document.getElementById("textNumElems");
-            if(div.hidden == true){
-                div.hidden = false;
-            }else div.hidden = true;
             switch (idbtn) {
                 case "bttnconsultaActual":
-                    console.log('consulta actuaaal');
-                    var aux = document.getElementById("aux1");
-                    var vegadesClicat = parseInt(aux.value);
-                    document.getElementById("bttntotcontrari").disabled = document.getElementById("bttntotcontrari").disabled == true ? false : true;
-                    if(div.textContent!=="" || div.textContent!==null){
-                        div.innerHTML='';
-                        var b_numelems = document.createElement("B");
-                        b_numelems.setAttribute("id", "textNumElems");
-                        var t = document.createTextNode("Nombre de resultats: ");
-                        b_numelems.appendChild(t);
-                        var li_info_final = document.createElement("LI");
-                        li_info_final.setAttribute("class", "list-group-item");
-                        li_info_final.setAttribute("id", "li-numElems");
-                        li_info_final.appendChild(b_numelems);
-                        div.appendChild(li_info_final);
-                    }
-                    document.getElementById("li-numElems").setAttribute("style", "background-color: #007bff; color: whitesmoke");
-                    if (vegadesClicat%2 == 0){
-                            if(document.getElementById("resStatistics1INI").value[0]!=='0' && document.getElementById("resStatistics1INI").value[0]!=='-1'){
-                                //b.innerHTML=" "+document.getElementById("resStatistics6INI").value.split("\n").length-1;
-                                console.log(document.getElementById("resStatistics1INI").value);
-                                b.innerHTML+=" "+document.getElementById("resStatistics1INI").value.split("|")[1];
-                                var string = document.getElementById("resStatistics1INI").value;
-                                var stringS = string.split("\n");
-                                for(var i=0; i<stringS.length-1; i++){
-                                    var colorBg = "";
-                                    colorBg = i%2 == 0 ? "#007bff" : "#118bcd";
-                                    let data = stringS[i].split(',');
-                                    for(var j=1; j<=3; j++){
-                                        let li = document.createElement("LI");
-                                        let t = document.createTextNode(data[j]);
-                                        let divNew = document.createElement("DIV");
-                                        //divNew.setAttribute("style", "background-color: blue; color: whitesmoke;");
-                                        divNew.appendChild(t);
-                                        li.appendChild(divNew);
-                                        let item = document.createElement("LI");
-                                        item.setAttribute("class","list-group-item");
-                                        item.setAttribute("style", "background-color: "+colorBg+"; color: whitesmoke;");
-                                        item.appendChild(li);
-                                        document.getElementById("resultats").appendChild(item);
-                                    }
-                                    var separator=document.createElement("LI");
-                                    separator.setAttribute("class", "nav-divider");
-                                    separator.setAttribute("style", "background-color: #2A3B56");
-                                    document.getElementById("resultats").appendChild(separator);
-                                    document.getElementById("resStatistics1INI").value="-1";
-                                }
-                            }else{
-                                document.getElementById("textNumElems").innerHTML="No hi ha resultats en aquesta pestanya.";
-                                console.log("eeooooo");
-                            }
-                            document.getElementById("text1datastatistics").value = document.getElementById("textNumElems").innerHTML;
-                            vegadesClicat= vegadesClicat +1;
-                            aux.value = vegadesClicat.toString();
-                    }else{
-                        document.getElementById("textNumElems").innerText = document.getElementById("text1datastatistics").value;
-                    }
+                    //console.log('consulta actuaaal');
+                    document.getElementById("resTOT1").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                    document.getElementById("resTOT2").hidden = true;
+                    document.getElementById("resTOT3").hidden = true;
+                    document.getElementById("resTOT4").hidden = true;
+                    document.getElementById("resTOT5").hidden = true;
+                    document.getElementById("resTOT6").hidden = true;
+                    document.getElementById("resTOT7").hidden = true;
+                    document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
                     break;
                 case "bttnmateixaCiutat":
-                    console.log('consulta de la mateixa ciutat');
-
+                    //console.log('consulta de la mateixa ciutat');
+                    document.getElementById("resTOT1").hidden = true;
+                    document.getElementById("resTOT2").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                    document.getElementById("resTOT3").hidden = true;
+                    document.getElementById("resTOT4").hidden = true;
+                    document.getElementById("resTOT5").hidden = true;
+                    document.getElementById("resTOT6").hidden = true;
+                    document.getElementById("resTOT7").hidden = true;
+                    document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
                     break;
                 case "bttnactiunegatMateixaCategoria":
-                    console.log('consulta actiu negat i la mateixa categoria');
-
+                    //console.log('consulta actiu negat i la mateixa categoria');
+                    document.getElementById("resTOT1").hidden = true;
+                    document.getElementById("resTOT2").hidden = true;
+                    document.getElementById("resTOT3").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                    document.getElementById("resTOT4").hidden = true;
+                    document.getElementById("resTOT5").hidden = true;
+                    document.getElementById("resTOT6").hidden = true;
+                    document.getElementById("resTOT7").hidden = true;
+                    document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
                     break;
                 case "bttnlocalsdiferents":
-                    console.log('consulta actiu que em ve categoria diferent mateixa ciutat');
-
-
+                    //console.log('consulta actiu que em ve categoria diferent mateixa ciutat');
+                    document.getElementById("resTOT1").hidden = true;
+                    document.getElementById("resTOT2").hidden = true;
+                    document.getElementById("resTOT3").hidden = true;
+                    document.getElementById("resTOT4").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                    document.getElementById("resTOT5").hidden = true;
+                    document.getElementById("resTOT6").hidden = true;
+                    document.getElementById("resTOT7").hidden = true;
+                    document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
                     break;
                 case "bttnlocalsaltrespobles":
-                    console.log('consulta altres pobles amb la mateixa categoria');
-
-
+                    //console.log('consulta altres pobles amb la mateixa categoria');
+                    document.getElementById("resTOT1").hidden = true;
+                    document.getElementById("resTOT2").hidden = true;
+                    document.getElementById("resTOT3").hidden = true;
+                    document.getElementById("resTOT4").hidden = true;
+                    document.getElementById("resTOT5").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                    document.getElementById("resTOT6").hidden = true;
+                    document.getElementById("resTOT7").hidden = true;
+                    document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
                     break;
                 case "bttntotcontrari":
-                    console.log('resultat contrari');
-                    var aux = document.getElementById("aux6");
-                    var vegadesClicat = parseInt(aux.value);
-                    if (vegadesClicat%2 == 0){
-                            li.setAttribute("style", "background-color: #17a2b8; color: whitesmoke");
-                            if(document.getElementById("resStatistics6INI").value[0]!=='0' && document.getElementById("resStatistics6INI").value[0]!=='-1'){
-                                //b.innerHTML=" "+document.getElementById("resStatistics6INI").value.split("\n").length-1;
-                                console.log(document.getElementById("resStatistics6INI").value);
-                                b.innerHTML+=" "+document.getElementById("resStatistics6INI").value.split("|")[1];
-                                var string = document.getElementById("resStatistics6INI").value;
-                                var stringS = string.split("\n");
-                                for(var i=0; i<stringS.length-1; i++){
-                                    var colorBg = "";
-                                    colorBg = i%2 == 0 ? "blue" : "#17a2b8";
-                                    let data = stringS[i].split(',');
-                                    for(var j=1; j<=3; j++){
-                                        let li = document.createElement("LI");
-                                        let t = document.createTextNode(data[j]);
-                                        let divNew = document.createElement("DIV");
-                                        //divNew.setAttribute("style", "background-color: blue; color: whitesmoke;");
-                                        divNew.appendChild(t);
-                                        li.appendChild(divNew);
-                                        let item = document.createElement("LI");
-                                        item.setAttribute("class","list-group-item");
-                                        item.setAttribute("style", "background-color: "+colorBg+"; color: whitesmoke;");
-                                        item.appendChild(li);
-                                        document.getElementById("resultats").appendChild(item);
-                                    }
-                                    var separator=document.createElement("LI");
-                                    separator.setAttribute("class", "nav-divider");
-                                    separator.setAttribute("style", "background-color: #2A3B56");
-                                    document.getElementById("resultats").appendChild(separator);
-                                    document.getElementById("resStatistics6INI").value="-1";
-                                }
-                            }else{
-                                b.innerHTML="No hi ha resultats en aquesta pestanya.";
-                            }
-                            vegadesClicat= vegadesClicat +1;
-                            aux.value = vegadesClicat.toString();
-                    }
+                    //console.log('resultat contrari');
+                    document.getElementById("resTOT1").hidden = true;
+                    document.getElementById("resTOT2").hidden = true;
+                    document.getElementById("resTOT3").hidden = true;
+                    document.getElementById("resTOT4").hidden = true;
+                    document.getElementById("resTOT5").hidden = true;
+                    document.getElementById("resTOT6").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                    document.getElementById("resTOT7").hidden = true;
+                    document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
                     break;
                 case "bttntotesdades":
-                    console.log('dades db');
-
+                    //console.log('dades db');
+                    document.getElementById("resTOT1").hidden = true;
+                    document.getElementById("resTOT2").hidden = true;
+                    document.getElementById("resTOT3").hidden = true;
+                    document.getElementById("resTOT4").hidden = true;
+                    document.getElementById("resTOT5").hidden = true;
+                    document.getElementById("resTOT6").hidden = true;
+                    document.getElementById("resTOT7").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                    document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
                     break;
             }
+        }
+
+        function guardarPoblacio(){
+            var inputOcult = document.getElementById("pobleSeleccionat");
+            var elem = document.getElementById("poblacioSeleccio");
+            var actiu = document.getElementById("estat");
+            var categoria =document.getElementById("categoriaSeleccionada");
+            elem.childNodes.forEach(node => {
+                if(node.selected){
+                    //console.log(node.value);
+                    inputOcult.value = node.value;
+                    var poble=node.value;
+                    $.ajax({
+                        type: 'GET',
+                        url : '/v1/geoInfoSystem/estadistiques/',
+                        data:{
+                            'poblacio' : poble,
+                            'actiu' : actiu.value,
+                            'categoria' : categoria.value
+                        },
+                        dataType:'json',
+                        success:
+                            function (data){
+                                var data1 = Object.values(data);
+                                console.log(data1);
+                            }
+                    });
+                }
+            });
         }
 
         function canviEstat(){
@@ -456,7 +452,7 @@ function initMap() {
                         dataType:'json',
                         success:
                             function (data){
-                                var data1 = Object.values(data);
+                                var data1 = Object.values(data); //JSON.parse()
                                 console.log(data1);
                             }
                     });
@@ -488,6 +484,17 @@ function initMap() {
             });
         }
 
+        function mostrarPanellIntroduccioDades(){
+            var control = document.getElementById("filtres");
+            control.hidden = control.hidden == true ? false : true;
+            document.getElementById("resTOT1").hidden = true;
+            document.getElementById("resTOT2").hidden = true;
+            document.getElementById("resTOT3").hidden = true;
+            document.getElementById("resTOT4").hidden = true;
+            document.getElementById("resTOT5").hidden = true;
+            document.getElementById("resTOT6").hidden = true;
+            document.getElementById("resTOT7").hidden = true;
+        }
         function iniPagina(){
             var divpobles = document.getElementById("ubicacio");
             var divtipus =document.getElementById("tipus");
@@ -550,7 +557,7 @@ function initMap() {
                     success:
                         function (data){
                             var data1 = Object.values(data);
-                            console.log(data1);
+                            //console.log(data1);
                             for(var i = 0; i<7; i++){
                                 let infoReal = Object.values(data1[i]);
                                 if(infoReal[1] !=='0'){
@@ -566,48 +573,55 @@ function initMap() {
                                     let s = "resStatistics"+(i+1)+"INI";
                                     let hidden = document.getElementById(s);
                                     for(var j = 0; j<infoToDo.length; j++){
-                                        hidden.value += (j+1)+", Nom del local: "+infoToDo[j]['nomLocal']+", Any de construcció: "+infoToDo[j]['anyConstruccio']+", Descripció: "+infoToDo[j]['descripcio']+"\n";
+                                        //hidden.value += (j+1)+", Nom del local: "+infoToDo[j]['nomLocal']+", Any de construcció: "+infoToDo[j]['anyConstruccio']+", Descripció: "+infoToDo[j]['descripcio']+"\n";
+                                        //console.log(infoToDo[j]);
+                                        let liNomLocal = document.createElement("LI");
+                                        let liAnyConstruccio = document.createElement("LI");
+                                        let liDescripcio = document.createElement("LI");
+                                        let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
+                                        let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
+                                        let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
+                                        //let divNew = document.createElement("DIV");
+                                        //divNew.setAttribute("style", "background-color: blue; color: whitesmoke;");
+                                        //divNew.appendChild(t);
+                                        //li.appendChild(divNew);
+                                        liNomLocal.appendChild(tNomLocal);
+                                        liAnyConstruccio.appendChild(tAnyConstruccio);
+                                        liDescripcio.appendChild(tDescripcio);
+                                        let itemNom = document.createElement("LI");
+                                        let itemAnyConstruccio = document.createElement("LI");
+                                        let itemDescripcio = document.createElement("LI");
+                                        itemNom.setAttribute("class","list-group-item");
+                                        itemAnyConstruccio.setAttribute("class", "list-group-item");
+                                        itemDescripcio.setAttribute("class", "list-group-item");
+                                        //item.setAttribute("style", "background-color: "+colorBg+"; color: whitesmoke;");
+                                        itemNom.appendChild(liNomLocal);
+                                        itemAnyConstruccio.appendChild(liAnyConstruccio);
+                                        itemDescripcio.appendChild(liDescripcio);
+                                        document.getElementById("resultats"+(i+1)).appendChild(itemNom);
+                                        document.getElementById("resultats"+(i+1)).appendChild(itemAnyConstruccio);
+                                        document.getElementById("resultats"+(i+1)).appendChild(itemDescripcio);
+                                        let separator=document.createElement("LI");
+                                        separator.setAttribute("class", "nav-divider");
+                                        separator.setAttribute("style", "background-color: #2A3B56");
+                                        document.getElementById("resultats"+(i+1)).appendChild(separator);
                                     }
-                                    hidden.value+="|"+infoToDo.length;
+
+                                    //hidden.value+="|"+infoToDo.length;
+                                    //console.log(infoToDo.length);
+                                    document.getElementById("textNumElems"+(i+1)).innerHTML+=infoToDo.length.toString();
                                 }else{
-                                    let s = "resStatistics"+(i+1)+"INI";
-                                    let hidden = document.getElementById(s);
-                                    hidden.value = "0 No hi ha resultats en la cerca.";
+                                    //let s = "resStatistics"+(i+1)+"INI";
+                                    //let hidden = document.getElementById(s);
+                                    //hidden.value = "0 No hi ha resultats en la cerca.";
+                                    document.getElementById("textNumElems"+(i+1)).innerHTML = "No hi ha resultats en aquesta pestanya.";
                                 }
                             }
                         }
             });
-
         }
 
-        function guardarPoblacio(){
-            var inputOcult = document.getElementById("pobleSeleccionat");
-            var elem = document.getElementById("poblacioSeleccio");
-            var actiu = document.getElementById("estat");
-            var categoria =document.getElementById("categoriaSeleccionada");
-            elem.childNodes.forEach(node => {
-                if(node.selected){
-                    //console.log(node.value);
-                    inputOcult.value = node.value;
-                    var poble=node.value;
-                    $.ajax({
-                        type: 'GET',
-                        url : '/v1/geoInfoSystem/estadistiques/',
-                        data:{
-                            'poblacio' : poble,
-                            'actiu' : actiu.value,
-                            'categoria' : categoria.value
-                        },
-                        dataType:'json',
-                        success:
-                            function (data){
-                                var data1 = Object.values(data);
-                                console.log(data1);
-                            }
-                    });
-                }
-            });
-        }
+
 
         function poblacionsPerProvincia(){
             var elem = document.getElementById("provinciaSeleccio");
@@ -647,10 +661,7 @@ function initMap() {
             });
 
         }
-        function mostrarPanellIntroduccioDades(){
-            var control = document.getElementById("filtres");
-            control.hidden = control.hidden == true ? false : true;
-        }
+
     </script>
     <!--Load the API from the specified URL
     * The async attribute allows the browser to render the page while the API loads
