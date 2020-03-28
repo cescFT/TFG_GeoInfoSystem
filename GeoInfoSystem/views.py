@@ -1093,10 +1093,14 @@ def res_ajax_estadistiques(request):
         # RESULTAT AMB ELS FILTRES ESTABLERTS
         punt = puntInteres.objects.all().filter(localitat = poble, actiu = bActiu)
         lloc = local.objects.all().filter(localitzacio__in = punt, categoria = categoriaC)
+        fk_id_puntsInteres = local.objects.all().filter(localitzacio__in = punt, categoria = categoriaC).values_list('localitzacio_id', flat=True)
+        res_lat_lng = puntInteres.objects.all().filter(id__in = fk_id_puntsInteres)
+        res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['resFiltres'] = data
         dict['descripcio'] = 'Resultat obtingut desprès d\'aplicar tots els filtres.'
         dict['numlocalsTotsFiltres'] = str(len(lloc))
+        dict['puntIntersFiltresActuals'] = res_json_lat_lng
         res['AllFilters'] = dict
 
 
@@ -1104,20 +1108,28 @@ def res_ajax_estadistiques(request):
         # RESULTAT ON SURTEN TOTS ELS PUNTS/LOCALS DEL MATEIX POBLE (TANT ACTIUS COM NO ACTIUS)
         punt = puntInteres.objects.all().filter(localitat=poble)
         lloc = local.objects.all().filter(localitzacio__in=punt)
+        fk_id_puntsInteres = local.objects.all().filter(localitzacio__in=punt).values_list('localitzacio_id', flat=True)
+        res_lat_lng = puntInteres.objects.all().filter(id__in=fk_id_puntsInteres)
+        res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['llocMateixPoble'] = data
         dict['descripcio'] = 'Tots els locals que es troben en la mateixa ciutat (tant actius com no actius).'
         dict['numLocalsMateixPoble'] = str(len(lloc))
+        dict['puntsIntersMateixPoble'] = res_json_lat_lng
         res['FilterMateixPoble'] = dict
 
         dict = {}
         # RESULTAT NEGANT EL ACTIU MATEIXA CATEGORIA
         punt = puntInteres.objects.all().filter(localitat=poble, actiu=not bActiu)
         lloc = local.objects.all().filter(localitzacio__in=punt, categoria=categoriaC)
+        fk_id_puntsInteres = local.objects.all().filter(localitzacio__in=punt, categoria=categoriaC).values_list('localitzacio_id', flat=True)
+        res_lat_lng = puntInteres.objects.all().filter(id__in=fk_id_puntsInteres)
+        res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['llocFilterNegat'] = data
         dict['descripcio'] = 'Resultats obtinguts deprès d\'haver negat si és actiu i mantenint la mateixa categoria.'
         dict['numLocalsNegantActiuMateixaCategoria'] = str(len(lloc))
+        dict['puntInteresNegatActiuMateixaCategoria'] = res_json_lat_lng
         res['FilterNegantActiu'] = dict
 
 
@@ -1126,20 +1138,28 @@ def res_ajax_estadistiques(request):
         punt = puntInteres.objects.all().filter(localitat=poble, actiu=bActiu)
         altresCategories = categoriaLocal.objects.all().exclude(categoria=categoria)
         lloc = local.objects.all().filter(localitzacio__in=punt, categoria__in=altresCategories)
+        fk_id_puntsInteres = local.objects.all().filter(localitzacio__in=punt, categoria__in=altresCategories).values_list('localitzacio_id', flat=True)
+        res_lat_lng = puntInteres.objects.all().filter(id__in=fk_id_puntsInteres)
+        res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['filtreEstrany'] = data
         dict['descripcio'] = 'Resultat obtingut de aplicar el mateix poble amb l\'actiu que s\'ha donat i una categoria diferent a la donada.'
         dict['numResMateixPobleNotMateixaCategoria'] = str(len(lloc))
+        dict['puntsInteresfiltreExtrany'] =res_json_lat_lng
         res['FiltreResMateixPobleNotCategoriaDonada'] = dict
 
         dict = {}
         # RESTULTAT NO MATEIX POBLE, ACTIU QUE VE I MATEIXA CATEGORIA
         punt = puntInteres.objects.all().exclude(localitat=poble).filter(actiu=bActiu)
         lloc = local.objects.all().filter(localitzacio__in=punt, categoria=categoriaC)
+        fk_id_puntsInteres = local.objects.all().filter(localitzacio__in=punt, categoria=categoriaC).values_list('localitzacio_id', flat=True)
+        res_lat_lng = puntInteres.objects.all().filter(id__in=fk_id_puntsInteres)
+        res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['filtreEstrany']=data
         dict['descripcio'] = 'Resultat de aplicar altres pobles i actiu que s\'ha donat i la mateixa categoria donada.'
         dict['numResNoMateixPobleMateixaCategoria'] = str(len(lloc))
+        dict['puntsInteresfiltreExtrany'] = res_json_lat_lng
         res['FiltreResNoMateixPobleMateixaCategoria'] = dict
 
         dict = {}
@@ -1147,20 +1167,28 @@ def res_ajax_estadistiques(request):
         punt = puntInteres.objects.all().exclude(localitat=poble).filter(actiu=not bActiu)
         llCategories = categoriaLocal.objects.all().exclude(categoria=categoriaC)
         lloc = local.objects.all().filter(localitzacio__in=punt, categoria__in=llCategories)
+        fk_id_puntsInteres = local.objects.all().filter(localitzacio__in=punt, categoria__in=llCategories).values_list('localitzacio_id', flat=True)
+        res_lat_lng = puntInteres.objects.all().filter(id__in=fk_id_puntsInteres)
+        res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['filtreEstrany'] = data
         dict['descripcio'] = 'Resultat de aplicar un poble diferent al donat, actiu negat i no mateixa categoria.'
         dict['numResNoMateixPobleNoMateixaCategoria'] = str(len(lloc))
+        dict['PuntInteresfiltreExtrany'] = res_json_lat_lng
         res['FiltreResNoMateixPobleNoMateixaCategoria'] = dict
 
         dict = {}
         # RESULTAT AMB TOTES LES DADES DE LA DB
         punt = puntInteres.objects.all()
         lloc = local.objects.all().filter(localitzacio__in=punt)
+        fk_id_puntsInteres = local.objects.all().filter(localitzacio__in=punt).values_list('localitzacio_id', flat=True)
+        res_lat_lng = puntInteres.objects.all().filter(id__in=fk_id_puntsInteres)
+        res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['llocsDB'] = data
         dict['descripcio'] = 'Totes les dades.'
         dict['numElemsReals'] = str(len(lloc))
+        dict['puntsInteresLlocsDB'] = res_json_lat_lng
 
         res['RealsDB'] = dict
         res_json = json.dumps(res)
