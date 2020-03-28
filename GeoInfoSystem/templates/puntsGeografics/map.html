@@ -415,7 +415,7 @@ function initMap() {
                 document.getElementById("resTOT"+i).appendChild(ulData);
             }
         }
-        
+
         function guardarPoblacio(){
             var inputOcult = document.getElementById("pobleSeleccionat");
             var elem = document.getElementById("poblacioSeleccio");
@@ -496,7 +496,6 @@ function initMap() {
             if (inputhidden.value == 'False'){
                 inputhidden.value = 'True';
             }else inputhidden.value = 'False';
-            //TODO ajax
             $.ajax({
                         type: 'GET',
                         url : '/v1/geoInfoSystem/estadistiques/',
@@ -565,7 +564,6 @@ function initMap() {
                 if(node.selected){
                     //console.log(node.value);
                     inputhidden.value = node.value;
-                    //TODO ajax
                     $.ajax({
                         type: 'GET',
                         url : '/v1/geoInfoSystem/estadistiques/',
@@ -703,7 +701,7 @@ function initMap() {
                     success:
                         function (data){
                             var data1 = Object.values(data);
-                            //console.log(data1);
+                            console.log(data1);
                             for(var i = 0; i<7; i++){
                                 let infoReal = Object.values(data1[i]);
                                 if(infoReal[1] !=='0'){
@@ -716,12 +714,32 @@ function initMap() {
                                             'descripcio' : informacio.fields.descripcio
                                         });
                                     }
+                                    let infoPI = JSON.parse(infoReal[2]);
+                                    let infoPuntInteres = [];
+                                    for(pInteres of infoPI){
+                                        infoPuntInteres.push({
+                                            'latitud' : pInteres.fields.latitud,
+                                            'longitud' : pInteres.fields.longitud,
+                                            'latitudS':pInteres.fields.latitud.toString(),
+                                            'longitudS':pInteres.fields.longitud.toString()
+                                        });
+                                    }
                                     for(var j = 0; j<infoToDo.length; j++){
                                         //hidden.value += (j+1)+", Nom del local: "+infoToDo[j]['nomLocal']+", Any de construcció: "+infoToDo[j]['anyConstruccio']+", Descripció: "+infoToDo[j]['descripcio']+"\n";
                                         //console.log(infoToDo[j]);
                                         let liNomLocal = document.createElement("LI");
                                         let liAnyConstruccio = document.createElement("LI");
                                         let liDescripcio = document.createElement("LI");
+                                        let liLinkToSpecificWeb = document.createElement("LI");
+                                        let url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+infoToDo[j]['nomLocal']+"/"+infoPuntInteres[j]['latitudS']+"/"+infoPuntInteres[j]['longitudS']+"/";
+                                        url = encodeURI(url);
+                                        let link  = document.createElement("A");
+                                        link.setAttribute("href", url);
+                                        link.setAttribute("target", "_blank");
+                                        link.setAttribute("rel", "noopener noreferrer");
+                                        let tLink = document.createTextNode("Click aquí per a veure més informació.");
+                                        link.appendChild(tLink);
+                                        liLinkToSpecificWeb.appendChild(link);
                                         let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
                                         let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
                                         let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
@@ -735,6 +753,8 @@ function initMap() {
                                         let itemNom = document.createElement("LI");
                                         let itemAnyConstruccio = document.createElement("LI");
                                         let itemDescripcio = document.createElement("LI");
+                                        let itemLink = document.createElement("LI");
+                                        itemLink.setAttribute("class", "list-group-item");
                                         itemNom.setAttribute("class","list-group-item");
                                         itemAnyConstruccio.setAttribute("class", "list-group-item");
                                         itemDescripcio.setAttribute("class", "list-group-item");
@@ -742,9 +762,11 @@ function initMap() {
                                         itemNom.appendChild(liNomLocal);
                                         itemAnyConstruccio.appendChild(liAnyConstruccio);
                                         itemDescripcio.appendChild(liDescripcio);
+                                        itemLink.appendChild(liLinkToSpecificWeb);
                                         document.getElementById("resultats"+(i+1)).appendChild(itemNom);
                                         document.getElementById("resultats"+(i+1)).appendChild(itemAnyConstruccio);
                                         document.getElementById("resultats"+(i+1)).appendChild(itemDescripcio);
+                                        document.getElementById("resultats"+(i+1)).appendChild(itemLink);
                                         let separator=document.createElement("LI");
                                         separator.setAttribute("class", "nav-divider");
                                         separator.setAttribute("style", "background-color: #2A3B56");

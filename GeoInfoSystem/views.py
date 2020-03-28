@@ -818,27 +818,39 @@ def estadistiques_inicials(request):
     # RESULTAT AMB ELS FILTRES ESTABLERTS
     punt_filtre1 = puntInteres.objects.all().filter(localitat=pobleInicial, actiu=actiu)
     llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria=categoriaInicial)
+    fk_id_puntInteres = local.objects.all().filter(localitzacio__in = punt_filtre1, categoria=categoriaInicial).values_list('localitzacio_id', flat=True)
+    puntsInteresLatLng = puntInteres.objects.all().filter(id__in = fk_id_puntInteres)
+    res_lat_lng = serializers.serialize('json', puntsInteresLatLng)
     res_filtre1 = serializers.serialize('json', llocs_filtre1)
     res['FiltresAplicats'] = res_filtre1
     res['numResultats'] = str(len(llocs_filtre1))
+    res['puntinteresFiltresAplicats'] = res_lat_lng
     resultatsInicials['FitresEstablerts'] = res
 
     res = {}
     # RESULTAT ON SURTEN TOTS ELS PUNTS/LOCALS DEL MATEIX POBLE (TANT ACTIUS COM NO ACTIUS)
     punt_filtre1 = puntInteres.objects.all().filter(localitat=pobleInicial)
     llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1)
+    fk_id_puntInteres = local.objects.all().filter(localitzacio__in=punt_filtre1).values_list('localitzacio_id', flat=True)
+    puntsInteresLatLng = puntInteres.objects.all().filter(id__in=fk_id_puntInteres)
+    res_lat_lng = serializers.serialize('json', puntsInteresLatLng)
     res_filtre1 = serializers.serialize('json', llocs_filtre1)
     res['puntsPoble'] = res_filtre1
     res['numMateixPoble'] = str(len(llocs_filtre1))
+    res['puntsInterespuntsMateixPoble'] = res_lat_lng
     resultatsInicials['FiltreMateixPoble'] = res
 
     res = {}
     # RESULTAT NEGANT EL ACTIU MATEIXA CATEGORIA
     punt_filtre1 = puntInteres.objects.all().filter(localitat=pobleInicial, actiu=not actiu)
     llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria=categoriaInicial)
+    fk_id_puntInteres = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria=categoriaInicial).values_list('localitzacio_id',flat=True)
+    puntsInteresLatLng = puntInteres.objects.all().filter(id__in=fk_id_puntInteres)
+    res_lat_lng = serializers.serialize('json', puntsInteresLatLng)
     res_filtre1 = serializers.serialize('json', llocs_filtre1)
     res['resNegatActiuMateixaCat'] = res_filtre1
     res['numResNegatActiuMateixaCat'] = str(len(llocs_filtre1))
+    res['resPuntInteresNegatActiuMateixaCat'] = res_lat_lng
     resultatsInicials['FiltreNegatActiuMateixaCat'] = res
 
     res = {}
@@ -846,18 +858,26 @@ def estadistiques_inicials(request):
     punt_filtre1 = puntInteres.objects.all().filter(localitat=pobleInicial, actiu=actiu)
     altresCategories_filtre1 = categoriaLocal.objects.all().exclude(categoria=categoriaInicial)
     llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria__in=altresCategories_filtre1)
+    fk_id_puntInteres = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria__in=altresCategories_filtre1).values_list('localitzacio_id', flat=True)
+    puntsInteresLatLng = puntInteres.objects.all().filter(id__in=fk_id_puntInteres)
+    res_lat_lng = serializers.serialize('json', puntsInteresLatLng)
     res_filtre1 = serializers.serialize('json', llocs_filtre1)
     res['resMateixPobleNoMateixaCat'] = res_filtre1
     res['numresMateixPobleNoMateixaCat'] = str(len(llocs_filtre1))
+    res['resPuntInteresMateixPobleNoMateixaCat'] = res_lat_lng
     resultatsInicials['FiltreMateixPobleNoMateixaCat'] = res
 
     res = {}
     # RESTULTAT NO MATEIX POBLE, ACTIU QUE VE I MATEIXA CATEGORIA
     punt_filtre1 = puntInteres.objects.all().exclude(localitat=pobleInicial).filter(actiu=actiu)
     llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria=categoriaInicial)
+    fk_id_puntInteres = local.objects.all().filter(localitzacio__in=punt_filtre1,categoria=categoriaInicial).values_list('localitzacio_id', flat=True)
+    puntsInteresLatLng = puntInteres.objects.all().filter(id__in=fk_id_puntInteres)
+    res_lat_lng = serializers.serialize('json', puntsInteresLatLng)
     res_filtre1 = serializers.serialize('json', llocs_filtre1)
     res['resNoMateixPobleMateixaCat'] = res_filtre1
     res['numResNoMateixPobleMateixaCat'] = str(len(llocs_filtre1))
+    res['resPuntInteresNoMateixPobleMateixaCat'] = res_lat_lng
     resultatsInicials['FiltreNoMateixPobleMateixaCat'] = res
 
     res = {}
@@ -865,18 +885,26 @@ def estadistiques_inicials(request):
     punt_filtre1 = puntInteres.objects.all().exclude(localitat=pobleInicial).filter(actiu=not actiu)
     altresCategories_filtre1 = categoriaLocal.objects.all().exclude(categoria=categoriaInicial)
     llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1, categoria__in=altresCategories_filtre1)
+    fk_id_puntInteres = local.objects.all().filter(localitzacio__in=punt_filtre1,categoria__in=altresCategories_filtre1).values_list('localitzacio_id', flat=True)
+    puntsInteresLatLng = puntInteres.objects.all().filter(id__in=fk_id_puntInteres)
+    res_lat_lng = serializers.serialize('json', puntsInteresLatLng)
     res_filtre1 = serializers.serialize('json', llocs_filtre1)
     res['resNoMateixPobleNoMateixaCategoria'] = res_filtre1
     res['numResNoMateixPobleNoMateixaCategoria'] = str(len(llocs_filtre1))
+    res['resPuntInteresNoMateixPobleNoMateixaCategoria'] = res_lat_lng
     resultatsInicials['FiltreNoMateixPobleNoMateixaCat'] = res
 
     res = {}
     # RESULTAT AMB TOTES LES DADES DE LA DB
     punt_filtre1 = puntInteres.objects.all()
     llocs_filtre1 = local.objects.all().filter(localitzacio__in=punt_filtre1)
+    fk_id_puntInteres = local.objects.all().filter(localitzacio__in=punt_filtre1).values_list('localitzacio_id', flat=True)
+    puntsInteresLatLng = puntInteres.objects.all().filter(id__in=fk_id_puntInteres)
+    res_lat_lng = serializers.serialize('json', puntsInteresLatLng)
     res_filtre1 = serializers.serialize('json', llocs_filtre1)
     res['infoDB'] = res_filtre1
     res['numinfoDB'] = str(len(llocs_filtre1))
+    res['puntsIntresinfoDB'] = res_lat_lng
     resultatsInicials['FiltreTotaDB'] = res
 
     initial_statistics_data = json.dumps(resultatsInicials)
