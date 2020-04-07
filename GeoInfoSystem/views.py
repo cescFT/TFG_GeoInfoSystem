@@ -951,7 +951,6 @@ def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
 
 def loginPage(request):
     if request.method == 'POST':
-        errors=[]
         username = request.POST['username']
         password = request.POST['password']
         user = authenticate(username=username, password=password)
@@ -961,16 +960,58 @@ def loginPage(request):
                 return redirect("/")
         else:
             user = User.objects.all().filter(username=username)
-            if not user:
-                errors+=["usuari o contrassenya incorrectes."]
-                return render(request, 'usuaris/login.html', {'errors': errors})
+            user=user[0]
+            if user.check_password(password):
+                if user.is_active:
+                    login(request,user)
+                    return redirect("/")
+    return render(request, 'usuaris/login.html',{})
+
+
+def checkInputsLogIn(request):
+    if request.method == 'GET':
+        data={}
+        username = urllib.parse.unquote(request.GET['nomUsuari'])
+        password = urllib.parse.unquote(request.GET['contrassenyaUsuari'])
+        if username == "" or password == "":
+            data['buit'] = "true"
+        if username == "" and password == "":
+            data['buit'] = "true"
+        if username != "" and password != "":
+            data['buit'] = "false"
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type="json")
+
+def checkUserToLogIn(request):
+    if request.method == 'GET':
+        data={}
+        username = urllib.parse.unquote(request.GET['nomUsuari'])
+        passwd = urllib.parse.unquote(request.GET['contrassenyaUsuari'])
+        userMaster = authenticate(username=username, password=passwd)
+        if userMaster is not None:
+            if userMaster.is_active:
+                data['tot_ok'] = "true"
             else:
-                user=user[0]
-                if user.check_password(password):
+                data['tot_ok'] = "false"
+        else:
+            userMaster= User.objects.all().filter(username=username)
+            if not userMaster:
+                data['tot_ok'] = "false"
+            else:
+                user = userMaster[0]
+                if user.check_password(passwd):
                     if user.is_active:
-                        login(request,user)
-                        return redirect("/")
-    return render(request, 'usuaris/login.html', {'errors': []})
+                        data['tot_ok'] = "true"
+                    else:
+                        data['tot_ok'] = "false"
+                else:
+                    data['tot_ok'] = "false"
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
+
+
+
+
 
 def logout(request):
     do_logout(request)
