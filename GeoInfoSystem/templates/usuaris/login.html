@@ -105,9 +105,9 @@
         <div class="row">
         <div class="form-group">
             <div class="row form-row">
-                <div id="errorsLogIn"></div>
                 <div class="col border p-3 form">
                     <h3>Introdueix les dades:</h3>
+                    <div id="errorsLogIn"></div>
                     <form id="formLogIn" method="POST" action="/v1/geoInfoSystem/inicia_sessio/">
                         {% csrf_token %}
                         <div class="form-group">
@@ -122,13 +122,10 @@
                     </form>
                     <button type="submit" id="iniciSessioBtn"  onclick="comprovarLogIn()" class="btn btn-success" disabled>Inicia sessió</button>
                 </div>
-
             </div>
         </div>
     </div>
     </div>
-
-
 </div>
 
 

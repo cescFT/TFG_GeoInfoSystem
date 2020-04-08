@@ -67,6 +67,7 @@
         float: none;
       }
     }
+
     </style>
 </head>
 <body>
@@ -84,36 +85,94 @@
         </div>
     </div>
     </div>
-    <h1>Registra't a la web</h1>
-    <div>
-        <h3>Per tal de registrar-te a la pàgina, has de complir aquestes condicions:</h3>
-        <div id="recordatori"></div>
-        <ul>
-            <li>Nom d'usuari no agafat prèviament</li>
-            <li>Contrassenya de més de 8 caràcters</li>
-            <li>Ambdues contrassenyes coincideixin</li>
-            <li>Format mail: exemple@mail.com</li>
-        </ul>
+    <div class="container">
+        <h1 style="text-align: center">Registra't a la web</h1>
+        <div>
+            <h3>Per tal de registrar-te a la pàgina, has de complir aquestes condicions:</h3>
+            <div id="recordatori"></div>
+            <ul>
+                <li>Nom d'usuari no agafat prèviament</li>
+                <li>Contrassenya de més de 8 caràcters</li>
+                <li>Ambdues contrassenyes coincideixin</li>
+                <li>Format mail: exemple@mail.com</li>
+            </ul>
+        </div>
+
+        <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;"> <!--percentrar-->
+        <div class="row form-row">
+            <div class="form-group border p-3 ">
+                <div id="errors"></div>
+                <form id="reg_form" method="POST" action="/v1/geoInfoSystem/registrar_nou_usuari/">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm">
+                                <label>Nom d'usuari:</label>
+                            </div>
+                            <div class="col-sm">
+                                <input type="text" id="nomUsuari" onkeyup="checkValues()" name="username" placeholder="Nom d'usuari" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm">
+                                <label>Correu electrònic:</label>
+                            </div>
+                            <div class="col-sm">
+                                <input type="email" id="correuE" onkeyup="checkValues()" name="email" placeholder="correu@exemple.com" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm">
+                                <label>Nom:</label>
+                            </div>
+                            <div class="col-sm">
+                                <input type="text" id="first_name" onkeyup="checkValues()" name="first_name" placeholder="Nom">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm">
+                                <label>Cognom:</label>
+                            </div>
+                            <div class="col-sm">
+                                <input type="text" id="last_name" onkeyup="checkValues()" name="last_name" placeholder="Cognom">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm">
+                                <label>Contrassenya:</label>
+                            </div>
+                            <div class="col-sm">
+                                <input type="password" id="passwd1" onkeyup="checkValues()" name="password1" placeholder="Contrassenya" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-sm">
+                                <label>Repeteix contrassenya:</label>
+                            </div>
+                            <div class="col-sm">
+                                <input type="password" id="passwd2" onkeyup="checkValues()" name="password2" placeholder="Repeteix contrassenya" required>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="text-center"><button style="margin:0px auto;" type="submit" onclick="checkInputsToRegister()" id="submit_registre" name="submit_new_user" class="btn btn-success center-block">Registra't</button></div>
+                <p style="text-align: center">Ja tens un compte? <a href="/v1/geoInfoSystem/inicia_sessio/">Inicia sessió</a></p>
+            </div>
+        </div>
+    </div>
     </div>
 
-    <div id="errors"></div>
-    <form id="reg_form" method="POST" action="/v1/geoInfoSystem/registrar_nou_usuari/">
-        {% csrf_token %}
-        <div><p>Nom d'usuari:</p></div>
-        <input type="text" id="nomUsuari" onkeyup="checkValues()" name="username" placeholder="Nom d'usuari" required>
-        <div><p>Correu electrònic:</p></div>
-        <input type="email" id="correuE" onkeyup="checkValues()" name="email" placeholder="correu@exemple.com" required>
-        <div><p>Nom:</p></div>
-        <input type="text" id="first_name" onkeyup="checkValues()" name="first_name" placeholder="Nom">
-        <div><p>Cognom:</p></div>
-        <input type="text" id="last_name" onkeyup="checkValues()" name="last_name" placeholder="Cognom">
-        <div><p>Contrassenya:</p></div>
-        <input type="password" id="passwd1" onkeyup="checkValues()" name="password1" placeholder="Contrassenya" required>
-        <div><p>Repeteix contrassenya:</p></div>
-        <input type="password" id="passwd2" onkeyup="checkValues()" name="password2" placeholder="Repeteix contrassenya" required>
-        <p>Ja tens un compte? <a href="/v1/geoInfoSystem/inicia_sessio/">Inicia sessió</a></p>
-    </form>
-    <button type="submit" onclick="checkInputsToRegister()" id="submit_registre" name="submit_new_user" class="btn btn-success">Registra't</button>
 
 <script>
     var resComprovacioBuits="true";

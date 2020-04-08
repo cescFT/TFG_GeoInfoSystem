@@ -4,6 +4,7 @@
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/registrar1.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/registrar1.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -308,7 +309,7 @@
       <workItem from="1586163275834" duration="4941000" />
       <workItem from="1586249939328" duration="5813000" />
       <workItem from="1586277405009" duration="2837000" />
-      <workItem from="1586336848180" duration="15291000" />
+      <workItem from="1586336848180" duration="21076000" />
     </task>
     <servers />
   </component>
