@@ -17,6 +17,7 @@ from Exceptions import *
 from django.core import serializers
 import json
 import re
+import random
 import urllib.parse
 # Create your views here.
 ###################################################################
@@ -827,9 +828,14 @@ def mostrarMapa(response):
     tipus = categoriaLocal.objects.all()
     categoriesT = serializers.serialize('json', tipus)
 
+    rand_id_puntInteres = random.choice(list(puntInteres.objects.all().values_list('id',flat=True)))
+
+    pIntRand_latitud = str(puntInteres.objects.all().filter(id=rand_id_puntInteres)[0].latitud)
+    pIntRand_longitud = str(puntInteres.objects.all().filter(id=rand_id_puntInteres)[0].longitud)
+    nom_local_rand = local.objects.all().filter(localitzacio=rand_id_puntInteres)[0].nomLocal
 
     #LIMITACIO DE NO PAGAR API: NO PUC FER CERQUES.... (searchbox item de google)
-    return render(response, "puntsGeografics/map.html", {'totesCategories':categoriesT,'poblesTGN':poblesDeTgn, 'provincies':provincies,'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions})
+    return render(response, "puntsGeografics/map.html", {'latitudRand': pIntRand_latitud, 'longitudRand': pIntRand_longitud, 'nomLocalRand':nom_local_rand,'totesCategories':categoriesT,'poblesTGN':poblesDeTgn, 'provincies':provincies,'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions})
 
 def estadistiques_inicials(request):
     resultatsInicials = {}
@@ -1098,7 +1104,6 @@ def updateUsuari(request, codi):
             return redirect("/v1/geoInfoSystem/el_meu_espai/")
         else:
             return render(request, "usuaris/updateUsuari.html", {'chMail': err_mail, 'chNom': err_Nom, 'chCog': err_cognom, 'chPass': err_passwd, 'errors': errors})
-
     else:
         codi = urllib.parse.unquote(codi)
         codiTallat = codi.split()

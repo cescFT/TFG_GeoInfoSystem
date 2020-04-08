@@ -12,6 +12,7 @@
         <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
         <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         /* Style the header with a grey background and some padding */
     .header {
@@ -75,15 +76,15 @@
 </head>
 <body>
     <div class="header">
-        <a href="/" class="logo">Sistema d'informació Geogràfica</a>
+        <a href="/" class="logo active"><i class="fa fa-home" aria-hidden="true"></i> Sistema d'informació Geogràfica</a>
         <div class="header-right">
-            <a class="active" href="/">Pàgina d'inici</a>
+            <a href="/v1/geoInfoSystem/map/"><i class="fa fa-globe" aria-hidden="true"></i> Visualitza el mapa</a>
             {% if user.is_authenticated %}
-                <a href="/v1/geoInfoSystem/el_meu_espai/">{{ user.username }}</a>
-                <a href="/v1/geoInfoSystem/tancar_sessio/">Tanca la sessió</a>
+                <a href="/v1/geoInfoSystem/el_meu_espai/"><i class="fa fa-user"></i> {{ user.username }}</a>
+                <a href="/v1/geoInfoSystem/tancar_sessio/"><i class="fa fa-sign-out"></i> Tanca la sessió</a>
             {% else %}
-                <a href="/v1/geoInfoSystem/registrar_nou_usuari/">Registra't</a>
-                <a href="/v1/geoInfoSystem/inicia_sessio/">Inicia sessió</a>
+                <a href="/v1/geoInfoSystem/registrar_nou_usuari/"><i class="fa fa-sign-in"></i> Registra't</a>
+                <a href="/v1/geoInfoSystem/inicia_sessio/"><i class="fa fa-check"></i> Inicia sessió</a>
             {% endif %}
         </div>
     </div>
