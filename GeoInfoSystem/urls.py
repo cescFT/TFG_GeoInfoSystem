@@ -46,5 +46,7 @@ urlpatterns = [
     path('estadistiques/', views.res_ajax_estadistiques, name='ajaxestadistiques'),
     path('estadistiques_inicials/', views.estadistiques_inicials, name='ajaxestadistiquesInicials'),
     path('comprovarInputsLogIn/', views.checkInputsLogIn, name="checkInputLogIn"),
-    path('comprovarLogIn/', views.checkUserToLogIn, name="checklogin")
+    path('comprovarLogIn/', views.checkUserToLogIn, name="checklogin"),
+    path('comprovarValorsBuitsRegistre/', views.check_empty_register_data, name="checkEmptyValuesRegister"),
+    path('comprovarRegistre/', views.check_values_register_data, name="checkRegister")
 ]

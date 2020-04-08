@@ -740,33 +740,55 @@ Mètode que mostra la pàgina per a registrar un nou usuari
 """
 def paginaRegistrarse(request):
     if request.method == 'POST':
-        errors=[]
-        if User.objects.all().filter(username=request.POST['username']):
-            errors+=["El nom d'usuari ja està agafat."]
         password1=request.POST['password1']
-        password2=request.POST['password2']
-        if password1 != password2:
-            errors+=["Les contrassenyes no coincideixen."]
+        nou_usuari = User()
+        nou_usuari.username=request.POST['username']
+        if request.POST['first_name']:
+            nou_usuari.first_name=request.POST['first_name']
+        if request.POST['last_name']:
+            nou_usuari.last_name = request.POST['last_name']
+        nou_usuari.email=request.POST['email']
+        nou_usuari.set_password(password1)
+        print(nou_usuari)
+        nou_usuari.save()
+        return redirect("/")
+    return render(request, "usuaris/registrar1.html", {})
 
-        if request.POST['email']:
-            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
-            if not re.search(regex, request.POST['email']):
-                errors+=["El mail no té format de correu electrònic"]
-        if errors:
-            return render(request, 'usuaris/registrar1.html', {'errors':errors})
-        if not errors:
-            nou_usuari = User()
-            nou_usuari.username=request.POST['username']
-            if request.POST['first_name']:
-                nou_usuari.first_name=request.POST['first_name']
-            if request.POST['last_name']:
-                nou_usuari.last_name = request.POST['last_name']
-            nou_usuari.email=request.POST['email']
-            nou_usuari.set_password(password1)
-            print(nou_usuari)
-            nou_usuari.save()
-            return redirect("/")
-    return render(request, "usuaris/registrar1.html", {'errors': []})
+def check_values_register_data(request):
+    username = urllib.parse.unquote(request.GET['username'])
+    password1 = urllib.parse.unquote(request.GET['password1'])
+    password2 = urllib.parse.unquote(request.GET['password2'])
+    email = urllib.parse.unquote(request.GET['email'])
+    data = {}
+    data['tot_ok']="true"
+    if User.objects.all().filter(username=username):
+        data['tot_ok']="false"
+    if len(password1) < 8:
+        data['tot_ok'] = "false"
+    if password1 != password2:
+        data['tot_ok']="false"
+    if email:
+        regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+        if not re.search(regex, email):
+            data['tot_ok'] = "false"
+    res_json = json.dumps(data)
+    return HttpResponse(res_json, content_type='json')
+
+def check_empty_register_data(request):
+    if request.method == 'GET':
+        username=urllib.parse.unquote(request.GET['username'])
+        first_name=urllib.parse.unquote(request.GET['first_name'])
+        last_name=urllib.parse.unquote(request.GET['last_name'])
+        password1=urllib.parse.unquote(request.GET['password1'])
+        password2=urllib.parse.unquote(request.GET['password2'])
+        email=urllib.parse.unquote(request.GET['email'])
+        data={}
+        if username == "" or first_name == "" or last_name == "" or password1 == "" or password2 == "" or email == "":
+            data['buit'] = "true"
+        else:
+            data['buit'] = "false"
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type="json")
 
 
 #############################################################################
