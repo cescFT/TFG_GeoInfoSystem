@@ -99,32 +99,48 @@
             {% endif %}
         </div>
     </div>
-
+    <br>
+    <div style="text-align: center">
+        <h1>Inicia la sessió</h1>
+    </div>
+    <br>
 <div class="container">
-    <div class="abs-center">
-        <div class="row">
-        <div class="form-group">
-            <div class="row form-row">
-                <div class="col border p-3 form">
-                    <h3>Introdueix les dades:</h3>
-                    <div id="errorsLogIn"></div>
-                    <form id="formLogIn" method="POST" action="/v1/geoInfoSystem/inicia_sessio/">
-                        {% csrf_token %}
-                        <div class="form-group">
-                            <label>Nom d'usuari:</label>
-                            <input type="text" id="username" name="username" onkeyup="comprovarInputs()" placeholder="Username" required>
+        <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
+            <div class="row">
+                <div class="form-group">
+                    <div class="row form-row">
+                        <div class="col border p-3 form">
+                            <div id="errorsLogIn"></div>
+                            <form id="formLogIn" method="POST" action="/v1/geoInfoSystem/inicia_sessio/">
+                                {% csrf_token %}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <label>Nom d'usuari:</label>
+                                        </div>
+                                        <div class="col-sm">
+                                            <input type="text" id="username" name="username" onkeyup="comprovarInputs()" placeholder="Username" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm">
+                                            <label>Contrassenya:</label>
+                                        </div>
+                                        <div class="col-sm">
+                                            <input type="password" name="password" id="password" onkeyup="comprovarInputs()" placeholder="Password" required>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                           <div class="text-center"><button style="margin:0px auto;" type="submit" id="iniciSessioBtn"  onclick="comprovarLogIn()" class="btn btn-success" disabled>Inicia sessió</button> </div>
+                            <p style="text-align: center">No tens compte? <a href="/v1/geoInfoSystem/registrar_nou_usuari/">Crea un compte</a></p>
                         </div>
-                        <div class="form-group">
-                            <label>Contrassenya:</label>
-                            <input type="password" name="password" id="password" onkeyup="comprovarInputs()" placeholder="Password" required>
-                        </div>
-                        <p>No tens compte? <a href="/v1/geoInfoSystem/registrar_nou_usuari/">Crea un compte</a></p>
-                    </form>
-                    <button type="submit" id="iniciSessioBtn"  onclick="comprovarLogIn()" class="btn btn-success" disabled>Inicia sessió</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
     </div>
 </div>
 
