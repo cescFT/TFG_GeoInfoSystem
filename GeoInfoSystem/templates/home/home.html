@@ -1,46 +1,101 @@
 {% extends 'home/base.html' %}
 {% block title %} Sistema de Geolocalització {% endblock %}
+{% load static %}
 {% block content %}
 <head>
     <style>
-        h1#titol{
+        .centrar{
             text-align: center;
         }
-        h2#subtitol{
-            text-align: center;
+        .info-cesc{
+            margin-left: 100px;
         }
-        div#centrarTitol{
-            margin-left: 50px;
-        }
-        div#centrarSubtitol{
-            margin-left: 20px;
-        }
-
-
-
     </style>
 </head>
-
-<div id="centrarTitol">
-    <h1 id="titol">Treball fi de grau</h1>
-    <div id="centrarSubtitol">
-        <h2 id="subtitol">Sistema d'informació Geogràfica per a l'estudi d'usos de les ciutats</h2>
+<br>
+<br>
+<div class="centrar">
+    <h1>Treball Fi de Grau</h1>
+    <div class="centrar">
+        <h2>Sistema d'informació Geogràfica per a l'estudi d'usos de les ciutats</h2>
     </div>
 </div>
+<br>
+<hr>
+<div class="container info-cesc">
+    <p align="justify">
+        Aquest sistema GIS, de l'Anglès <i>Geographical Information System</i>, ha estat dissenyat i programat per en Francesc Ferré Tarrés.<br>
+        La finalitat principal d'aquest treball és mostrar la usabilitat de les ciutats a partir dels punts d'interès que els usuaris registrats a la web posen.
+        <br>
+        A més, aquesta web va destinada a complementar un projecte més gran, coordinat per en Roger Miralles Jori (professor de l'Escola Tècnica Superior d'Arquitectura, a la Universitat Rovira i Virigli) i
+        l'Antoni Martínez Ballesté (professor de l'Escola Tècnica Superior d'Enginyeria, a la Universitat Rovira i Virgili), qui ha estat el meu tutor personal per a culminar aquest projecte.
+        <br>
+        <h4>Funcionalitats de la web</h4>
+        <ol>
+            <li>Capçalera:
+                <ul>
+                    <li>En la part esquerra de la capçalera es veu en blau un bànner. Si es fa click, retornes a la pàgina d'inici, és a dir, en <a href="/">aquesta<a>. En aquesta pàgina trobaràs informació relacionada
+                        en com navegar dins de la web i quines són les funcionalitats, detallades.</li>
+                    <li>
+                        En la part dreta de la capçalera es veuen tres opcions clares:
+                        <ul>
+                            <li><b>Visualitza el mapa:</b> En aquesta opció, qualsevol persona que es connecti, pot veure el mapa amb els punts d'interès que la persona amb privilegis d'administrador ha afegit.</li>
+                            <li><b>Registrar-se:</b> En aquesta opció, qualsevol persona que vulgui, omple el formulari i pot registrar-se gratis sense cap mena de problema.</li>
+                            <li><b>Iniciar sessió:</b> En aquesta opció, qualsevol persona que ja prèviament s'hagi registrat, pot iniciar la sessió en aquesta pàgina.</li>
+                        </ul>
+                        En la pàgina en que es visualitza el mapa, hi ha una opció interessant per a tots aquells que volen cercar informació sobre un punt. Aquesta opció és una opció que dóna, <b>de forma aleatòria</b> informació sobre un punt en específic.
+                    </li>
+                </ul>
+            </li>
+            <li>Mapa:
+                <ul>
+                    <li>En aquesta pantalla es mostra el mapa, realitzat amb la tecnologia de Google Maps utilitzant la API de JavaScript. A continuació es pot veure un exemple:
+                    <div style="margin:0px auto;  background-size: cover; position: relative; left: 25%; display: flex; flex-flow: row; width: 100%; height: 100%;"><img src="{% static 'exemple_mapa.jpg' %}"/></div>
+                    <br>El que es pot veure en aquesta imatge és un exemple real sobre el que es pot representar en aquest mapa. Es poden veure diferents punts marcats en el mapa, aquests són els punts d'interès que l'usuari autoritzat ha afegit.
+                        Si s'apreta en algun dels punts, es pot veure informació dins d'un quadre de text (inclou un enllaç per a veure la informació en una finestra més gran), aquí hi ha un exemple:
+                        <div style="margin:0px auto;  background-size: cover; position: relative; left: 25%; display: flex; flex-flow: row; width: 100%; height: 100%;"><img src="{% static 'exemple_click_punt.jpg' %}"/></div>
+                        <br>
+                        A més hi ha un mòdul estadístic, aquest permet filtrar i extreure dades, aquests filtres són els següents:
+                        <ul>
+                            <li><b>Ciutat o Poble:</b> Aquest filtratge permet que es cerquin els punts d'interès en una ciutat o poblacio de Catalunya. S'ordenen per mitjà de les províncies. Per tant, la persona que vulgui fer
+                                un filtre estadístic, ha d'establir primer la província del poble o ciutat a la qual vol filtrar els punts.
+                            </li>
+                            <li><b>Tipus:</b> En aquest filtratge podem aplicar quin tipus de locals vol la persona per a filtrar de la població que ha establert anteriorment.</li>
+                            <li><b>Actiu:</b> Botó que si està activat, cerca els locals actius, altrament, cerca els locals no actius.</li>
+                        </ul>
+                        Els resultats que dóna aquest mòdul són els següents:
+                        <ul>
+                            <li><b>Resultat de la consulta actual:</b> El servidor retorna el resultat d'aplicar els filtres establerts per la persona interessada en saber el resultat.</li>
+                            <li><b>Locals de la mateixa localitat:</b> El servidor retorna tots els locals que es troben en la mateixa localitat, tant els locals actius o no.</li>
+                            <li><b>Locals de la mateixa categoria:</b> El servidor retorna tots els locals que es troben en la localitat donada però amb el actiu contrari al donat i la mateixa categoria.</li>
+                            <li><b>Locals d'altres categories:</b> El servidor retorna tots els localts que estroben en la mateixa localitat donada però amb una categoria diferent a la que s'ha donat.</li>
+                            <li><b>Locals d'altres pobles amb la mateixa categoria:</b> El servidor manté l'actiu donat i la categoria però cerca locals a altres localitats.</li>
+                            <li><b>Locals resultat d'aplicar el resultat contrari de la consulta actual:</b> El servidor retorna el resultat contrari als paràmetres donats. Per exemple:
+                            <ul>
+                                <li><b>Localitat:</b> Valls (Alt Camp), Tarragona</li>
+                                <li><b>Tipus:</b> Restauració</li>
+                                <li><b>Actiu:</b> Botó apretat</li>
+                            </ul>
+                                El que el servidor retornarà seràn tots aquells locals que no són de <i><b>Valls</b></i>, que no estan dins de l'àmbit de la <i><b>Restauració</b></i> i <i><b>no actius</b></i>.
+                            </li>
+                            <li><b>Locals presents en tot el sistema GIS:</b> El servidor retorna tots els locals que hi ha en la base de dades.</li>
+                        </ul>
+                    </li>
+                </ul>
+            </li>
+            <li>Informació d'un local en específic:
+                Aquesta opció és vàlida quan s'accedeix a la pàgina de visualització del <a href="/v1/geoInfoSystem/map/">mapa</a>, descrita en l'apartat anterior. En aquesta opció, el que es fa és que cada vegada que una persona accedeix
+                en la pàgina, aquesta carrega una pàgina específica d'informació d'un local (punt d'interès) aleatori present en el sistema GIS.
+            </li>
+            <li>Registrar-se a la web:
+            <!--TODO-->
+            </li>
+        </ol>
+    </p>
 
 
-<div>
-    <p class="info">POSAR INFO ...</p>
-    <ul>
-            {% for i in "paraula" %}
-            <li>{{i}}</li>
-            {% endfor %}
-</ul>
 </div>
 
-<div>
-    <p>Les accions permeses en aquesta pàgina web són les següents:</p>
-    <a href="/v1/geoInfoSystem/map/" type="button">Click per a veure el mapa</a>
-</div>
+
 
 {% endblock %}

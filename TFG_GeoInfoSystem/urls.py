@@ -16,11 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from GeoInfoSystem import views
+from django.contrib.staticfiles.urls import  staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home, name='Pagina Inici'),
     path('accounts/login/', views.unauthorizedpage, name='login1'),
     path('v1/geoInfoSystem/', include('GeoInfoSystem.urls'))
-
 ]
+
+urlpatterns+= staticfiles_urlpatterns()
