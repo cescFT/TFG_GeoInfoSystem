@@ -78,6 +78,9 @@
         <a href="/" class="logo active"><i class="fa fa-home" aria-hidden="true"></i> Sistema d'Informació Geogràfica</a>
         <div class="header-right">
             <a href="/v1/geoInfoSystem/map/"><i class="fa fa-globe" aria-hidden="true"></i> Visualitza el mapa</a>
+            {% if user.is_staff and user.is_superuser %}
+                <a href="/v1/geoInfoSystem/nouPunt/"><i class="fa fa-magic"></i> Afegir nous punts</a>
+            {% endif %}
             {% if user.is_authenticated %}
                 <a href="/v1/geoInfoSystem/el_meu_espai/"><i class="fa fa-user"></i> {{ user.username }}</a>
                 <a href="/v1/geoInfoSystem/tancar_sessio/"><i class="fa fa-sign-out"></i> Tanca la sessió</a>

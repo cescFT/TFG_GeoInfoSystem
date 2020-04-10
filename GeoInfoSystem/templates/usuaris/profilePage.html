@@ -40,7 +40,9 @@
 {%if user.is_staff and user.is_superuser%}
 <a href="/admin" type="button">Click aqui per anar a la pàgina administrativa del lloc web.</a>
 {%endif%}
-
+{% if user.is_staff and user.is_superuser %}
+                <a href="/v1/geoInfoSystem/nouPunt/"><i class="fa fa-magic"></i> Afegir nous punts</a>
+            {% endif %}
 
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalBaixa">
   Donar-me de baixa del lloc web.
