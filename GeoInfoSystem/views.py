@@ -956,8 +956,8 @@ def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
     localEspecific = local.objects.all().filter(nomLocal=nomLocal)
     categoria = localEspecific[0].categoria
     print(categoria)
-    altresPuntsInteres = puntInteres.objects.all().filter(localitat=p.localitat).exclude(latitud=latitud, longitud=longitud)
-    punts=[]
+    altresPuntsInteres = list(puntInteres.objects.all().filter(localitat=p.localitat).exclude(latitud=latitud, longitud=longitud))
+    """punts=[]
     for punt in altresPuntsInteres:
         punts+=[punt]
     locals = local.objects.all().exclude(nomLocal=nomLocal)
@@ -967,15 +967,45 @@ def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
             if l.localitzacio.localitat == punt.localitat:
                 altresLocals+=[l]
     print(punts)
-    print(altresLocals)
+    print(altresLocals)"""
     punt = serializers.serialize("json", puntInteresC)
     localE = serializers.serialize("json", localEspecific)
-    altresLocals = serializers.serialize("json", altresLocals)
-    punts = serializers.serialize("json", punts)
-    if altresLocals != "[]" and punts!= "[]":
-        return render(response, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat,'puntInteres':punt, 'local': localE, 'altresLocals' : altresLocals, 'altresPuntsInteres': punts, 'altres': True})
+    #altresLocals = serializers.serialize("json", altresLocals)
+    #punts = serializers.serialize("json", punts)
+    if len(altresPuntsInteres)>0:
+        return render(response, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat,'puntInteres':punt, 'local': localE, 'altres': True})
     else:
-        return render(response, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat, 'puntInteres': punt, 'local': localE, 'altresLocals': altresLocals, 'altresPuntsInteres': punts, 'altres': False})
+        return render(response, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat, 'puntInteres': punt, 'local': localE, 'altres': False})
+
+def ajax_altres_punts_mateixa_ciutat_info_especifica(request):
+    if request.method == 'GET':
+        nomLocal=urllib.parse.unquote(request.GET['nomLocal'])
+        ciutat = urllib.parse.unquote(request.GET['ciutat'])
+        latitud_punt_actual = float(request.GET['latitudPuntActual'])
+        longitud_punt_actual = float(request.GET['longitudPuntActual'])
+        data={}
+        mateixa_ciutat = localitzacio.objects.all().filter(ciutat=ciutat.split('(')[0].replace(" (", ""))[0]
+        altresPuntsInteres = puntInteres.objects.all().filter(localitat=mateixa_ciutat).exclude(latitud=latitud_punt_actual, longitud=longitud_punt_actual)
+        punts = []
+        for punt in altresPuntsInteres:
+            punts += [punt]
+        locals = local.objects.all().exclude(nomLocal=nomLocal)
+        altresLocals = []
+        categories_altres_locals=[]
+        for punt in punts:
+            for l in locals:
+                if l.localitzacio.localitat == punt.localitat:
+                    categories_altres_locals+=[l.categoria]
+                    altresLocals += [l]
+        categories_locals=serializers.serialize('json', categories_altres_locals)
+        locals_localitat=serializers.serialize("json", altresLocals)
+        puntsInteres_localitat=serializers.serialize('json', punts)
+        data['locals'] = locals_localitat
+        data['puntsInteres'] = puntsInteres_localitat
+        data['categories'] = categories_locals
+        res_json = json.dumps(data)
+
+        return HttpResponse(res_json, content_type='json')
 
 def loginPage(request):
     if request.method == 'POST':

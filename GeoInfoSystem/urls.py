@@ -36,6 +36,7 @@ urlpatterns = [
     path('registrar_nou_usuari/', views.paginaRegistrarse, name='Registrar'),
     path('map/', views.mostrarMapa, name='mapa'),
     url(r'info_especifica/(?P<nomLocal>[^/]+)/(?P<latitud>\d+\.\d+)/(?P<longitud>\d+\.\d+)/$', views.mostrarPuntEspecific, name='informacio'),
+    path('altres_punts_mateixa_ciutat_info_especifica/', views.ajax_altres_punts_mateixa_ciutat_info_especifica, name='altrespunts'),
     path('inicia_sessio/', views.loginPage, name='inicia sessio'),
     path('tancar_sessio/', views.logout, name='Tancar sessio'),
     path('el_meu_espai/', views.profilePage, name='Espai'),

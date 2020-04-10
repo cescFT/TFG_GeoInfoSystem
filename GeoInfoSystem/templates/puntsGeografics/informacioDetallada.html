@@ -136,10 +136,9 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div id="llistatPunts" class="modal-body">
+                  <div id="llistatPunts" style="margin:auto" class="modal-body">
                   </div>
                   <div class="modal-footer">
-                    <button type="button" id="activador" onclick="mostrarInformacio()" class="btn btn-primary">Mostrar Altres punts</button>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                   </div>
                 </div>
@@ -150,6 +149,7 @@
                     <p>No hi ha més punts d'interès en aquesta localitat.</p>
                 </div>
             {% endif %}
+    <input type="hidden" id="auxiliarBoolea" name="auxiliarBoolea" value="false">
 
 <script>
     function prettySite() {
@@ -205,65 +205,91 @@
         var localitat = `{{localitat|safe}}`;
         var nomLocalitat=document.getElementById("localitat");
         nomLocalitat.innerText=localitat;
-    }
-    function mostrarInformacio(){
-        var nomLocalitat=document.getElementById("localitat");
-        var textToIntroduce = document.getElementById("llistatPunts");
-        var locals= JSON.parse(`{{altresLocals | safe}}`);
-        var punts =JSON.parse(`{{altresPuntsInteres | safe}}`);
-        var localitat = `{{localitat|safe}}`;
-        var pointsToDo=[];
-        var localsToDo=[];
-        for(local of locals){
-            localsToDo.push({
-                "localitzacio" : local.fields.localitzacio,
-                "nomLocal" : local.fields.nomLocal,
-                "puntuacio" : local.fields.estat_conservacio,
-                "puntuacioS" : local.fields.estat_conservacio.toString(),
-                "categoria" : local.fields.categoria,
-                "anyConstruccio" : local.fields.anyConstruccio,
-                "anyConstruccioS" : local.fields.anyConstruccio.toString(),
-                "descripcio" : local.fields.descripcio
-            });
-        }
-        console.log(localsToDo);
-        for(punt of punts){
-            pointsToDo.push({
-                "pk" : punt.pk ,
-                "latitud" : punt.fields.latitud,
-                "longitud" : punt.fields.longitud,
-                "latitudS" : punt.fields.latitud.toString(),
-                "longitudS" : punt.fields.longitud.toString(),
-                "Superficie" : punt.fields.superficie.toString(),
-                "Localitat" : punt.fields.localitat.toString()
-            });
-        }
-        console.log(pointsToDo);
-        nomLocalitat.innerText=localitat;
-        let url;
+        var coordenadesPuntActual = document.getElementById("coordenades").innerHTML.split(",");
+        $.ajax({
+            type: 'GET',
+            url: '/v1/geoInfoSystem/altres_punts_mateixa_ciutat_info_especifica/',
+            data:{
+                "ciutat" : localitat ,
+                "latitudPuntActual": coordenadesPuntActual[0].replace("(",""),
+                "longitudPuntActual": coordenadesPuntActual[1].replace(")",""),
+                "nomLocal" : document.getElementById("nomLloc").innerHTML
+            },
+            dataType: 'json',
+            success:
+                function (data){
+                    if(document.getElementById("auxiliarBoolea").value === "false"){
+                        //console.log(data);
+                        var data_locals = Object.values(data);
+                        //console.log(data_locals);
+                        var infoLocals = JSON.parse(data_locals[0]);
+                        var infoPuntsInteres = JSON.parse(data_locals[1]);
+                        var infoCategories = JSON.parse(data_locals[2]);
+                        var infoLocalsToDo = [];
+                        var infoPuntsInteresToDo=[];
+                        var infoCategoriesToDo=[];
+                        for (info of infoLocals){
+                            infoLocalsToDo.push({
+                                'nomLocal' : info.fields.nomLocal
+                            });
+                        }
+                        for(info of infoCategories){
+                            infoCategoriesToDo.push({
+                                'categoria' : info.fields.categoria
+                            });
+                        }
+                        for(info of infoPuntsInteres){
+                            infoPuntsInteresToDo.push({
+                                'latitudS' : info.fields.latitud.toString(),
+                                'longitudS' : info.fields.longitud.toString()
+                            });
+                        }
+                        //console.log(infoLocalsToDo);
+                        //console.log(infoCategoriesToDo);
+                        //console.log(infoPuntsInteresToDo);
 
-        for(var i=0; i<pointsToDo.length; i++){
-        for(var j=0; j<localsToDo.length; j++){
-            if(pointsToDo[i]['pk'] == localsToDo[j]['localitzacio']){
-              url =`localhost:8000/v1/geoInfoSystem/info_especifica/`+localsToDo[j]['nomLocal']+`/`+pointsToDo[i]['latitud']+`/`+pointsToDo[i]['longitud']+`/`;
-              url = encodeURI(url);
-              console.log(url);
-              let button = document.createElement("a");
-              button.innerText=localsToDo[j]['nomLocal'];
-              button.href=url;
-              button.target="_blank";
-              button.rel="noopener noreferrer";
-              textToIntroduce.appendChild(button);
-              textToIntroduce.innerHTML+='<br>';
-          }
-        }
-      }
-      var botoActivador = document.getElementById("activador");
-      botoActivador.disabled=true;
-  }
+                        for(var i=0; i<infoLocalsToDo.length; i++){
+                            let nomLocal = infoLocalsToDo[i]['nomLocal'];
+                            let categoriaLocal = infoCategoriesToDo[i]['categoria'];
+                            let latitudS = infoPuntsInteresToDo[i]['latitudS'];
+                            let longitudS = infoPuntsInteresToDo[i]['longitudS'];
+                            let url;
+                            url =`localhost:8000/v1/geoInfoSystem/info_especifica/`+nomLocal+`/`+latitudS+`/`+longitudS+`/`;
+                            url = encodeURI(url);
+                            //console.log(url);
+                            let infoText=document.createElement("DIV");
+                            infoText.setAttribute("class", "row");
+                            let infoIntoText = document.createElement("DIV");
+                            infoIntoText.setAttribute("class", "col-sm");
+                            let tInfoNomLocal = document.createTextNode("Local");
+                            let tBold = document.createElement("B");
+                            tBold.appendChild(tInfoNomLocal);
+                            infoIntoText.appendChild(tBold);
+                            let infoIntoText1 = document.createElement("DIV");
+                            infoIntoText1.setAttribute("class", "col-sm");
+                            let tInfoCategoriaLocal = document.createTextNode("Categoria");
+                            let tBold1 = document.createElement("B");
+                            tBold1.appendChild(tInfoCategoriaLocal);
+                            infoIntoText1.appendChild(tBold1);
+                            infoText.appendChild(infoIntoText);
+                            infoText.appendChild(infoIntoText1);
+                            let separador = document.createElement("DIV");
+                            separador.setAttribute("class","w-100");
+                            infoText.appendChild(separador);
+                            document.getElementById("llistatPunts").appendChild(infoText);
+                            let button = document.createElement("a");
+                            button.innerHTML='<div class="row"><div class="col-sm"">'+nomLocal+'</div><div class="col-sm"">'+categoriaLocal+'</div></div><div class="w-100"></div>';
+                            button.href=url;
+                            button.target="_blank";
+                            button.rel="noopener noreferrer";
+                            document.getElementById("llistatPunts").appendChild(button);
+                        }
+                        document.getElementById("auxiliarBoolea").value="true";
+                    }
+                }
+        });
+    }
 
 </script>
-
-
 </body>
 </html>
