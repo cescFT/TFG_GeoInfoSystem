@@ -3,9 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <title>Uupss...</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .abs-center {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-height: 100vh;
+        }
+
+        .form {
+          width: 450px;
+        }
+    </style>
 </head>
 <body>
-<h1>Hi ha hagut algun error...</h1>
-<a href="/" type="button">Retornar a la pàgina d'inici</a>
+
+<div class="container">
+  <div class="abs-center">
+    <div class="border p-3 form">
+      <div class="text-center" style="font-size: 200px; color:#ff6300"><i class="fa fa-exclamation-triangle fa-lg"></i></div>
+        <h1 class="text-center">ERROR!</h1>
+        <div class="text-center"><a style="margin:0px auto;" href="/" type="button">Retornar a la pàgina d'inici</a></div>
+    </div>
+  </div>
+</div>
 </body>
 </html>
