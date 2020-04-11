@@ -1086,57 +1086,24 @@ def profilePage(request):
 
 @login_required(login_url='/v1/geoInfoSystem/inicia_sessio/')
 def updateUsuari(request, codi):
-    errors = []
     if request.method == 'POST':
         user_name=request.user
-        err_mail=False
-        err_Nom = False
-        err_cognom = False
-        err_passwd = False
         if codi == 'actualitzaMail':
             mail1 = request.POST['email']
-            mail2 = request.POST['email1']
-            if mail1 != mail2:
-                err_mail = True
-                errors+=['Els dos correus no coincideixen, siusplau, torna a intentar-ho.']
-            else:
-                User.objects.all().filter(username=user_name).update(email = mail1)
+            User.objects.all().filter(username=user_name).update(email=mail1)
         elif codi == 'actualitzaNom':
             nom1 = request.POST['first_name']
-            nom2 = request.POST['first_name1']
-            if nom1 != nom2:
-                err_Nom = True
-                errors+=['Els dos noms no coincideixen, siusplau, torna a intentar-ho.']
-            else:
-                if nom1 == user_name:
-                    err_Nom = True
-                    errors+=['El nom no pot coincidir amb el nom d\'usuari.']
-                else:
-                    User.objects.all().filter(username=user_name).update(first_name=nom1)
+            User.objects.all().filter(username=user_name).update(first_name=nom1)
         elif codi== 'actualitzaCognom':
             cognom1 = request.POST['last_name']
-            cognom2 = request.POST['last_name1']
-            if cognom1 != cognom2:
-                err_cognom = True
-                errors+=['Els cognoms no coincideixen, siusplau, torna a intentar-ho.']
-            else:
-                User.objects.all().filter(username=user_name).update(last_name=cognom1)
-
+            User.objects.all().filter(username=user_name).update(last_name=cognom1)
         elif codi == 'actualitzaContrassenya':
             password1=request.POST['password']
-            password2=request.POST['password1']
-            if password1 != password2:
-                err_passwd = True
-                errors+=['Les contrassenyes no coincideixen, siusplau, torna a intentar-ho.']
-            else:
-                first_pass = User.objects.all().filter(username=user_name)[0].password.split('$')
-                hasher = first_pass[0]
-                salt = first_pass[1]  # grabbing salt from the first password of the database
-                User.objects.all().filter(username=user_name).update(password=make_password(password1, salt, hasher))
-        if not errors:
-            return redirect("/v1/geoInfoSystem/el_meu_espai/")
-        else:
-            return render(request, "usuaris/updateUsuari.html", {'chMail': err_mail, 'chNom': err_Nom, 'chCog': err_cognom, 'chPass': err_passwd, 'errors': errors})
+            first_pass = User.objects.all().filter(username=user_name)[0].password.split('$')
+            hasher = first_pass[0]
+            salt = first_pass[1]  # grabbing salt from the first password of the database
+            User.objects.all().filter(username=user_name).update(password=make_password(password1, salt, hasher))
+        return redirect("/v1/geoInfoSystem/el_meu_espai/")
     else:
         codi = urllib.parse.unquote(codi)
         codiTallat = codi.split()
@@ -1152,7 +1119,106 @@ def updateUsuari(request, codi):
         chPass = False
         if codiTallat[3].isupper():
             chPass = True
-        return render(request, "usuaris/updateUsuari.html",{'chMail':chMail, 'chNom':chNom, 'chCog':chCog, 'chPass':chPass, 'errors': errors})
+        return render(request, "usuaris/updateUsuari.html",{'chMail':chMail, 'chNom':chNom, 'chCog':chCog, 'chPass':chPass})
+
+def comprovar_mails_update_usuari_empty(request):
+    if request.method == 'GET':
+        mail1=request.GET['mail1']
+        mail2=request.GET['mail2']
+        data={}
+        data['tot_ok']='true'
+        if mail1 == "" or mail2 == "":
+            data['tot_ok']='false'
+        res_json=json.dumps(data)
+        return HttpResponse(res_json,content_type='json')
+
+def comprovar_mails_update_usuari(request):
+    if request.method == 'GET':
+        mail1 = request.GET['mail1']
+        mail2 = request.GET['mail2']
+        data={}
+        data['tot_ok']='true'
+        if mail1 != mail2:
+            data['tot_ok']='false'
+        else:
+            regex = '^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$'
+            if not re.search(regex, mail1) or not re.search(regex, mail2):
+                data['tot_ok']='false'
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
+
+def comprovar_noms_update_usuari_empty(request):
+    if request.method == 'GET':
+        nom1=request.GET['nom1']
+        nom2=request.GET['nom2']
+        data = {}
+        data['tot_ok'] = 'true'
+        if nom1 == "" or nom2 == "":
+            data['tot_ok'] = 'false'
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
+
+def comprovar_noms_update_usuari(request):
+    if request.method=='GET':
+        nom1=request.GET['nom1']
+        nom2=request.GET['nom2']
+        nomUsuari = request.GET['nomUsuari']
+        data={}
+        data['tot_ok'] = 'true'
+        if nom1 != nom2:
+            data['tot_ok']='false'
+        else:
+            if nom1 == nomUsuari:
+                data['tot_ok']='false'
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
+
+def comprovar_cognom_update_usuari_empty(request):
+    if request.method == 'GET':
+        cognom1=request.GET['cognom1']
+        cognom2=request.GET['cognom2']
+        data = {}
+        data['tot_ok'] = 'true'
+        if cognom1 == "" or cognom2 == "":
+            data['tot_ok'] = 'false'
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
+
+def comprovar_cognom_update_usuari(request):
+    if request.method == 'GET':
+        cognom1=request.GET['cognom1']
+        cognom2=request.GET['cognom2']
+        data={}
+        data['tot_ok'] = 'true'
+        if cognom1 != cognom2:
+            data['tot_ok']='false'
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
+
+def comprovar_contrassenya_update_usuari_empty(request):
+    if request.method == 'GET':
+        passwd1=request.GET['passwd1']
+        passwd2=request.GET['passwd2']
+        data = {}
+        data['tot_ok'] = 'true'
+        if passwd1 == "" or passwd2 == "":
+            data['tot_ok'] = 'false'
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
+
+def comprovar_contrassenya_update_usuari(request):
+    if request.method == 'GET':
+        passwd1=request.GET['passwd1']
+        passwd2=request.GET['passwd2']
+        data={}
+        data['tot_ok'] = 'true'
+        if passwd1 != passwd2:
+            data['tot_ok']='false'
+        else:
+            if len(passwd1) < 8:
+                data['tot_ok']='false'
+        res_json=json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
 
 def baixa(request):
     curr_usr = request.user

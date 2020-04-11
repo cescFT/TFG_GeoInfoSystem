@@ -6,11 +6,11 @@
     <br>
     <div style="text-align: center">
         {%if user.first_name and user.last_name %}
-        <h1>Pàgina del perfil personal de <b>{{user.first_name}} {{user.last_name}}</b></h1>
+        <h1>Perfil personal de <b>{{user.first_name}} {{user.last_name}}</b></h1>
         {% elif user.first_name and not user.last_name %}
-        <h1>Pàgina del perfil personal de <b>{{user.first_name}}</b></h1>
+        <h1>Perfil personal de <b>{{user.first_name}}</b></h1>
         {%else%}
-        <h1>Pàgina del perfil personal de <b>{{user.username}}</b></h1>
+        <h1>Perfil personal de <b>{{user.username}}</b></h1>
         {% endif %}
     </div>
     <hr>
@@ -31,7 +31,7 @@
                     {% if user.email %}
                         {{user.email}}
                     {% else %}
-                        <a href="/v1/geoInfoSystem/actualitzar_camps/E%20n%20c%20p/">Afegeix correu.</a>
+                        <a href="/v1/geoInfoSystem/actualitzar_camps/E%20n%20c%20p/">Afegeix correu</a>.
                     {% endif %}
                 </div>
             </div>
@@ -43,7 +43,7 @@
                     {% if user.first_name %}
                         {{user.first_name}}
                     {% else %}
-                        <a href="/v1/geoInfoSystem/actualitzar_camps/e%20N%20c%20p/">Afegeix nom.</a>
+                        <a href="/v1/geoInfoSystem/actualitzar_camps/e%20N%20c%20p/">Afegeix nom</a>.
                     {% endif %}
                 </div>
             </div>
@@ -55,7 +55,7 @@
                     {%if user.last_name%}
                         {{user.last_name}}
                     {%else%}
-                        <a href="/v1/geoInfoSystem/actualitzar_camps/e%20n%20C%20p/">Afegeix cognom.</a>
+                        <a href="/v1/geoInfoSystem/actualitzar_camps/e%20n%20C%20p/">Afegeix cognom</a>.
                     {%endif%}
                 </div>
             </div>
