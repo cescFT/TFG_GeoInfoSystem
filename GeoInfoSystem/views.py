@@ -1078,7 +1078,10 @@ def logout(request):
 
 @login_required(login_url='/v1/geoInfoSystem/inicia_sessio/')
 def profilePage(request):
-    return render(request, "usuaris/profilePage.html", {})
+    fk_rand_punt_interes=random.choices(list(local.objects.all().values_list('localitzacio_id', flat=True)))[0]
+    local_rand=local.objects.all().filter(localitzacio_id=fk_rand_punt_interes)[0]
+    p_interes=puntInteres.objects.all().filter(id=fk_rand_punt_interes)[0]
+    return render(request, "usuaris/profilePage.html", {'latitud':str(p_interes.latitud), 'longitud':str(p_interes.longitud), 'nomLocal':local_rand.nomLocal})
 
 
 @login_required(login_url='/v1/geoInfoSystem/inicia_sessio/')
