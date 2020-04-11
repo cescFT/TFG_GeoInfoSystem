@@ -4,6 +4,7 @@
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/updateUsuari.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/updateUsuari.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -311,7 +312,7 @@
       <workItem from="1586336848180" duration="21277000" />
       <workItem from="1586424095331" duration="19941000" />
       <workItem from="1586511005785" duration="20032000" />
-      <workItem from="1586595069824" duration="18246000" />
+      <workItem from="1586595069824" duration="18879000" />
     </task>
     <servers />
   </component>

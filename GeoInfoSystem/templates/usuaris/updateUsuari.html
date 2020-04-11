@@ -72,21 +72,38 @@
         </div>
     </div>
 {%elif chCog %}
-    <h1>Canvi de cognom</h1>
-    <p>En el següent formulari tens la oportunitat d'afegir els cognoms</p>
-    <div id="errorsCognom"></div>
-<form id="form_update_cognom" method="POST" action="/v1/geoInfoSystem/actualitzar_camps/actualitzaCognom/">
-    {% csrf_token %}
-    <div><p>Nou cognom:</p></div>
-    <input type="text"  id="last_name"  onkeyup="checkEmptySurnames()"  name="last_name" placeholder="Cognom" required>
-    <div><p>Repeteix el nou cognom:</p></div>
-    <input type="text"  id="last_name1" onkeyup="checkEmptySurnames()"  name="last_name1" placeholder="Repeteix cognom" required>
-</form>
-<button type="submit" name="submit_update"  onclick="checkSurnames()"  id="bttn_update_surname" class="btn btn-success" disabled>Actualitza el Cognom</button>
-
-
-
-
+    <h2>Canvi de cognom</h2>
+    <p style="margin-left: 25px">En el següent formulari tens la oportunitat d'afegir els cognoms</p>
+    <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
+        <div class="form-group border p-3">
+            <div id="errorsCognom"></div>
+            <br>
+            <form id="form_update_cognom" method="POST" action="/v1/geoInfoSystem/actualitzar_camps/actualitzaCognom/">
+                {% csrf_token %}
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm">
+                            <label><b>Nou cognom:</b></label>
+                        </div>
+                        <div class="col-sm">
+                            <input type="text"  id="last_name"  onkeyup="checkEmptySurnames()"  name="last_name" placeholder="Cognom" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-sm">
+                            <label><b>Repeteix el nou cognom:</b></label>
+                        </div>
+                        <div class="col-sm">
+                            <input type="text"  id="last_name1" onkeyup="checkEmptySurnames()"  name="last_name1" placeholder="Repeteix cognom" required>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="text-center"><button type="submit" name="submit_update"  onclick="checkSurnames()"  id="bttn_update_surname" class="btn btn-success" disabled><i class="fa fa-edit"></i> Actualitza el Cognom</button></div>
+        </div>
+    </div>
 {%elif chPass %}
     <h1>Canvi de contrassenya</h1>
     <p>En el següent formulari tens la oportunitat de canviar la contrassenya</p>

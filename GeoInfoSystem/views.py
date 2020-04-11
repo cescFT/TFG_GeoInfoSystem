@@ -1107,6 +1107,8 @@ def updateUsuari(request, codi):
     else:
         codi = urllib.parse.unquote(codi)
         codiTallat = codi.split()
+        if codiTallat[0].islower() and codiTallat[1].islower() and codiTallat[2].islower() and codiTallat[3].islower():
+            return render(request, 'errors/ErrorFile.html', {})
         chMail = False
         if codiTallat[0].isupper():
             chMail = True
