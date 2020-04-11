@@ -2,55 +2,90 @@
 {% block title %} El meu espai - {{ user.username }}{% endblock %}
 {% block content %}
 
-{%if user.first_name and user.last_name %}
-<h1>Espai reservat per a visualitzar la informació personal de: <b>{{user.first_name}} {{user.last_name}}</b></h1>
-{% elif user.first_name and not user.last_name %}
-<h1>Espai reservat per a visualitzar la informació personal de: <b>{{user.first_name}}</b></h1>
-{%else%}
-<h1>Espai reservat per a visualitzar la informació personal de: <b>{{user.username}}</b></h1>
-{% endif %}
+<div class="container">
+    <br>
+    <div style="text-align: center">
+        {%if user.first_name and user.last_name %}
+        <h1>Pàgina del perfil personal de <b>{{user.first_name}} {{user.last_name}}</b></h1>
+        {% elif user.first_name and not user.last_name %}
+        <h1>Pàgina del perfil personal de <b>{{user.first_name}}</b></h1>
+        {%else%}
+        <h1>Pàgina del perfil personal de <b>{{user.username}}</b></h1>
+        {% endif %}
+    </div>
+    <hr>
+    <h2>Informació personal</h2>
+    <div class="row">
+        <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;" class="card card-body">
+            <div class="row">
+                <div class="col-sm">
+                    <label><b>Nom d'Usuari</b></label>
+                </div>
+                <div class="col-sm" style="margin-right: 750px">{{user.username}}</div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <label><b>Correu electrònic</b></label>
+                </div>
+                <div class="col-sm" style="margin-right: 750px">
+                    {% if user.email %}
+                        {{user.email}}
+                    {% else %}
+                        <a href="/v1/geoInfoSystem/actualitzar_camps/E%20n%20c%20p/">Afegeix correu.</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <label><b>Nom</b></label>
+                </div>
+                <div class="col-sm" style="margin-right: 750px">
+                    {% if user.first_name %}
+                        {{user.first_name}}
+                    {% else %}
+                        <a href="/v1/geoInfoSystem/actualitzar_camps/e%20N%20c%20p/">Afegeix nom.</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm">
+                    <label><b>Cognom</b></label>
+                </div>
+                <div class="col-sm" style="margin-right: 750px">
+                    {%if user.last_name%}
+                        {{user.last_name}}
+                    {%else%}
+                        <a href="/v1/geoInfoSystem/actualitzar_camps/e%20n%20C%20p/">Afegeix cognom.</a>
+                    {%endif%}
+                </div>
+            </div>
+            <br>
+            <label><b>Canvi de contrassenya <i class="fa fa-edit"></i></b></label>
+            <p style="margin-left: 15px">En cas d'haver detectat algun problema de seguretat, pots canviar-la en qualsevol moment fent click <a href="/v1/geoInfoSystem/actualitzar_camps/e%20n%20c%20P/">aqui</a></p>
+            <br>
+            <div class="text-center"><label><b><i class="fa fa-clock-o" aria-hidden="true"></i></b> {{user.last_login}}</label></div>
+        </div>
+    </div>
+</div>
+<br>
+<div class="container">
+    <h2>Accions reservades</h2>
+<div class="row">
+                <br>
+                <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;" class="card card-body">
+                    {% if user.is_staff and user.is_superuser %}
+                       <a href="/v1/geoInfoSystem/nouPunt/">Afegir nous punts</a>
+                       <a href="/admin" type="button">Click aqui per anar a la pàgina administrativa del lloc web.</a>
+                    {% endif %}
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalBaixa">Donar-me de baixa del lloc web.</button>
 
-<p>En aquest apartat pots modificar la contrassenya o correu electrònic. (De moment)</p>
-
-<h2>Informació personal:</h2>
-<div>
-    <label>Nom d'usuari: {{user.username}}</label>
-    {%if user.email%}
-         <label>Correu electrònic: {{user.email}}</label>
-    {%else%}
-        <label>Sembla ser que has ingressat un correu electrònic. Vols afegir-lo ara?</label>
-        <a href="/v1/geoInfoSystem/actualitzar_camps/E%20n%20c%20p/">Afegeix correu.</a>
-    {%endif%}
-    {%if user.first_name%}
-        <label>Nom: {{user.first_name}}</label>
-    {%else%}
-        <label>Sembla ser que has ingressat el teu nom. Vols afegir-lo ara?</label>
-        <a href="/v1/geoInfoSystem/actualitzar_camps/e%20N%20c%20p/">Afegeix nom.</a>
-    {%endif%}
-    {%if user.last_name%}
-        <label>Cognom: {{user.last_name}}</label>
-    {%else%}
-        <label>Sembla ser que has ingressat el teu cognom. Vols afegir-lo ara?</label>
-        <a href="/v1/geoInfoSystem/actualitzar_camps/e%20n%20C%20p/">Afegeix cognom.</a>
-    {%endif%}
-    <p>En cas d'haver detectat algun problema amb la contrassenya, pots canviar-la en qualsevol moment fent click <a href="/v1/geoInfoSystem/actualitzar_camps/e%20n%20c%20P/">aqui</a></p>
+                </div>
+            </div>
 </div>
 
 
-{%if user.is_staff and user.is_superuser%}
-<a href="/admin" type="button">Click aqui per anar a la pàgina administrativa del lloc web.</a>
-{%endif%}
-{% if user.is_staff and user.is_superuser %}
-                <a href="/v1/geoInfoSystem/nouPunt/"><i class="fa fa-magic"></i> Afegir nous punts</a>
-            {% endif %}
-
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalBaixa">
-  Donar-me de baixa del lloc web.
-</button>
-
-
 <div class="modal fade" id="modalBaixa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
       <div class="modal-header">
         <h5 class="modal-title" id="exampleModalLabel">Donar-me de baixa</h5>
@@ -59,6 +94,7 @@
         </button>
       </div>
       <div class="modal-body">
+          <div class="text-center" style="font-size:50px; color:#ff6300"><i class="fa fa-exclamation-triangle" aria-hidden="true"></i></div>
         <p> Vols donar-te de baixa del lloc web? Si ho fas, hauràs de tornar a registrar-te i a més perdràs accés als espais reservats per a usuaris.</p>
       </div>
       <div class="modal-footer">
@@ -66,12 +102,6 @@
       </div>
     </div>
   </div>
-</div>
-
-
-<div>
-    <p>Última connexió establerta:</p>
-    <p>{{user.last_login}}</p>
 </div>
 
 {% endblock %}
