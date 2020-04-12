@@ -954,14 +954,16 @@ function initMap() {
                 success:
                     function (data){
                         var data1 = Object.values(data);
-                        console.log(data1);
+                        //console.log(data1);
                         for(var i = 0; i<7; i++){
                             let infoReal = Object.values(data1[i]);
                             if(infoReal[1] !=='0'){
                                 let info = JSON.parse(infoReal[0]);
                                 let infoToDo = [];
                                 for (informacio of info){
+                                    //console.log(informacio);
                                     infoToDo.push({
+                                        'fk_puntInteres': informacio.fields.localitzacio,
                                         'nomLocal' : informacio.fields.nomLocal,
                                         'anyConstruccio' : informacio.fields.anyConstruccio,
                                         'descripcio' : informacio.fields.descripcio
@@ -971,6 +973,7 @@ function initMap() {
                                 let infoPuntInteres = [];
                                 for(pInteres of infoPI){
                                     infoPuntInteres.push({
+                                        'pk':pInteres.pk,
                                         'latitud' : pInteres.fields.latitud,
                                         'longitud' : pInteres.fields.longitud,
                                         'latitudS':pInteres.fields.latitud.toString(),
@@ -984,15 +987,7 @@ function initMap() {
                                     let liAnyConstruccio = document.createElement("LI");
                                     let liDescripcio = document.createElement("LI");
                                     let liLinkToSpecificWeb = document.createElement("LI");
-                                    let url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+infoToDo[j]['nomLocal']+"/"+infoPuntInteres[j]['latitudS']+"/"+infoPuntInteres[j]['longitudS']+"/";
-                                    url = encodeURI(url);
-                                    let link  = document.createElement("A");
-                                    link.setAttribute("href", url);
-                                    link.setAttribute("target", "_blank");
-                                    link.setAttribute("rel", "noopener noreferrer");
-                                    let tLink = document.createTextNode("Click aquí per a veure més informació.");
-                                    link.appendChild(tLink);
-                                    liLinkToSpecificWeb.appendChild(link);
+                                    crearLink(infoToDo[j],infoPuntInteres, liLinkToSpecificWeb);
                                     let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
                                     let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
                                     let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
@@ -1044,6 +1039,25 @@ function initMap() {
         });
     }
 
+    function crearLink(local, puntsInteres, linkIE){
+        for(var n=0; n<puntsInteres.length; n++){
+            if(local['fk_puntInteres'] == puntsInteres[n]['pk']){
+                let url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+local['nomLocal']+"/"+puntsInteres[n]['latitudS']+"/"+puntsInteres[n]['longitudS']+"/";
+                url = encodeURI(url);
+                console.log(url);
+                let link  = document.createElement("A");
+                link.setAttribute("href", url);
+                link.setAttribute("target", "_blank");
+                link.setAttribute("rel", "noopener noreferrer");
+                let tLink = document.createTextNode("Click aquí per a veure més informació.");
+                link.appendChild(tLink);
+                linkIE.appendChild(link);
+                break;
+            }
+        }
+        console.log(local);
+        console.log(puntsInteres);
+    }
 
 
     function poblacionsPerProvincia(){
