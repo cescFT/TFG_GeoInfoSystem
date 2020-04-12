@@ -161,71 +161,94 @@
                         <p class="same-line-block-elem1"><input class="same-line-block-elem2" type="checkbox" onclick="canviEstat()" name="actiu" id="esActiu"> <b>Actiu</b></p>
                     </div>
                 </div>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    <!--<button type="button" class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="top" title="Consultes sobre el sistema GIS."  id="bttnconsultes" value="Consultes sobre el sistema GIS." onclick="mostrarPanellIntroduccioDades()">Fer consultes</button>-->
+                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat de la consulta actual." onclick="switchStatisticsData(this.id)" id="bttnconsultaActual"  value="Resultat de la consulta actual">Consulta Actual</button>
+                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat d'aplicar un poble diferent al donat, actiu negat i no mateixa categoria." onclick="switchStatisticsData(this.id)" id="bttntotcontrari"  value="Resultat d'aplicar un poble diferent al donat, actiu negat i no mateixa categoria.">Resultat contrari</button>
+                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Totes les dades." onclick="switchStatisticsData(this.id)"  id="bttntotesdades"   value="Totes les dades.">Consultar tota la informació</button>
+                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)." onclick="switchStatisticsData(this.id)" id="bttnmateixaCiutat"  value="Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)">Locals mateixa ciutat</button>
+                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultats obtinguts deprès d'haver negat si és actiu i mantenint la mateixa categoria." onclick="switchStatisticsData(this.id)" id="bttnactiunegatMateixaCategoria"  value="Resultats obtinguts deprès d'haver negat si és actiu i mantenint la mateixa categoria">Locals mateixa categoria</button>
+                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat obtingut de aplicar el mateix poble amb l'actiu que s'ha donat i una categoria diferent a la donada.." onclick="switchStatisticsData(this.id)" id="bttnlocalsdiferents"  value="Resultat obtingut de aplicar el mateix poble amb l'actiu que s'ha donat i una categoria diferent a la donada.">Locals diferent categoria </button>
+                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat de aplicar altres pobles i actiu que s'ha donat i la mateixa categoria donada." onclick="switchStatisticsData(this.id)" id="bttnlocalsaltrespobles"  value="Resultat de aplicar altres pobles i actiu que s'ha donat i la mateixa categoria donada.">Locals altres pobles i categoria actual</button>
+                </div>
             </div>
         </div>
     </div>
+    <br>
+    <div id="containerInformatiu" class="container">
+        <div class="card card-body">
+            <p>Apreta els botons de la botonera per anar veien els resultats.</p>
+        </div>
+    </div>
     <div class="container">
-        <div id="resultatsCerca">
-            <div class="btn-group" role="group" aria-label="Basic example">
-                <!--<button type="button" class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="top" title="Consultes sobre el sistema GIS."  id="bttnconsultes" value="Consultes sobre el sistema GIS." onclick="mostrarPanellIntroduccioDades()">Fer consultes</button>-->
-                <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat de la consulta actual." onclick="switchStatisticsData(this.id)" id="bttnconsultaActual"  value="Resultat de la consulta actual">Consulta Actual</button>
-                <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat d'aplicar un poble diferent al donat, actiu negat i no mateixa categoria." onclick="switchStatisticsData(this.id)" id="bttntotcontrari"  value="Resultat d'aplicar un poble diferent al donat, actiu negat i no mateixa categoria.">Resultat contrari</button>
-                <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Totes les dades." onclick="switchStatisticsData(this.id)"  id="bttntotesdades"   value="Totes les dades.">Consultar tota la informació</button>
-                <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)." onclick="switchStatisticsData(this.id)" id="bttnmateixaCiutat"  value="Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)">Locals mateixa ciutat</button>
-                <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultats obtinguts deprès d'haver negat si és actiu i mantenint la mateixa categoria." onclick="switchStatisticsData(this.id)" id="bttnactiunegatMateixaCategoria"  value="Resultats obtinguts deprès d'haver negat si és actiu i mantenint la mateixa categoria">Locals mateixa categoria</button>
-                <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat obtingut de aplicar el mateix poble amb l'actiu que s'ha donat i una categoria diferent a la donada.." onclick="switchStatisticsData(this.id)" id="bttnlocalsdiferents"  value="Resultat obtingut de aplicar el mateix poble amb l'actiu que s'ha donat i una categoria diferent a la donada.">Locals diferent categoria </button>
-                <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat de aplicar altres pobles i actiu que s'ha donat i la mateixa categoria donada." onclick="switchStatisticsData(this.id)" id="bttnlocalsaltrespobles"  value="Resultat de aplicar altres pobles i actiu que s'ha donat i la mateixa categoria donada.">Locals altres pobles i categoria actual</button>
+        <div id="resTOT1" hidden><!--RESULTATS CONSULTA ACTUAL-->
+            <div class="card card-group text-center">
+                <b style="font-size: 30px; margin:0px auto;">Resultat de la consulta actual</b>
             </div>
-
-            <div id="resTOT1" hidden>
-                <ul class="list-group" id="resultats1">
-                    <li class="list-group-item" id="li-numElems1"><b id="textNumElems1">Nombre de resultats: </b></li>
-                    <li class="nav-divider" id="li-divider1" style="background-color: #2A3B56" hidden></li>
-                </ul>
+            <ul class="list-group" id="resultats1">
+                <li class="list-group-item" id="li-numElems1"><b id="textNumElems1">Nombre de resultats: </b></li>
+                <li class="nav-divider" id="li-divider1" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
+            </ul>
+        </div>
+        <div id="resTOT2" hidden> <!--RESULTATS LOCALS MATEIXA CIUTAT-->
+            <div class="card card-group text-center">
+                <b style="font-size: 30px; margin:0px auto;">Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)</b>
             </div>
-            <div id="resTOT2" hidden>
-                <ul class="list-group" id="resultats2">
-                    <li class="list-group-item" id="li-numElems2"><b id="textNumElems2">Nombre de resultats: </b></li>
-                    <li class="nav-divider" id="li-divider2" style="background-color: #2A3B56" hidden></li>
-                </ul>
+            <ul class="list-group" id="resultats2">
+                <li class="list-group-item" id="li-numElems2"><b id="textNumElems2">Nombre de resultats: </b></li>
+                <li class="nav-divider" id="li-divider2" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
+            </ul>
+        </div>
+        <div id="resTOT3" hidden> <!--RESULTATS LOCALS MATEIXA CATEGORIA-->
+            <div class="card card-group text-center">
+                <b style="font-size: 30px; margin:0px auto;">Resultats obtinguts actiu negat, mateixa categoria i poble</b>
             </div>
-            <div id="resTOT3" hidden>
-                <ul class="list-group" id="resultats3">
-                    <li class="list-group-item" id="li-numElems3"><b id="textNumElems3">Nombre de resultats: </b></li>
-                    <li class="nav-divider" id="li-divider3" style="background-color: #2A3B56" hidden></li>
-                </ul>
+            <ul class="list-group" id="resultats3">
+                <li class="list-group-item" id="li-numElems3"><b id="textNumElems3">Nombre de resultats: </b></li>
+                <li class="nav-divider" id="li-divider3" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
+            </ul>
+        </div>
+        <div id="resTOT4" hidden> <!--RESULTATS LOCALS DIFERENT CATEGORIA-->
+            <div class="card card-group text-center">
+                <b style="font-size: 30px; margin:0px auto;">Resultat obtingut mateix poble i actiu, però diferent categoria</b>
             </div>
-            <div id="resTOT4" hidden>
-                <ul class="list-group" id="resultats4">
-                    <li class="list-group-item" id="li-numElems4"><b id="textNumElems4">Nombre de resultats: </b></li>
-                    <li class="nav-divider" id="li-divider4" style="background-color: #2A3B56" hidden></li>
-                </ul>
+            <ul class="list-group" id="resultats4">
+                <li class="list-group-item" id="li-numElems4"><b id="textNumElems4">Nombre de resultats: </b></li>
+                <li class="nav-divider" id="li-divider4" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
+            </ul>
+        </div>
+        <div id="resTOT5" hidden> <!--RESULTATS LOCALS ALTRES POBLES I CATEGORIA ACTUAL-->
+            <div class="card card-group text-center">
+                <b style="font-size: 30px; margin:0px auto;">Resultat de mantenir mateix actiu i categoria, però canviant la localitat</b>
             </div>
-            <div id="resTOT5" hidden>
-                <ul class="list-group" id="resultats5">
-                    <li class="list-group-item" id="li-numElems5"><b id="textNumElems5">Nombre de resultats: </b></li>
-                    <li class="nav-divider" id="li-divider5" style="background-color: #2A3B56" hidden></li>
-                </ul>
+            <ul class="list-group" id="resultats5">
+                <li class="list-group-item" id="li-numElems5"><b id="textNumElems5">Nombre de resultats: </b></li>
+                <li class="nav-divider" id="li-divider5" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
+            </ul>
+        </div>
+        <div id="resTOT6" hidden> <!--RESULTATS RESULTAT CONTRARI-->
+            <div class="card card-group text-center">
+                <b style="font-size: 30px; margin:0px auto;">Resultat de negar totes les dades d'entrada</b>
             </div>
-            <div id="resTOT6" hidden>
-                <ul class="list-group" id="resultats6">
-                    <li class="list-group-item" id="li-numElems6"><b id="textNumElems6">Nombre de resultats: </b></li>
-                    <li class="nav-divider" id="li-divider6" style="background-color: #2A3B56" hidden></li>
-                </ul>
+            <ul class="list-group" id="resultats6">
+                <li class="list-group-item" id="li-numElems6"><b id="textNumElems6">Nombre de resultats: </b></li>
+                <li class="nav-divider" id="li-divider6" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
+            </ul>
+        </div>
+        <div id="resTOT7" hidden> <!--RESULTATS CONSULTAR TOTA LA INFORMACIÓ-->
+            <div class="card card-group text-center">
+                <b style="font-size: 30px; margin:0px auto;">Totes les dades del sistema GIS</b>
             </div>
-            <div id="resTOT7" hidden>
-                <ul class="list-group" id="resultats7">
-                    <li class="list-group-item" id="li-numElems7"><b id="textNumElems7">Nombre de resultats: </b></li>
-                    <li class="nav-divider" id="li-divider7" style="background-color: #2A3B56" hidden></li>
-                </ul>
-            </div>
-
-
+            <ul class="list-group" id="resultats7">
+                <li class="list-group-item" id="li-numElems7"><b id="textNumElems7">Nombre de resultats: </b></li>
+                <li class="nav-divider" id="li-divider7" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
+            </ul>
         </div>
     </div>
     <input type="hidden" name="categoria" id="categoriaSeleccionada" value="Restauració">
     <input type="hidden" name="esActiu" id="estat" value="False">
     <input type="hidden" name="poblacio" id="pobleSeleccionat" value="Aiguamúrcia (Alt Camp), Tarragona">
+    <br><br>
 <script>
     var map;
 // Initialize and add the map
@@ -352,40 +375,56 @@ function initMap() {
                 document.getElementById("resTOT5").hidden = true;
                 document.getElementById("resTOT6").hidden = true;
                 document.getElementById("resTOT7").hidden = true;
-                document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
+                if(document.getElementById("resTOT1").hidden == false){
+                    document.getElementById("containerInformatiu").hidden=true;
+                }else{
+                    document.getElementById("containerInformatiu").hidden = false;
+                }
                 break;
             case "bttnmateixaCiutat":
                 //console.log('consulta de la mateixa ciutat');
                 document.getElementById("resTOT1").hidden = true;
-                document.getElementById("resTOT2").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                document.getElementById("resTOT2").hidden = document.getElementById("resTOT2").hidden == true ? false : true;
                 document.getElementById("resTOT3").hidden = true;
                 document.getElementById("resTOT4").hidden = true;
                 document.getElementById("resTOT5").hidden = true;
                 document.getElementById("resTOT6").hidden = true;
                 document.getElementById("resTOT7").hidden = true;
-                document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
+                if(document.getElementById("resTOT2").hidden == false){
+                    document.getElementById("containerInformatiu").hidden=true;
+                }else{
+                    document.getElementById("containerInformatiu").hidden = false;
+                }
                 break;
             case "bttnactiunegatMateixaCategoria":
                 //console.log('consulta actiu negat i la mateixa categoria');
                 document.getElementById("resTOT1").hidden = true;
                 document.getElementById("resTOT2").hidden = true;
-                document.getElementById("resTOT3").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                document.getElementById("resTOT3").hidden = document.getElementById("resTOT3").hidden == true ? false : true;
                 document.getElementById("resTOT4").hidden = true;
                 document.getElementById("resTOT5").hidden = true;
                 document.getElementById("resTOT6").hidden = true;
                 document.getElementById("resTOT7").hidden = true;
-                document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
+                if(document.getElementById("resTOT3").hidden == false){
+                    document.getElementById("containerInformatiu").hidden=true;
+                }else{
+                    document.getElementById("containerInformatiu").hidden = false;
+                }
                 break;
             case "bttnlocalsdiferents":
                 //console.log('consulta actiu que em ve categoria diferent mateixa ciutat');
                 document.getElementById("resTOT1").hidden = true;
                 document.getElementById("resTOT2").hidden = true;
                 document.getElementById("resTOT3").hidden = true;
-                document.getElementById("resTOT4").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                document.getElementById("resTOT4").hidden = document.getElementById("resTOT4").hidden == true ? false : true;
                 document.getElementById("resTOT5").hidden = true;
                 document.getElementById("resTOT6").hidden = true;
                 document.getElementById("resTOT7").hidden = true;
-                document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
+                if(document.getElementById("resTOT4").hidden == false){
+                    document.getElementById("containerInformatiu").hidden=true;
+                }else{
+                    document.getElementById("containerInformatiu").hidden = false;
+                }
                 break;
             case "bttnlocalsaltrespobles":
                 //console.log('consulta altres pobles amb la mateixa categoria');
@@ -393,10 +432,14 @@ function initMap() {
                 document.getElementById("resTOT2").hidden = true;
                 document.getElementById("resTOT3").hidden = true;
                 document.getElementById("resTOT4").hidden = true;
-                document.getElementById("resTOT5").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                document.getElementById("resTOT5").hidden = document.getElementById("resTOT5").hidden == true ? false : true;
                 document.getElementById("resTOT6").hidden = true;
                 document.getElementById("resTOT7").hidden = true;
-                document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
+                if(document.getElementById("resTOT5").hidden == false){
+                    document.getElementById("containerInformatiu").hidden=true;
+                }else{
+                    document.getElementById("containerInformatiu").hidden = false;
+                }
                 break;
             case "bttntotcontrari":
                 //console.log('resultat contrari');
@@ -405,9 +448,13 @@ function initMap() {
                 document.getElementById("resTOT3").hidden = true;
                 document.getElementById("resTOT4").hidden = true;
                 document.getElementById("resTOT5").hidden = true;
-                document.getElementById("resTOT6").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
+                document.getElementById("resTOT6").hidden = document.getElementById("resTOT6").hidden == true ? false : true;
                 document.getElementById("resTOT7").hidden = true;
-                document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
+                if(document.getElementById("resTOT6").hidden == false){
+                    document.getElementById("containerInformatiu").hidden=true;
+                }else{
+                    document.getElementById("containerInformatiu").hidden = false;
+                }
                 break;
             case "bttntotesdades":
                 //console.log('dades db');
@@ -417,15 +464,94 @@ function initMap() {
                 document.getElementById("resTOT4").hidden = true;
                 document.getElementById("resTOT5").hidden = true;
                 document.getElementById("resTOT6").hidden = true;
-                document.getElementById("resTOT7").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
-                document.getElementById("filtres").hidden = document.getElementById("filtres") == true ? false : true;
+                document.getElementById("resTOT7").hidden = document.getElementById("resTOT7").hidden == true ? false : true;
+                if(document.getElementById("resTOT7").hidden == false){
+                    document.getElementById("containerInformatiu").hidden=true;
+                }else{
+                    document.getElementById("containerInformatiu").hidden = false;
+                }
                 break;
         }
     }
 
+    function crearInformacio(id_div){
+        switch (id_div) {
+            case "resTOT1":
+                var div1 = document.createElement("DIV");
+                var b1 = document.createElement("B");
+                var t1 = document.createTextNode("Resultat de la consulta actual");
+                b1.setAttribute("style", "font-size: 30px; margin:0px auto;");
+                div1.setAttribute("class", "card card-group text-center");
+                b1.appendChild(t1);
+                div1.appendChild(b1);
+                document.getElementById(id_div).appendChild(div1);
+                break;
+            case "resTOT2":
+                var div2 = document.createElement("DIV");
+                var b2 = document.createElement("B");
+                var t2 = document.createTextNode("Resultat de negar totes les dades d'entrada");
+                b2.setAttribute("style", "font-size: 30px; margin:0px auto;");
+                div2.setAttribute("class", "card card-group text-center");
+                b2.appendChild(t2);
+                div2.appendChild(b2);
+                document.getElementById(id_div).appendChild(div2);
+                break;
+            case "resTOT3":
+                var div3 = document.createElement("DIV");
+                var b3 = document.createElement("B");
+                var t3 = document.createTextNode("Totes les dades del sistema GIS");
+                b3.setAttribute("style", "font-size: 30px; margin:0px auto;");
+                div3.setAttribute("class", "card card-group text-center");
+                b3.appendChild(t3);
+                div3.appendChild(b3);
+                document.getElementById(id_div).appendChild(div3);
+                break;
+            case "resTOT4":
+                var div4 = document.createElement("DIV");
+                var b4 = document.createElement("B");
+                var t4 = document.createTextNode("Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)");
+                b4.setAttribute("style", "font-size: 30px; margin:0px auto;");
+                div4.setAttribute("class", "card card-group text-center");
+                b4.appendChild(t4);
+                div4.appendChild(b4);
+                document.getElementById(id_div).appendChild(div4);
+                break;
+            case "resTOT5":
+                var div5 = document.createElement("DIV");
+                var b5 = document.createElement("B");
+                var t5 = document.createTextNode("Resultats obtinguts actiu negat, mateixa categoria i poble");
+                b5.setAttribute("style", "font-size: 30px; margin:0px auto;");
+                div5.setAttribute("class", "card card-group text-center");
+                b5.appendChild(t5);
+                div5.appendChild(b5);
+                document.getElementById(id_div).appendChild(div5);
+                break;
+            case "resTOT6":
+                var div6 = document.createElement("DIV");
+                var b6 = document.createElement("B");
+                var t6 = document.createTextNode("Resultat obtingut mateix poble i actiu, però diferent categoria");
+                b6.setAttribute("style", "font-size: 30px; margin:0px auto;");
+                div6.setAttribute("class", "card card-group text-center");
+                b6.appendChild(t6);
+                div6.appendChild(b6);
+                document.getElementById(id_div).appendChild(div6);
+                break;
+            case "resTOT7":
+                var div7 = document.createElement("DIV");
+                var b7 = document.createElement("B");
+                var t7 = document.createTextNode("Resultat de mantenir mateix actiu i categoria, però canviant la localitat");
+                b7.setAttribute("style", "font-size: 30px; margin:0px auto;");
+                div7.setAttribute("class", "card card-group text-center");
+                b7.appendChild(t7);
+                div7.appendChild(b7);
+                document.getElementById(id_div).appendChild(div7);
+                break;
+        }
+    }
     function netejarEstadistiques(){
         for(var i=1; i<=7; i++){
             document.getElementById("resTOT"+i).innerHTML='';
+            crearInformacio("resTOT"+i);
             let ulData = document.createElement("UL");
             let liData = document.createElement("LI");
             let liDivider = document.createElement("LI");
@@ -437,8 +563,10 @@ function initMap() {
             liData.setAttribute("id", "li-numElems"+i);
             liDivider.setAttribute("class", "nav-divider");
             liDivider.setAttribute("id", "li-divider"+i);
-            liDivider.setAttribute("style", "background-color: #2A3B56");
+            liDivider.setAttribute("style", "background-color: #2A3B56; list-style: none; color:#2A3B56;");
             liDivider.setAttribute("hidden", "true");
+            let tLiDivider = document.createTextNode("s");
+            liDivider.appendChild(tLiDivider);
             liData.appendChild(bInfo);
             ulData.setAttribute("class", "list-group");
             ulData.setAttribute("id", "resultats"+i);
@@ -533,7 +661,9 @@ function initMap() {
                                         if(j!==infoToDo.length-1){
                                             let separator=document.createElement("LI");
                                             separator.setAttribute("class", "nav-divider");
-                                            separator.setAttribute("style", "background-color: #2A3B56");
+                                            separator.setAttribute("style", "background-color: #2A3B56; list-style: none; color:#2A3B56;");
+                                            let tAuxLiDivider = document.createTextNode("s");
+                                            separator.appendChild(tAuxLiDivider);
                                             document.getElementById("resultats"+(i+1)).appendChild(separator);
                                         }
                                     }
@@ -630,7 +760,9 @@ function initMap() {
                                         if(j!==infoToDo.length-1){
                                             let separator=document.createElement("LI");
                                             separator.setAttribute("class", "nav-divider");
-                                            separator.setAttribute("style", "background-color: #2A3B56");
+                                            separator.setAttribute("style", "background-color: #2A3B56; list-style: none; color:#2A3B56;");
+                                            let tAuxDivider = document.createTextNode("s");
+                                            separator.appendChild(tAuxDivider);
                                             document.getElementById("resultats"+(i+1)).appendChild(separator);
                                         }
                                     }
@@ -725,7 +857,9 @@ function initMap() {
                                         if(j!==infoToDo.length-1){
                                             let separator=document.createElement("LI");
                                             separator.setAttribute("class", "nav-divider");
-                                            separator.setAttribute("style", "background-color: #2A3B56");
+                                            separator.setAttribute("style", "background-color: #2A3B56; list-style: none; color:#2A3B56;");
+                                            let tAux = document.createTextNode("s");
+                                            separator.appendChild(tAux);
                                             document.getElementById("resultats"+(i+1)).appendChild(separator);
                                         }
                                     }
@@ -777,6 +911,7 @@ function initMap() {
         //console.log(llPoblesTGN);
         var sPoble = document.createElement("SELECT");
         sPoble.setAttribute("id", "poblacioSeleccio");
+        sPoble.setAttribute("class", "form-control");
         sPoble.setAttribute("onchange", "guardarPoblacio()");
         divpobles.appendChild(sPoble);
         for(var j=0; j<llPoblesTGN.length; j++){
@@ -789,6 +924,7 @@ function initMap() {
 
         var sCategoria = document.createElement("SELECT");
         sCategoria.setAttribute("id", "tipusSeleccio");
+        sCategoria.setAttribute("class", "form-control");
         sCategoria.setAttribute("onchange", "guardarTipus()");
         divtipus.appendChild(sCategoria);
         for(var i=0; i<categoriesToDo.length; i++){
@@ -800,6 +936,7 @@ function initMap() {
         }
         var sProvincia = document.createElement("SELECT");
         sProvincia.setAttribute("id", "provinciaSeleccio");
+        sProvincia.setAttribute("class", "form-control");
         sProvincia.setAttribute("onchange", "poblacionsPerProvincia()");
         divProvincies.appendChild(sProvincia);
         for(var k=0; k<llProvincies.length; k++){
@@ -886,7 +1023,9 @@ function initMap() {
                                     if(j!== infoToDo.length-1){
                                         let separator=document.createElement("LI");
                                         separator.setAttribute("class", "nav-divider");
-                                        separator.setAttribute("style", "background-color: #2A3B56");
+                                        separator.setAttribute("style", "background-color: #2A3B56; list-style:none; color: #2A3B56;");
+                                        let t = document.createTextNode("s");
+                                        separator.appendChild(t);
                                         document.getElementById("resultats"+(i+1)).appendChild(separator);
                                     }
                                 }
