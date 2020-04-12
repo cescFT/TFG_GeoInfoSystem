@@ -82,8 +82,160 @@
             {% endif %}
         </div>
     </div>
-    <h1 class="text-center">Afegeix els punts nous al sistema GIS</h1>
+    <h1 class="text-center">Sistema GIS: Nous punts</h1>
     <hr>
+    <br>
+    <div class="container">
+        {% if errors|length > 0 %}
+        <div>
+            <p>HI HA ELS SEGÜENTS ERRORS:</p>
+            {% for error in errors %}
+                <p>* {{error}}</p>
+            {% endfor %}
+        </div>
+        {% endif %}
+            <h2><img src="https://img.icons8.com/ios-glyphs/100/000000/map-marker.png"/>Afegeix punts al sistema GIS</h2>
+            <div class="col-xs-12 col-md-8" style="float:none; margin:auto;"> <!--col-xs-12 col-md-8-->
+                <div id="map"></div>
+                <div class="text-center">
+                    <div class="btn-group" role="group">
+                        <button class="btn btn-outline-secondary" onclick="mostraLesCoordenadesUsuari()"><img style="height: 20px" src="https://img.icons8.com/ios-glyphs/30/000000/centre-of-gravity.png"/> Centrar mapa</button>
+                        <button class="btn btn-outline-secondary" onclick="eliminarTotsPuntsInteresNous()" id="boto_eliminarPunts"><i class="fa fa-eraser"></i> Esborrar els punts marcats</button>
+                        <button class="btn btn-outline-secondary" onclick="mostrarCoordenades()" id="boto_mostrarDades"><i class="fa fa-eye"></i> Mostra els punts</button>
+                    </div>
+                </div>
+                <div><p class="text-center" style="color: red" id="InformatiuNoPunts"></p></div>
+
+                <div class="container">
+                    <div id="nousPunts" style="float:none; margin:auto;" hidden>
+                        <div class="row">
+                            <div class="col-sm">
+                                <label for="puntsNous" class="font-weight-bold">Triar punt...</label>
+                            </div>
+                            <div class="col-sm">
+                                <select id="puntsNous" name="punts" class="form-control"></select>
+                            </div>
+                        </div>
+                        <div style="margin-left: 15px">
+                            <div class="btn-group" role="group">
+                                <div class="row">
+                                    <button class="btn btn-outline-danger" onclick="tancarSeleccio()" id="bttn_close"><i class="fa fa-times" aria-hidden="true"></i> Tanca selecció de punts</button>
+                                    <button class="btn btn-outline-success" onclick="dadesSeguents()" id="bttn_form_data_local"><i class="fa fa-arrow-right"></i> Següent</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+            <div id="dadesSeguents" hidden>
+                <div class="row form-row">
+                        <div style="float:none; margin:auto" class="card card-body">
+                            <div class="form-group">
+                                <form id="form_guardar_nou_punt" onsubmit="return checkValues()" method="POST" action="/v1/geoInfoSystem/nouPunt/">
+                                    {%csrf_token%}
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label class="font-weight-bold">Nom del local</label>
+                                            </div>
+                                            <div class="col-sm">
+                                                <input type="text" name="nomLocal" id="nomLocal" placeholder="Ex: Bar El Sindicat" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <textarea class="form-control" rows="3" name="descripcioLocal" id="descripcio" placeholder="Breu descripció del lloc."></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label class="font-weight-bold">Tipus</label>
+                                            </div>
+                                            <div class="col-sm">
+                                                <div id="tipusPunt"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label class="font-weight-bold">Superficie</label>
+                                            </div>
+                                            <div class="col-sm">
+                                                <input type="text" name="superficie" id="superficie" placeholder="Ex: 25.45" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label class="font-weight-bold">Província</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div id="selectProvincia">Selecciona la provincia:</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label class="font-weight-bold">Localitat</label>
+                                            </div>
+                                            <div class="col-sm">
+                                                <div id="ubicacio"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label class="form-weight-bold">Estat de Conservació</label>
+                                            </div>
+                                            <div class="col-sm">
+                                                <select id="puntuacioLloc" class="form-control" onchange="emmagatzemarPuntuacio()">
+                                                    <option value="0">0</option>
+                                                    <option value="1">1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label class="font-weight-bold">Any de construcció</label>
+                                            </div>
+                                            <div class="col-sm">
+                                                <input type="text" name="any" id="any" placeholder="Ex: 1714" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="text-center">
+                                        <div class="form-check">
+                                            <label class="font-weight-bold">Actiu </label>
+                                            <input type="checkbox" onclick="canviEstat()" name="actiu" id="esActiu">
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="llocActiu" id="botoActiu" value="False">
+                                    <input type="hidden" name="p" id="puntuacio" value="0">
+                                    <input type="hidden" name="tipus" id="categoriaPunt" value="Restauració"> <!--canviar per la primera categoria quan tingui les bones categories perq ara nse-->
+                                    <input type="hidden" name="poblacio" id="poblacioG" value="Aiguamúrcia (Alt Camp), Tarragona">
+                                    <input type="hidden" name="puntPerProcessar1" id="puntNou" value="a">
+                                    <input type="hidden" name="puntprocessarAux" id="puntAux" value="">
+                                    <input type="hidden" name="altresPunts" id="altresPunsNous" value="">
+                                    <input type="hidden" name="midaLlista" id="midaLlistatPunts" value="">
+                                    <div class="text-center"><button style="margin:0px auto;" onclick="guardarSeleccionat()" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Desar</button></div>
+                                </form>
+                            </div>
+                        </div>
+                </div>
+            </div>
+    </div>
     <br>
     <div id="instruccionscard" class="container">
         <div class="card card-body">
@@ -113,24 +265,6 @@
         </div>
         <br>
     </div>
-
-    <div class="container">
-        <div class="card card-body">
-            <h2><img src="https://img.icons8.com/ios-glyphs/100/000000/map-marker.png"/>Afegeix punts en el mapa</h2>
-            <div class="col-xs-12 col-md-8" style="float:none; margin:auto;"> <!--col-xs-12 col-md-8-->
-                <div id="map"></div>
-                <div class="btn-group" role="group">
-                    <button class="btn btn-outline-secondary" onclick="mostraLesCoordenadesUsuari()"><img style="height: 20px" src="https://img.icons8.com/ios-glyphs/30/000000/centre-of-gravity.png"/> Centrar mapa</button>
-                    <button class="btn btn-outline-secondary" onclick="eliminarTotsPuntsInteresNous()" id="boto_eliminarPunts"><i class="fa fa-eraser"></i> Esborrar els punts marcats</button>
-                    <button class="btn btn-outline-secondary" onclick="mostrarCoordenades()" id="boto_mostrarDades"><i class="fa fa-eye"></i> Mostra els punts</button>
-                </div>
-                <div><p class="text-center" style="color: red" id="InformatiuNoPunts"></p></div>
-            </div>
-        </div>
-        <!--<div class="row">-->
-
-       <!-- </div>-->
-    <!--</div>-->
     <br>
     <div class="container">
         <div class="card card-body">
@@ -165,63 +299,6 @@
         </div>
     </div>
 
-    {% if errors|length > 0 %}
-        <div>
-            <p>HI HA ELS SEGÜENTS ERRORS:</p>
-            {% for error in errors %}
-                <p>* {{error}}</p>
-            {% endfor %}
-        </div>
-    {% endif %}
-
-
-    <div id="nousPunts" hidden>
-        <p>Coordenades dels punts marcats:</p>
-        <label for="puntsNous">Escull els que vols processar com a nous punts:</label>
-        <select id="puntsNous" name="punts">
-        </select>
-        <button onclick="dadesSeguents()">Següent...</button>
-        <button onclick="tancarSeleccio()">Tancar la selecció de punts</button>
-    </div>
-    <div id="dadesSeguents" hidden>
-        <form id="form_guardar_nou_punt" onsubmit="return checkValues()" method="POST" action="/v1/geoInfoSystem/nouPunt/">
-            {%csrf_token%}
-            <label>Nom del local:</label>
-            <input type="text" name="nomLocal" id="nomLocal" placeholder="Ex: Bar El Sindicat" required>
-            <label>Descripció del lloc:</label>
-            <textarea name="descripcioLocal" id="descripcio" placeholder="Breu descripció del lloc."></textarea>
-            <label>Tipus:</label>
-            <div id="tipusPunt"></div>
-            <label>És actiu?</label>
-            <input type="checkbox" onclick="canviEstat()" name="actiu" id="esActiu">
-            <label>Superficie:</label>
-            <input type="text" name="superficie" id="superficie" placeholder="Ex: 25.45" required>
-            <label>Seleccioneu la ubicació:</label>
-            <div id="selectProvincia">Selecciona la provincia:</div>
-            <div id="ubicacio"></div>
-            <label>Estat de Conservació [0 a 5]:</label>
-            <select id="puntuacioLloc" onchange="emmagatzemarPuntuacio()">
-                <option value="0">0</option>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-
-            <label>Any de construcció:</label>
-            <input type="text" name="any" id="any" placeholder="Ex: 1714" required>
-            <input type="hidden" name="llocActiu" id="botoActiu" value="False">
-            <input type="hidden" name="p" id="puntuacio" value="0">
-            <input type="hidden" name="tipus" id="categoriaPunt" value="Restauració"> <!--canviar per la primera categoria quan tingui les bones categories perq ara nse-->
-            <input type="hidden" name="poblacio" id="poblacioG" value="Aiguamúrcia (Alt Camp), Tarragona">
-            <input type="hidden" name="puntPerProcessar1" id="puntNou" value="a">
-            <input type="hidden" name="puntprocessarAux" id="puntAux" value="">
-            <input type="hidden" name="altresPunts" id="altresPunsNous" value="">
-            <input type="hidden" name="midaLlista" id="midaLlistatPunts" value="">
-            <button onclick="guardarSeleccionat()">Desar.</button>
-        </form>
-    </div>
 <script>
     var map;
     var llistatNousMarkers=[];
@@ -432,6 +509,7 @@ function dadesSeguents() {
 
     var sProvincia = document.createElement("SELECT");
     sProvincia.setAttribute("id", "provinciaSeleccio");
+    sProvincia.setAttribute("class", "form-control");
     sProvincia.setAttribute("onchange", "poblacionsPerProvincia()");
     divprova.appendChild(sProvincia);
     for(var k=0; k<provinciesToDo.length; k++){
@@ -470,6 +548,7 @@ function dadesSeguents() {
     //console.log(categoriesToDo);
     var select = document.createElement("SELECT");
     select.setAttribute("id", "tipusSeleccio");
+    select.setAttribute("class", "form-control");
     select.setAttribute("onchange", "guardarTipus()");
     divseleccio.appendChild(select);
 
@@ -485,13 +564,16 @@ function dadesSeguents() {
     seleccio.childNodes.forEach(node => {
         if(node.selected){
             if(node.value == "selectcard"){
-                alert('Selecciona un punt pel qual vulguis crear.');
+                alert('Selecciona un punt que vulguis afegir al sistema GIS.');
                 malament = 0;
             }
         }
 	});
     if (malament ===1){
         x.hidden = false;
+        document.getElementById("bttn_form_data_local").disabled=true;
+        var bttnTancar=document.getElementById("bttn_close");
+        bttnTancar.innerHTML="<i class=\"fa fa-times\" aria-hidden=\"true\"></i> Tancar tot";
     }
 }
 
@@ -527,7 +609,9 @@ function tancarSeleccio() {
     var seleccio = document.getElementById("puntsNous");
     seleccio.innerHTML='';
     var btnMostrarPunts = document.getElementById("boto_mostrarDades");
-    btnMostrarPunts.innerHTML="Mostra els punts";
+    btnMostrarPunts.innerHTML="<i class=\"fa fa-eye\"></i> Mostra els punts";
+    document.getElementById("bttn_close").innerHTML="<i class=\"fa fa-times\" aria-hidden=\"true\"></i> Tanca selecció de punts";
+    document.getElementById("bttn_form_data_local").disabled=false;
 }
 
 function guardarSeleccionat(){
@@ -577,7 +661,7 @@ function mostrarCoordenades(){
         div.hidden=false;
         if(div.hidden === false){
             seleccio.innerHTML='';
-            btnMostrarPunts.innerHTML="Actualitza llistat de punts";
+            btnMostrarPunts.innerHTML="<img style='height: 22px' src=\"https://img.icons8.com/ios/64/000000/location-update.png\"/> Actualitza llistat de punts";
         }
         for(var i = 0; i< llistatNousMarkers.length; i++){
             seleccio.innerHTML+=`<option id="`+i+`" value="`+llistatTitolsNousMarkers[i]['pInteres'].getPosition().lat().toString()+" "+llistatTitolsNousMarkers[i]['pInteres'].getPosition().lng().toString()+`">`+llistatTitolsNousMarkers[i]['titol']+`</option>`;
@@ -597,7 +681,7 @@ function eliminarTotsPuntsInteresNous(){
     seleccio.innerHTML='';
     var div = document.getElementById("nousPunts");
     var btnMostrarPunts = document.getElementById("boto_mostrarDades");
-    btnMostrarPunts.innerHTML="Mostra els punts";
+    btnMostrarPunts.innerHTML="<i class=\"fa fa-eye\"></i> Mostra els punts";
     div.hidden=true;
     if (divForm.hidden == false){
         divForm.hidden = true;
@@ -609,6 +693,8 @@ function eliminarTotsPuntsInteresNous(){
         llistatNousMarkers[i].setMap(null);
     }
     llistatNousMarkers=[];
+    document.getElementById("bttn_form_data_local").disabled=false;
+    document.getElementById("bttn_close").innerHTML='<i class="fa fa-times" aria-hidden="true"></i> Tanca selecció de punts';
 }
 
 function mostraLesCoordenadesUsuari(){

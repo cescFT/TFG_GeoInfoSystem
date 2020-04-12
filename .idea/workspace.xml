@@ -311,7 +311,8 @@
       <workItem from="1586336848180" duration="21277000" />
       <workItem from="1586424095331" duration="19941000" />
       <workItem from="1586511005785" duration="20032000" />
-      <workItem from="1586595069824" duration="26827000" />
+      <workItem from="1586595069824" duration="27044000" />
+      <workItem from="1586682062065" duration="7108000" />
     </task>
     <servers />
   </component>
@@ -375,11 +376,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910215140" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1586595117000">
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1586682136743">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1586277461574" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1586595117000" />
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1586682136743" />
     <state x="771" y="439" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2" timestamp="1586337689600">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
