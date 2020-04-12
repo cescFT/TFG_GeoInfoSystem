@@ -50,10 +50,22 @@
             <li>Mapa:
                 <ul>
                     <li>En aquesta pantalla es mostra el mapa, realitzat amb la tecnologia de Google Maps utilitzant la API de JavaScript. A continuació es pot veure un exemple:
-                    <div style="margin:0px auto;  background-size: cover; position: relative; left: 25%; display: flex; flex-flow: row; width: 100%; height: 100%;"><img src="{% static 'exemple_mapa.jpg' %}"/></div>
+                    <div class="text-center">
+                        <figure>
+                            <br>
+                            <img style="border-width: 2px; border-style: solid;" src="{% static 'exemple_mapa1.png' %}"/>
+                            <figcaption><b>Exemple GIS</b></figcaption>
+                        </figure>
+                    </div>
                     <br>El que es pot veure en aquesta imatge és un exemple real sobre el que es pot representar en aquest mapa. Es poden veure diferents punts marcats en el mapa, aquests són els punts d'interès que l'usuari autoritzat ha afegit.
                         Si s'apreta en algun dels punts, es pot veure informació dins d'un quadre de text (inclou un enllaç per a veure la informació en una finestra més gran), aquí hi ha un exemple:
-                        <div style="margin:0px auto;  background-size: cover; position: relative; left: 25%; display: flex; flex-flow: row; width: 100%; height: 100%;"><img src="{% static 'exemple_click_punt.jpg' %}"/></div>
+                        <div class="text-center">
+                            <figure>
+                                <br>
+                                <img style="border-width: 2px; border-style: solid;" src="{% static 'exemple_click_punt.jpg' %}"/>
+                                <figcaption><b>Punt d'interès premut</b></figcaption>
+                            </figure>
+                        </div>
                         <br>
                         A més hi ha un mòdul estadístic, aquest permet filtrar i extreure dades, aquests filtres són els següents:
                         <ul>
@@ -119,16 +131,27 @@
                 </ul>
             </li>
             <li>Creació d'un nou punt en el sistema GIS:
-                Aquesta opció està restringida a tots els usuaris, excepte aquells qui siguin administradors de la pàgina, tal com s'ha comentat amb anterioritat en punts anteriors. En aquesta pantalla els usuaris es troben en primer lloc al mapa buit.
-                <!-- TODO: QUAN S'ARREGLI, POSAR LA FOTO TOT GUAI-->
+                Aquesta opció està restringida a tots els usuaris, excepte aquells qui siguin administradors de la pàgina, tal com s'ha comentat amb anterioritat en punts anteriors. En aquesta pantalla els usuaris es troben tres blocs:
+                <ul>
+                    <li><b><i>Mapa per afegir punts nous:</i></b> És en aquesta primera secció en la que els usuaris amb privilegis d'administrador podran afegir els nous punts al sistema GIS, sempre i quan siguin punts nous.</li>
+                    <li><b><i>Instruccions:</i></b> S'explica el flux normal de la execució del sistema d'afegir un nou punt.</li>
+                    <li><b><i>Preguntes freqüents:</i></b> En aquesta secció l'usuari privilegiat pot veure una col·lecció de preguntes freqüents sobre el funcionament d'afegir nous punts al sistema GIS.</li>
+                </ul>
+                <div class="text-center">
+                    <figure>
+                        <br>
+                        <img style="border-width: 2px; border-style: solid;" src="{% static 'nou_punt_mapa.jpg' %}"/>
+                        <figcaption><b>Exemple amb el mapa marcat amb un nou punt</b></figcaption>
+                    </figure>
+                </div>
+
                 Tal com es pot veure en la imatge anterior, en la part inferior del mapa es mostra una botonera formada per a tres botons:
                 <ul>
-                    <li><b><i>Centrar mapa:</i></b></li> Aquesta opció, centra el mapa en la zona on es troba l'usuari que vol afegir el punt. <b style="color: red">IMPORTANT: L'usuari ha de donar permís al navegador per la geolocalització per a gaudir d'aquesta acció.</b>
+                    <li><b><i>Centrar mapa:</i></b> Aquesta opció, centra el mapa en la zona on es troba l'usuari que vol afegir el punt. <br><b style="color: red">IMPORTANT: L'usuari ha de donar permís al navegador per la geolocalització per a gaudir d'aquesta acció.</b></li>
                     <li><b><i>Esborrar els punts marcats:</i></b> Aquesta opció el que fa és que l'usuari tingui la capacitat d'eliminar els punts que ha marcat, en cas que s'hagi equivocat.</li>
                     <li><b><i>Mostrar els punts:</i></b> Aquest botó és molt important. Aquest botó permet a l'usuari passar a la següent etapa del procès d'afegir un punt.</li>
                 </ul>
                 Quan l'usuari ha pitjat el botó <b><i>Mostrar els punts</i></b>, el que passa és que apareix un desplegable en el qual hi apareix un llistat de tots els punts que ha afegit l'usuari, essent el <i>Punt 1</i>, el primer punt d'interès que l'usuari ha pitjat i els <i>Punt N</i>, els següents.
-                <!-- TODO: QUAN HO TINGUI ARREGLAT, POSAR FOTO-->
                 D'aquest desplegable, l'usuari ha d'escollir el que vulgui processar i donar-li al botó <i><b>Següent</b></i>, apareix el formulari per a omplir les dades referents al local que es troba en la localització. Aquest formulari demana el següent:
                 <ul>
                     <li>Nom del local.</li>
@@ -139,9 +162,14 @@
                     <li>Estat de conservació del local.</li>
                     <li>Any de construcció.</li>
                 </ul>
-                Donant-li a desar, l'usuari autoritzat processarà el punt seleccionat.<br>
-                Aqui poden passar dues coses, en cas que l'usuari hagi posat més punts, el servidor el redirigirà un altre cop a la pantalla d'afegir nous punts per a que pugui afegir els altres punts, repetint un altre cop el mateix procès explicat.
-                En cas que hi hagi algun problema, el sistema també el retornarà de nou en la pàgina d'afegir nous punts en el sistema. Quan s'acaben tots els punts a processar, i tot ha anat bé, el sistema GIS et retorna a la pàgina del mapa i pots veure els nous punts.
+                <div  class="text-center">
+                    <figure>
+                        <br>
+                        <img style="border-width: 2px; border-style: solid;" src="{% static 'form_nou_punt1.jpg' %}"/>
+                        <figcaption><b>Formulari on es demana totes les dades descrites anteriorment.</b></figcaption>
+                    </figure>
+                </div>
+                Donant-li al botó de <i>desar</i>, l'usuari autoritzat processarà el punt seleccionat.<br>
             </li>
         </ol>
     </p>

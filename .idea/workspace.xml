@@ -2,7 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/exemple_mapa1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/form_nou_punt.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/form_nou_punt1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/nou_punt_mapa.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/home/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/home/home.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -311,7 +316,7 @@
       <workItem from="1586424095331" duration="19941000" />
       <workItem from="1586511005785" duration="20032000" />
       <workItem from="1586595069824" duration="27044000" />
-      <workItem from="1586682062065" duration="17967000" />
+      <workItem from="1586682062065" duration="19638000" />
     </task>
     <servers />
   </component>
