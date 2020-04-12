@@ -97,7 +97,6 @@
                     </div>
                 </div>
                 <div><p class="text-center" style="color: red" id="InformatiuNoPunts"></p></div>
-                <!--DIV ERRORS!!!-->
                 <div class="container">
                     <div id="nousPunts" style="float:none; margin:auto;" hidden>
                         <div class="row">
@@ -122,6 +121,9 @@
             <div id="dadesSeguents" hidden>
                 <div class="row form-row">
                         <div style="float:none; margin:auto" class="card card-body">
+                            <div id="errorsBuits" class="text-center" style="color:red" hidden></div>
+                            <div id="errorsProcessament" class="text-center" style="color:red" hidden><b><i class="fa fa-exclamation-triangle"></i> Error al processar. Revisa les <a class="text-danger" href="#errorcomu">preguntes freqüents</a></b></div>
+                            <br>
                             <div class="form-group">
                                 <form id="form_guardar_nou_punt" onsubmit="return checkValues()" method="POST" action="/v1/geoInfoSystem/nouPunt/">
                                     {%csrf_token%}
@@ -258,11 +260,19 @@
         <br>
     </div>
     <br>
-    <div class="container">
+    <div class="container" id="faqs">
         <div class="card card-body">
             <h2><img  style="height: 70px" src="https://img.icons8.com/ios-glyphs/64/000000/thinking-male.png"/> Preguntes freqüents</h2>
             <div class="row">
                 <ol>
+                    <li id="errorcomu">
+                        <b>He rebut l'avís "<i class="fa fa-exclamation-triangle"></i> Error al processar. Revisa les preguntes freqüents". Què ha passat?</b>
+                        <p style="margin-left: 10px;" align="justify">Tranquil, no et preucupis. El més comú és passa és que s'intenti posar un punt d'interès nou amb una categoria i ciutat existents. El sistema GIS, abans de processar els punts, comprova que no es posi un nou punt ja existent, és a dir, un punt en una ciutat i amb una categoria iguals.
+                        Per tant, només es poden posar punts nous que no existeixin prèviament en el sistema GIS.
+                        </p>
+                        <b>Ho he posat bé i m'ha aparegut aquest error, que faig?</b>
+                        <p style="margin-left: 10px" align="justify">En cas de fer bé això, comprova sempre que els camps "superficie" i "any de construcció" siguin numèrics i coherents. En altre cas, no et permetrà.</p>
+                    </li>
                     <li><b>Puc centrar el mapa si no permeto la geolocalització del navegador en aquest lloc web?</b>
                         <p style="margin-left: 10px" align="justify">Malauradament no. Aquesta opció funciona gràcies a un mecanisme que hi ha incorporat en la versió 5 del llenguatge HTML, de l'Anglès <i>HyperText Markup Language</i>.</p>
                         <b>I si no centro el mapa no puc afegir nou/s punt/s d'interès nou/s?</b>
@@ -620,12 +630,18 @@ function checkInputs(){
         success:
             function (data){
                 if (Object.values(data)[0] ==='true'){
-                    checkInputsToProcess()
+                    checkInputsToProcess();
                 }else{
-                    //TODO
-                    console.log('fer div dient que no poden haverhi camps buits :)')
+                    if(document.getElementById("errorsBuits").innerHTML === ''){
+                        var div=document.getElementById("errorsBuits");
+                        div.innerHTML='<i class="fa fa-exclamation-triangle"></i> ';
+                        var b=document.createElement("B");
+                        var t=document.createTextNode("Siusplau revisa que tots els camps que estiguin plens.");
+                        b.appendChild(t);
+                        div.appendChild(b);
+                        div.hidden=false;
+                    }
                 }
-
             }
     });
 }
@@ -647,8 +663,7 @@ function checkInputsToProcess(){
                 if(Object.values(data)[0] === 'true'){
                     guardarSeleccionat();
                 }else{
-                    //TODO
-                    console.log('fer div explicant perq nu va.')
+                    document.getElementById("errorsProcessament").hidden = false;
                 }
             }
     });
@@ -726,12 +741,17 @@ function eliminarTotsPuntsInteresNous(){
     if (divForm.hidden == false){
         divForm.hidden = true;
     }
+    document.getElementById("errorsBuits").hidden = true;
+    document.getElementById("errorsProcessament").hidden=true;
     divTipus.innerHTML='';
     divSeleccProv.innerHTML='';
     divUbi.innerHTML='';
     for(var i=0; i< llistatNousMarkers.length; i++){
         llistatNousMarkers[i].setMap(null);
     }
+    document.getElementById("nomLocal").value='';
+    document.getElementById("descripcio").value='';
+    document.getElementById("any").value='';
     llistatNousMarkers=[];
     document.getElementById("bttn_form_data_local").disabled=false;
     document.getElementById("bttn_close").innerHTML='<i class="fa fa-times" aria-hidden="true"></i> Tanca selecció de punts';
