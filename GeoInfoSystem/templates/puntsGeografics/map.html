@@ -607,6 +607,7 @@ function initMap() {
                                     let infoToDo = [];
                                     for(infoReal of information){
                                         infoToDo.push({
+                                            'fk_puntInteres':infoReal.fields.localitzacio,
                                             'nomLocal' : infoReal.fields.nomLocal,
                                             'anyConstruccio' : infoReal.fields.anyConstruccio,
                                             'descripcio' : infoReal.fields.descripcio
@@ -616,6 +617,7 @@ function initMap() {
                                     let infoPuntInteres = [];
                                     for (puntI of pInteresInfo){
                                         infoPuntInteres.push({
+                                            'pk':puntI.pk,
                                             'latitud' : puntI.fields.latitud,
                                             'longitud' : puntI.fields.longitud,
                                             'latitudS': puntI.fields.latitud.toString(),
@@ -627,15 +629,7 @@ function initMap() {
                                         let liAnyConstruccio = document.createElement("LI");
                                         let liDescripcio = document.createElement("LI");
                                         let liLinkToSpecificWeb = document.createElement("LI");
-                                        let url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+infoToDo[j]['nomLocal']+"/"+infoPuntInteres[j]['latitudS']+"/"+infoPuntInteres[j]['longitudS']+"/";
-                                        url = encodeURI(url);
-                                        let link  = document.createElement("A");
-                                        link.setAttribute("href", url);
-                                        link.setAttribute("target", "_blank");
-                                        link.setAttribute("rel", "noopener noreferrer");
-                                        let tLink = document.createTextNode("Click aquí per a veure més informació.");
-                                        link.appendChild(tLink);
-                                        liLinkToSpecificWeb.appendChild(link);
+                                        crearLink(infoToDo[j], infoPuntInteres, liLinkToSpecificWeb);
                                         let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
                                         let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
                                         let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
@@ -706,6 +700,7 @@ function initMap() {
                                     let infoToDo = [];
                                     for(infoReal of information){
                                         infoToDo.push({
+                                            'fk_puntInteres':infoReal.fields.localitzacio,
                                             'nomLocal' : infoReal.fields.nomLocal,
                                             'anyConstruccio' : infoReal.fields.anyConstruccio,
                                             'descripcio' : infoReal.fields.descripcio
@@ -715,6 +710,7 @@ function initMap() {
                                     let infoPuntInteres = [];
                                     for (puntI of pInteresInfo){
                                         infoPuntInteres.push({
+                                            'pk':puntI.pk,
                                             'latitud' : puntI.fields.latitud,
                                             'longitud' : puntI.fields.longitud,
                                             'latitudS': puntI.fields.latitud.toString(),
@@ -726,15 +722,7 @@ function initMap() {
                                         let liAnyConstruccio = document.createElement("LI");
                                         let liDescripcio = document.createElement("LI");
                                         let liLinkToSpecificWeb = document.createElement("LI");
-                                        let url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+infoToDo[j]['nomLocal']+"/"+infoPuntInteres[j]['latitudS']+"/"+infoPuntInteres[j]['longitudS']+"/";
-                                        url = encodeURI(url);
-                                        let link  = document.createElement("A");
-                                        link.setAttribute("href", url);
-                                        link.setAttribute("target", "_blank");
-                                        link.setAttribute("rel", "noopener noreferrer");
-                                        let tLink = document.createTextNode("Click aquí per a veure més informació.");
-                                        link.appendChild(tLink);
-                                        liLinkToSpecificWeb.appendChild(link);
+                                        crearLink(infoToDo[j],infoPuntInteres,liLinkToSpecificWeb);
                                         let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
                                         let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
                                         let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
@@ -803,6 +791,7 @@ function initMap() {
                                     let infoToDo = [];
                                     for(infoReal of information){
                                         infoToDo.push({
+                                            'fk_puntInteres': infoReal.fields.localitzacio,
                                             'nomLocal' : infoReal.fields.nomLocal,
                                             'anyConstruccio' : infoReal.fields.anyConstruccio,
                                             'descripcio' : infoReal.fields.descripcio
@@ -812,6 +801,7 @@ function initMap() {
                                     let infoPuntInteres = [];
                                     for (puntI of pInteresInfo){
                                         infoPuntInteres.push({
+                                            'pk':puntI.pk,
                                             'latitud' : puntI.fields.latitud,
                                             'longitud' : puntI.fields.longitud,
                                             'latitudS': puntI.fields.latitud.toString(),
@@ -823,15 +813,7 @@ function initMap() {
                                         let liAnyConstruccio = document.createElement("LI");
                                         let liDescripcio = document.createElement("LI");
                                         let liLinkToSpecificWeb = document.createElement("LI");
-                                        let url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+infoToDo[j]['nomLocal']+"/"+infoPuntInteres[j]['latitudS']+"/"+infoPuntInteres[j]['longitudS']+"/";
-                                        url = encodeURI(url);
-                                        let link  = document.createElement("A");
-                                        link.setAttribute("href", url);
-                                        link.setAttribute("target", "_blank");
-                                        link.setAttribute("rel", "noopener noreferrer");
-                                        let tLink = document.createTextNode("Click aquí per a veure més informació.");
-                                        link.appendChild(tLink);
-                                        liLinkToSpecificWeb.appendChild(link);
+                                        crearLink(infoToDo[j], infoPuntInteres, liLinkToSpecificWeb);
                                         let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
                                         let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
                                         let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
@@ -1044,7 +1026,7 @@ function initMap() {
             if(local['fk_puntInteres'] == puntsInteres[n]['pk']){
                 let url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+local['nomLocal']+"/"+puntsInteres[n]['latitudS']+"/"+puntsInteres[n]['longitudS']+"/";
                 url = encodeURI(url);
-                console.log(url);
+                //console.log(url);
                 let link  = document.createElement("A");
                 link.setAttribute("href", url);
                 link.setAttribute("target", "_blank");
@@ -1055,8 +1037,8 @@ function initMap() {
                 break;
             }
         }
-        console.log(local);
-        console.log(puntsInteres);
+        //console.log(local);
+        //console.log(puntsInteres);
     }
 
 
