@@ -1377,7 +1377,6 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
     poblacions = localitzacio.objects.all().filter(provincia='Tarragona')
     poblacionsMostrar = serializers.serialize("json", poblacions)
     if request.method == 'POST':
-        errors = []
         # em ve nomPunt,lat<espai>lng
         altresPuntsPerProcessar = json.loads(request.POST['altresPunts'])
         puntNou = request.POST['puntPerProcessar1']
@@ -1385,86 +1384,93 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
         descripcioLocal = request.POST['descripcioLocal']
         tipus = request.POST['tipus']
         llocActiu = request.POST['llocActiu']
-        superficie = request.POST['superficie']
+        superficie = request.POST['superficie'].replace(',', '.')
         localitat = request.POST['poblacio'] #em ve: poblacio<espai>(comarca),<espai>provincia
         puntuacio = request.POST['p']
         any = request.POST['any']
         midaLlistaString = request.POST['midaLlista']
 
-        if not nomLocal:
-            errors+=['Cal posar un nom al punt d\'intereres.']
-        if not descripcioLocal:
-            errors+=['Cal afegir una descripció.']
-        if not tipus:
-            errors+=['Cal afegir un tipus.']
-        if not superficie:
-            errors+=['Cal afegir la superficie.']
-        if not localitat:
-            errors+=['Cal afegir la localitat']
-        if not any:
-            errors+=['Cal afegir un any.']
-
-        if not errors:
-            try:
-                any = int(any)
-            except Exception or ValueError:
-                errors+=['L\'any no té un format correcte.']
-            if any<0:
-                errors+=['L\'any és negatiu.']
-            try:
-                superficie=float(superficie)
-            except Exception or ValueError:
-                errors+=['El valor indicat en la superfície no té un format correcte.']
-        if errors:
-            altresPuntsPerProcessar+=[puntNou]
-            dict={}
-            llista=[]
-            i=0
-            for punt in altresPuntsPerProcessar:
-                puntSplit=punt.split(",")
-                dict["punt"] = puntSplit[0]+","+puntSplit[1]
-                i=i+1
-                llista += [dict]
-                dict={}
-            midaLlista = int(midaLlistaString)
-            punts = json.dumps(llista)
-            return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'provincies': provinciesMostrar,'categories': categoriesMostrar, 'poblacions': poblacionsMostrar,'punts': punts, 'errors':errors, 'lenLlista':midaLlista})
-        else:
-            puntSplit = puntNou.split(",") #tinc el nom del punt, q no el vull per a res[0] <-> lat lng [1]
-            coordenades = puntSplit[1].split(" ") #lat[0] long[1] en format string
-            latitud=float(coordenades[0])
-            longitud=float(coordenades[1])
-            actiu=False
-            sLocalitat = localitat.split(' ')  #em ve: poblacio<espai>(comarca),<espai>provincia
-            poblacio = sLocalitat[0]
-            poblacio = localitzacio.objects.all().filter(ciutat=poblacio)[0]
-            if llocActiu == "True":
-                actiu=True
-            nouPunt = puntInteres(latitud=latitud, longitud=longitud, actiu=actiu, superficie=superficie, localitat=poblacio)
-            nouPunt.save()
-            p = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
-            categoria = categoriaLocal.objects.all().filter(categoria=tipus)[0]
-            localNou = local(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio), categoria=categoria, anyConstruccio=any, descripcio=descripcioLocal)
-            localNou.save()
+        superficie=float(superficie)
+        puntSplit = puntNou.split(",") #tinc el nom del punt, q no el vull per a res[0] <-> lat lng [1]
+        coordenades = puntSplit[1].split(" ") #lat[0] long[1] en format string
+        latitud=float(coordenades[0])
+        longitud=float(coordenades[1])
+        actiu=False
+        sLocalitat = localitat.split(' (')  #em ve: poblacio<espai>(comarca),<espai>provincia
+        poblacio = sLocalitat[0]
+        poblacio = localitzacio.objects.all().filter(ciutat=poblacio)[0]
+        if llocActiu == "True":
+            actiu=True
+        nouPunt = puntInteres(latitud=latitud, longitud=longitud, actiu=actiu, superficie=superficie, localitat=poblacio)
+        nouPunt.save()
+        p = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
+        categoria = categoriaLocal.objects.all().filter(categoria=tipus)[0]
+        localNou = local(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio), categoria=categoria, anyConstruccio=int(any), descripcio=descripcioLocal)
+        localNou.save()
+        dict = {}
+        llista = []
+        i = 0
+        for punt in altresPuntsPerProcessar:
+            puntSplit = punt.split(",")
+            dict["punt"] = puntSplit[0] + "," + puntSplit[1]
+            i = i + 1
+            llista += [dict]
             dict = {}
-            llista = []
-            i = 0
-            for punt in altresPuntsPerProcessar:
-                puntSplit = punt.split(",")
-                dict["punt"] = puntSplit[0] + "," + puntSplit[1]
-                i = i + 1
-                llista += [dict]
-                dict = {}
+        midaLlista = int(midaLlistaString)
+        punts = json.dumps(llista)
+        if len(altresPuntsPerProcessar) == 1:
+            if altresPuntsPerProcessar[0].split(',')[0] == '--- Siusplau selecciona un punt ---':
+                return redirect("/v1/geoInfoSystem/map/")
+        else:
             midaLlista = int(midaLlistaString)
             punts = json.dumps(llista)
-            if len(altresPuntsPerProcessar) == 1:
-                if altresPuntsPerProcessar[0].split(',')[0] == '--- Siusplau selecciona un punt ---':
-                    return redirect("/v1/geoInfoSystem/map/")
-            else:
-                midaLlista = int(midaLlistaString)
-                punts = json.dumps(llista)
-                return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'provincies':provinciesMostrar ,'categories': categoriesMostrar, 'poblacions':poblacionsMostrar, 'punts': punts, 'errors':[], 'lenLlista':midaLlista})
-    return render(request, "puntsGeografics/afegirNouPunt.html", {'provincies':provinciesMostrar,'categories':categoriesMostrar, 'poblacions':poblacionsMostrar,'punts':[], 'errors':[], 'lenLlista':0})
+            return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'provincies':provinciesMostrar ,'categories': categoriesMostrar, 'poblacions':poblacionsMostrar, 'punts': punts, 'lenLlista':midaLlista})
+    return render(request, "puntsGeografics/afegirNouPunt.html", {'provincies':provinciesMostrar,'categories':categoriesMostrar, 'poblacions':poblacionsMostrar,'punts':[], 'lenLlista':0})
+
+def check_values_new_point_empty(request):
+    if request.method == 'GET':
+        nomLocal = urllib.parse.unquote(request.GET['nomLocal'])
+        descripcioLocal = urllib.parse.unquote(request.GET['descripcioLocal'])
+        superficie = request.GET['superficie']
+        any = request.GET['any']
+        data={}
+        data['tot_ok']='true'
+        if nomLocal == '' or descripcioLocal == '' or superficie == '' or any == '':
+            data['tot_ok']='false'
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
+
+def check_values_new_point(request):
+    if request.method == 'GET':
+        nomLocal = urllib.parse.unquote(request.GET['nomLocal'])
+        superficie = request.GET['superficie'].replace(',', '.')
+        categoria = request.GET['tipus']
+        any = request.GET['any']
+        poble = urllib.parse.unquote(request.GET['poblacio']).split(" (")[0]
+        ciutat = localitzacio.objects.all().filter(ciutat=poble)[0]
+        data = {}
+        data['tot_ok'] = 'true'
+        if local.objects.all().filter(nomLocal=nomLocal).count() == 0:
+            data['tot_ok']='true'
+        else:
+            pInteres_nou_localitat = local.objects.all().filter(nomLocal = nomLocal)[0].localitzacio.localitat
+            local_nou_categoria = local.objects.all().filter(nomLocal=nomLocal)[0].categoria.categoria
+            if ciutat == pInteres_nou_localitat and categoria == local_nou_categoria: #permeto que en la mateixa ciutat hi hagi dos punts d'interes amb el mateix nom però diferent categoria
+                data['tot_ok']='false'
+        if data['tot_ok'] == 'true':
+            try:
+                sup=float(superficie)
+            except Exception or ValueError:
+                data['tot_ok']='false'
+            try:
+                year=int(any)
+                if year <0:
+                    data['tot_ok']='false'
+            except Exception or ValueError:
+                data['tot_ok']='false'
+        res_json = json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
+
 
 """
 AIXO ES PERQ AIXI ES COMPROVA SI ÉS SUPERUSUARI, EN ALTRE CAS NO ENTRARA
