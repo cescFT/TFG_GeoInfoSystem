@@ -243,9 +243,9 @@
             success:
                 function (data){
                     if(document.getElementById("auxiliarBoolea").value === "false"){
-                        //console.log(data);
+                        console.log(data);
                         var data_locals = Object.values(data);
-                        //console.log(data_locals);
+                        console.log(data_locals);
                         var infoLocals = JSON.parse(data_locals[0]);
                         var infoPuntsInteres = JSON.parse(data_locals[1]);
                         var infoCategories = JSON.parse(data_locals[2]);
@@ -254,16 +254,20 @@
                         var infoCategoriesToDo=[];
                         for (info of infoLocals){
                             infoLocalsToDo.push({
-                                'nomLocal' : info.fields.nomLocal
+                                'nomLocal' : info.fields.nomLocal,
+                                'fk_categoria': info.fields.categoria,
+                                'fk_localitzacio': info.fields.localitzacio
                             });
                         }
                         for(info of infoCategories){
                             infoCategoriesToDo.push({
-                                'categoria' : info.fields.categoria
+                                'categoria' : info.fields.categoria,
+                                'pk' : info.pk
                             });
                         }
                         for(info of infoPuntsInteres){
                             infoPuntsInteresToDo.push({
+                                'pk':info.pk,
                                 'latitudS' : info.fields.latitud.toString(),
                                 'longitudS' : info.fields.longitud.toString()
                             });
@@ -277,9 +281,6 @@
                             let categoriaLocal = infoCategoriesToDo[i]['categoria'];
                             let latitudS = infoPuntsInteresToDo[i]['latitudS'];
                             let longitudS = infoPuntsInteresToDo[i]['longitudS'];
-                            let url;
-                            url =`localhost:8000/v1/geoInfoSystem/info_especifica/`+nomLocal+`/`+latitudS+`/`+longitudS+`/`;
-                            url = encodeURI(url);
                             //console.log(url);
                             let infoText=document.createElement("DIV");
                             infoText.setAttribute("class", "row");
@@ -302,8 +303,9 @@
                             infoText.appendChild(separador);
                             document.getElementById("llistatPunts").appendChild(infoText);
                             let button = document.createElement("a");
-                            button.innerHTML='<div class="row"><div class="col-sm"">'+nomLocal+'</div><div class="col-sm"">'+categoriaLocal+'</div></div><div class="w-100"></div>';
-                            button.href=url;
+                            button.innerHTML='<div class="row"><div class="col-sm">'+infoLocalsToDo[i]['nomLocal']+'</div><div class="col-sm">'+categoriaLocal+'</div></div><div class="w-100"></div>';
+                            button.href=createURL(infoLocalsToDo[i],infoPuntsInteresToDo);
+                            //console.log(createURL(infoLocalsToDo[i],infoPuntsInteresToDo));
                             button.target="_blank";
                             button.rel="noopener noreferrer";
                             document.getElementById("llistatPunts").appendChild(button);
@@ -314,6 +316,18 @@
         });
     }
 
+
+    function createURL(local, puntsInteres, categories){
+        let url;
+        for(var n=0; n<puntsInteres.length; n++){
+            if(local['fk_localitzacio'] == puntsInteres[n]['pk']){
+                url =`localhost:8000/v1/geoInfoSystem/info_especifica/`+local['nomLocal']+`/`+puntsInteres[n]['latitudS']+`/`+puntsInteres[n]['longitudS']+`/`;
+                url = encodeURI(url);
+                break;
+            }
+        }
+        return url;
+    }
 </script>
 </body>
 </html>

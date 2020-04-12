@@ -989,17 +989,14 @@ def ajax_altres_punts_mateixa_ciutat_info_especifica(request):
         punts = []
         for punt in altresPuntsInteres:
             punts += [punt]
-        locals = local.objects.all().exclude(nomLocal=nomLocal)
-        altresLocals = []
-        categories_altres_locals=[]
-        for punt in punts:
-            for l in locals:
-                if l.localitzacio.localitat == punt.localitat:
-                    categories_altres_locals+=[l.categoria]
-                    altresLocals += [l]
-        categories_locals=serializers.serialize('json', categories_altres_locals)
-        locals_localitat=serializers.serialize("json", altresLocals)
+        locals = local.objects.all().filter(localitzacio__in=altresPuntsInteres)
+        categories=[]
+        for loc in locals:
+            categories+=[loc.categoria]
+        categories_locals = categoriaLocal.objects.all().filter(categoria__in=categories)
+        locals_localitat=serializers.serialize("json", locals)
         puntsInteres_localitat=serializers.serialize('json', punts)
+        categories_locals = serializers.serialize('json', categories_locals)
         data['locals'] = locals_localitat
         data['puntsInteres'] = puntsInteres_localitat
         data['categories'] = categories_locals
