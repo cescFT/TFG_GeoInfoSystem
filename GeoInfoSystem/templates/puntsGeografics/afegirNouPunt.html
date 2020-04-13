@@ -474,6 +474,7 @@ function poblacionsPerProvincia(){
                         //console.log(pobles);
                         var sPoble = document.createElement("SELECT");
                         sPoble.setAttribute("id", "poblacioSeleccio");
+                        sPoble.setAttribute("class", "form-control");
                         sPoble.setAttribute("onchange", "guardarPoblacio()");
                         divpoble.appendChild(sPoble);
                         for(var j=0; j<pobles.length; j++){
@@ -532,6 +533,7 @@ function dadesSeguents() {
     //console.log(poblesToDo);
     var sPoble = document.createElement("SELECT");
     sPoble.setAttribute("id", "poblacioSeleccio");
+    sPoble.setAttribute("class", "form-control");
     sPoble.setAttribute("onchange", "guardarPoblacio()");
     divpoble.appendChild(sPoble);
     for(var j=0; j<poblesToDo.length; j++){
