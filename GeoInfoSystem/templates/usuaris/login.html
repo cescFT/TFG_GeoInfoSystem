@@ -103,6 +103,7 @@
     <div style="text-align: center">
         <h1>Inicia la sessió</h1>
     </div>
+    <hr>
     <br>
 <div class="container">
         <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
@@ -111,31 +112,33 @@
                     <div class="row form-row">
                         <div class="col border p-3 form">
                             <div id="errorsLogIn"></div>
+                            <br>
                             <form id="formLogIn" method="POST" action="/v1/geoInfoSystem/inicia_sessio/">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm">
-                                            <label>Nom d'usuari:</label>
+                                            <label class="font-weight-bold">Nom d'usuari</label>
                                         </div>
                                         <div class="col-sm">
-                                            <input type="text" id="username" name="username" onkeyup="comprovarInputs()" placeholder="Username" required>
+                                            <input type="text" id="username" name="username" onkeyup="comprovarInputs()" placeholder="Nom d'Usuari" required>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm">
-                                            <label>Contrassenya:</label>
+                                            <label class="font-weight-bold">Contrassenya</label>
                                         </div>
                                         <div class="col-sm">
-                                            <input type="password" name="password" id="password" onkeyup="comprovarInputs()" placeholder="Password" required>
+                                            <input type="password" name="password" id="password" onkeyup="comprovarInputs()" placeholder="Contrassenya" required>
                                         </div>
                                     </div>
                                 </div>
                             </form>
-
+                            <br>
                            <div class="text-center"><button style="margin:0px auto;" type="submit" id="iniciSessioBtn"  onclick="comprovarLogIn()" class="btn btn-success" disabled>Inicia sessió</button> </div>
+                            <br>
                             <p style="text-align: center">No tens compte? <a href="/v1/geoInfoSystem/registrar_nou_usuari/">Crea un compte</a></p>
                         </div>
                     </div>

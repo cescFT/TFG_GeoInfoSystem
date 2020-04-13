@@ -7,7 +7,7 @@
 <hr>
 <div class="container">
     {%if chMail %}
-    <h2>Canvi de correu electrònic</h2>
+    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de correu electrònic</h2>
     <p style="margin-left: 25px">En el següent formulari tens la oportunitat de canviar o afegir el correu electrònic del teu perfil</p>
     <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
         <div class="form-group border p-3">
@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Nou correu electrònic:</b></label>
+                            <label><b>Nou correu electrònic</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="email" id="mail" name="email"  onkeyup="checkEmptyMails()" placeholder="correu@exemple.com" required>
@@ -27,7 +27,7 @@
                     <br>
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Repeteix el correu electrònic:</b></label>
+                            <label><b>Repeteix el correu electrònic</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="email"  id="mail1" name="email1" onkeyup="checkEmptyMails()" placeholder="correu@exemple.com" required>
@@ -35,11 +35,14 @@
                     </div>
                 </div>
             </form>
+            <br>
             <div class="text-center"><button type="submit" name="submit_update" onclick="checkMails()" id="bttn_update_mail" class="btn btn-success" disabled><i class="fa fa-edit"></i> Actualitza el correu</button></div>
+            <br>
+            <div class="text-center"><p>Vols tornar al teu perfil? <a href="/v1/geoInfoSystem/el_meu_espai/">Torna al teu perfil</a>.</p></div>
         </div>
     </div>
 {%elif chNom %}
-    <h2>Canvi de nom</h2>
+    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de nom</h2>
     <p style="margin-left: 25px">En el següent formulari tens la oportunitat d'afegir el nom</p>
     <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
         <div class="form-group border p-3">
@@ -50,7 +53,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Nou nom:</b></label>
+                            <label><b>Nou nom</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="text" id="first_name"  onkeyup="checkEmptyNames()" name="first_name" placeholder="Nom" required>
@@ -60,7 +63,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Repeteix el nou nom:</b></label>
+                            <label><b>Repeteix el nou nom</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="text" id="first_name1" onkeyup="checkEmptyNames()" name="first_name1" placeholder="Repeteix nom" required>
@@ -68,11 +71,14 @@
                     </div>
                 </div>
             </form>
+            <br>
             <div class="text-center"><button type="submit" name="submit_update" onclick="checkNames()" id="bttn_update_name" class="btn btn-success" disabled><i class="fa fa-edit"></i> Actualitza el nom</button></div>
+            <br>
+            <div class="text-center"><p>Vols tornar al teu perfil? <a href="/v1/geoInfoSystem/el_meu_espai/">Torna al teu perfil</a>.</p></div>
         </div>
     </div>
 {%elif chCog %}
-    <h2>Canvi de cognom</h2>
+    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de cognom</h2>
     <p style="margin-left: 25px">En el següent formulari tens la oportunitat d'afegir els cognoms</p>
     <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
         <div class="form-group border p-3">
@@ -83,29 +89,32 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Nou cognom:</b></label>
+                            <label><b>Nous cognoms</b></label>
                         </div>
                         <div class="col-sm">
-                            <input type="text"  id="last_name"  onkeyup="checkEmptySurnames()"  name="last_name" placeholder="Cognom" required>
+                            <input type="text"  id="last_name"  onkeyup="checkEmptySurnames()"  name="last_name" placeholder="Cognoms" required>
                         </div>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Repeteix el nou cognom:</b></label>
+                            <label><b>Repeteix els cognoms</b></label>
                         </div>
                         <div class="col-sm">
-                            <input type="text"  id="last_name1" onkeyup="checkEmptySurnames()"  name="last_name1" placeholder="Repeteix cognom" required>
+                            <input type="text"  id="last_name1" onkeyup="checkEmptySurnames()"  name="last_name1" placeholder="Repeteix cognoms" required>
                         </div>
                     </div>
                 </div>
             </form>
+            <br>
             <div class="text-center"><button type="submit" name="submit_update"  onclick="checkSurnames()"  id="bttn_update_surname" class="btn btn-success" disabled><i class="fa fa-edit"></i> Actualitza el Cognom</button></div>
+            <br>
+            <div class="text-center"><p>Vols tornar al teu perfil? <a href="/v1/geoInfoSystem/el_meu_espai/">Torna al teu perfil</a>.</p></div>
         </div>
     </div>
 {%elif chPass %}
-    <h2>Canvi de contrassenya</h2>
+    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de contrassenya</h2>
     <p style="margin-left: 25px">En el següent formulari tens la oportunitat de canviar la contrassenya</p>
     <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
         <div class="form-group border p-3">
@@ -116,7 +125,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Nova contrassenya:</b></label>
+                            <label><b>Nova contrassenya</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="password" id="password" onkeyup="checkEmptyPasswd()" name="password" placeholder="Contrassenya" required>
@@ -126,7 +135,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Repeteix la nova contrassenya:</b></label>
+                            <label><b>Repeteix la nova contrassenya</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="password" id="password1" onkeyup="checkEmptyPasswd()" name="password1" placeholder="Repeteix contrassenya" required>
@@ -134,7 +143,10 @@
                     </div>
                 </div>
             </form>
+            <br>
             <div class="text-center"><button type="submit" name="submit_update" onclick="checkPasswd()" id="bttn_update_password" class="btn btn-success" disabled><i class="fa fa-edit"></i> Canvia la contrassenya</button></div>
+            <br>
+            <div class="text-center"><p>Vols tornar al teu perfil? <a href="/v1/geoInfoSystem/el_meu_espai/">Torna al teu perfil</a>.</p></div>
         </div>
     </div>
 {%endif%}

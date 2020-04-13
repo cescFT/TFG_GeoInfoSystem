@@ -2,7 +2,6 @@
 {% block title %} El meu espai - {{ user.username }}{% endblock %}
 {% block content %}
 <body onload="randInfo()">
-<div class="container">
     <br>
     <div style="text-align: center">
         {%if user.first_name and user.last_name %}
@@ -14,6 +13,7 @@
         {% endif %}
     </div>
     <hr>
+    <div class="container">
     <h2>Informació personal</h2>
     <div class="row">
         <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;" class="card card-body">
@@ -148,7 +148,7 @@
         </div>
     </div>
 </div>
-
+<br><br>
 
 <div class="modal fade" id="modalBaixa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
