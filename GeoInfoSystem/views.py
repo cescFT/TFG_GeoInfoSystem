@@ -948,7 +948,7 @@ def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
         if not loc:
             raise NoContingut
     except Exception or NoContingut:
-        return render(response, "errors/ErrorFile.html",{})
+        return redirect('/v1/geoInfoSystem/error/')
     puntInteresC = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)
     p = puntInteresC[0]
     localitat  = p.localitat
@@ -1104,8 +1104,12 @@ def updateUsuari(request, codi):
     else:
         codi = urllib.parse.unquote(codi)
         codiTallat = codi.split()
+        if len(codiTallat)<4 or len(codiTallat)>=5:
+            return redirect('/v1/geoInfoSystem/error/')
         if codiTallat[0].islower() and codiTallat[1].islower() and codiTallat[2].islower() and codiTallat[3].islower():
-            return render(request, 'errors/ErrorFile.html', {})
+            return redirect('/v1/geoInfoSystem/error/')
+        if codiTallat[0].lower() != 'e' or codiTallat[1].lower()!='n' or codiTallat[2].lower()!='c' or codiTallat[3].lower()!='p':
+            return redirect('/v1/geoInfoSystem/error/')
         chMail = False
         if codiTallat[0].isupper():
             chMail = True
@@ -1227,6 +1231,8 @@ def baixa(request):
 def unauthorizedpage(response):
     return render(response, "errors/NoAutoritzat.html", {})
 
+def errorpage(request):
+    return render(request, "errors/ErrorFile.html", {})
 
 def ciutatsPerProvincia(request):
     if request.method == 'GET':

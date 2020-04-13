@@ -3,13 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/home/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/home/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/login.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/profilePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/profilePage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/registrar1.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/registrar1.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/updateUsuari.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/updateUsuari.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -319,7 +314,7 @@
       <workItem from="1586511005785" duration="20032000" />
       <workItem from="1586595069824" duration="27044000" />
       <workItem from="1586682062065" duration="38438000" />
-      <workItem from="1586768174448" duration="1016000" />
+      <workItem from="1586768174448" duration="2406000" />
     </task>
     <servers />
   </component>
