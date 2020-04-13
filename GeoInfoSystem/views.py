@@ -725,16 +725,17 @@ def deleteLocalByName(request):
         except Exception or NoContingut:
             return Response('No hi ha cap punt d\'interes amb aquest nom.', status=status.HTTP_404_NOT_FOUND)
 
-
 ################################################################
-# Secció per a cridar la vista d'entrada/registre/login/logout #
+################################################################
+#                       VISTES WEB                             #
+################################################################
 ################################################################
 
 """ 
 Mètode que permet visualitzar la pàgina d'inici
 """
-def home(response):
-    return render(response, "home/home.html",{})
+def home(request):
+    return render(request, "home/home.html",{})
 
 """
 Mètode que mostra la pàgina per a registrar un nou usuari
@@ -755,6 +756,11 @@ def paginaRegistrarse(request):
         return redirect("/")
     return render(request, "usuaris/registrar1.html", {})
 
+"""
+Mètode AJAX que comprova les dades d'entrada del formulari del registre d'usuaris en la web.
+Permet registrar-se quan l'usuari és nou, osigui no hi ha cap nom d'usuari igual en la base de dades, la contrassenya té més de 8 caràcters,
+ambdues contrassenyes són iguals i el mail introduït té un format mail.
+"""
 def check_values_register_data(request):
     username = urllib.parse.unquote(request.GET['username'])
     password1 = urllib.parse.unquote(request.GET['password1'])
@@ -775,6 +781,10 @@ def check_values_register_data(request):
     res_json = json.dumps(data)
     return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode AJAX que permet comtrolar si les dades del formulari del registre estan plenes o buides.
+En cas que les dades estiguin plenes, retorna fals i permet registrar-se, en altre cas, no.
+"""
 def check_empty_register_data(request):
     if request.method == 'GET':
         username=urllib.parse.unquote(request.GET['username'])
@@ -791,11 +801,10 @@ def check_empty_register_data(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type="json")
 
-
-#############################################################################
-# MÈTODES REFERENTS A LA VISTA ON TREBALLAREM AMB EL MAPA                   #
-#############################################################################
-def mostrarMapa(response):
+"""
+Mètode que permet mostrar el mapa, punt central del sistema GIS. 
+"""
+def mostrarMapa(request):
     puntsInteresCercats = puntInteres.objects.all()
     localsimp = local.objects.all()
 
@@ -835,8 +844,12 @@ def mostrarMapa(response):
     nom_local_rand = local.objects.all().filter(localitzacio=rand_id_puntInteres)[0].nomLocal
 
     #LIMITACIO DE NO PAGAR API: NO PUC FER CERQUES.... (searchbox item de google)
-    return render(response, "puntsGeografics/map.html", {'latitudRand': pIntRand_latitud, 'longitudRand': pIntRand_longitud, 'nomLocalRand':nom_local_rand,'totesCategories':categoriesT,'poblesTGN':poblesDeTgn, 'provincies':provincies,'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions})
+    return render(request, "puntsGeografics/map.html", {'latitudRand': pIntRand_latitud, 'longitudRand': pIntRand_longitud, 'nomLocalRand':nom_local_rand,'totesCategories':categoriesT,'poblesTGN':poblesDeTgn, 'provincies':provincies,'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions})
 
+"""
+Mètode AJAX auxiliar al mètode anterior. Aquest permet que el mòdul estadístic no estigui buit a l'inici, sinó que tal com l'usuari
+entra en la vista de la web, ja vegi les estadístiques inicials mostrades en la part inferior de la pantalla.
+"""
 def estadistiques_inicials(request):
     resultatsInicials = {}
     res = {}
@@ -938,7 +951,11 @@ def estadistiques_inicials(request):
     initial_statistics_data = json.dumps(resultatsInicials)
     return HttpResponse(initial_statistics_data, content_type='json')
 
-def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
+"""
+Mètode que permet executar la vista d'una pantalla informativa d'un punt específic.
+Controla que les dades siguin correctes, en altre cas, informarà amb la vista de l'error i anira a la pàgina d'inici.
+"""
+def mostrarPuntEspecific(request, nomLocal,latitud, longitud):
     nomLocal = urllib.parse.unquote(nomLocal)
     try:
         punt = puntInteres.objects.all().filter(latitud=latitud, longitud=longitud)[0]
@@ -973,10 +990,13 @@ def mostrarPuntEspecific(response, nomLocal,latitud, longitud):
     #altresLocals = serializers.serialize("json", altresLocals)
     #punts = serializers.serialize("json", punts)
     if len(altresPuntsInteres)>0:
-        return render(response, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat,'puntInteres':punt, 'local': localE, 'altres': True})
+        return render(request, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat,'puntInteres':punt, 'local': localE, 'altres': True})
     else:
-        return render(response, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat, 'puntInteres': punt, 'local': localE, 'altres': False})
+        return render(request, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat, 'puntInteres': punt, 'local': localE, 'altres': False})
 
+"""
+Mètode AJAX auxiliar del mètode anterior que permet que quan en un punt d'una ciutat hi ha més punts, permet la obtenció dels altres punts específics i l'usuari hi pot accedir, sense cap problema.
+"""
 def ajax_altres_punts_mateixa_ciutat_info_especifica(request):
     if request.method == 'GET':
         nomLocal=urllib.parse.unquote(request.GET['nomLocal'])
@@ -1004,6 +1024,10 @@ def ajax_altres_punts_mateixa_ciutat_info_especifica(request):
 
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode que permet executar la vista del log in i també permet processar les dades introduïdes.
+En cas que el login sigui correcte, retornem a la pàgina d'inici.
+"""
 def loginPage(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -1022,7 +1046,10 @@ def loginPage(request):
                     return redirect("/")
     return render(request, 'usuaris/login.html',{})
 
-
+"""
+Mètode AJAX auxiliar del mètode anterior, el qual comprova si els inputs del login estan informats.
+En cas que no estiguin informats, no et permetra fer login
+"""
 def checkInputsLogIn(request):
     if request.method == 'GET':
         data={}
@@ -1037,6 +1064,10 @@ def checkInputsLogIn(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type="json")
 
+"""
+Mètode AJAX auxiliar del mètode del login que comprova si cert usuari, que ha posat les seves credencials estan bé o no.
+En cas que estiguin bé, permetrà l'accès.
+"""
 def checkUserToLogIn(request):
     if request.method == 'GET':
         data={}
@@ -1064,15 +1095,17 @@ def checkUserToLogIn(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
-
-
-
-
+"""
+Mètode que permet fer el log out d'un usuari, que prèviament ha fet log in.
+"""
 def logout(request):
     do_logout(request)
     return redirect("/")
 
-
+"""
+Mètode que permet renderitzar la pàgina del perfil de l'usuari, sempre i quan aquest hagi fet log in prèviament.
+A més, envia informació addicional sobre un punt random cada vegada que es recarrega la pàgina.
+"""
 @login_required(login_url='/v1/geoInfoSystem/inicia_sessio/')
 def profilePage(request):
     fk_rand_punt_interes=random.choices(list(local.objects.all().values_list('localitzacio_id', flat=True)))[0]
@@ -1080,7 +1113,11 @@ def profilePage(request):
     p_interes=puntInteres.objects.all().filter(id=fk_rand_punt_interes)[0]
     return render(request, "usuaris/profilePage.html", {'latitud':str(p_interes.latitud), 'longitud':str(p_interes.longitud), 'nomLocal':local_rand.nomLocal})
 
-
+"""
+Mètode que permet updatejar els camps de l'usuari sempre i quan s'hagi fet login.
+Permet modificar el correu, el nom de la persona, el cognom i la contrassenya.
+A més comprova que la URI estigui ben formada.
+"""
 @login_required(login_url='/v1/geoInfoSystem/inicia_sessio/')
 def updateUsuari(request, codi):
     if request.method == 'POST':
@@ -1124,6 +1161,9 @@ def updateUsuari(request, codi):
             chPass = True
         return render(request, "usuaris/updateUsuari.html",{'chMail':chMail, 'chNom':chNom, 'chCog':chCog, 'chPass':chPass})
 
+"""
+Mètode AJAX auxiliar que verifica que els camps del mail estiguin informats per a poder actualizar-lo.
+"""
 def comprovar_mails_update_usuari_empty(request):
     if request.method == 'GET':
         mail1=request.GET['mail1']
@@ -1135,6 +1175,9 @@ def comprovar_mails_update_usuari_empty(request):
         res_json=json.dumps(data)
         return HttpResponse(res_json,content_type='json')
 
+"""
+Mètode AJAX que comprova que els mails siguin iguals i dóna l'OK per a actualitzar-lo.
+"""
 def comprovar_mails_update_usuari(request):
     if request.method == 'GET':
         mail1 = request.GET['mail1']
@@ -1150,6 +1193,9 @@ def comprovar_mails_update_usuari(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode AJAX auxiliar que verifica que els camps del nom estiguin informats per a poder actualizar-lo.
+"""
 def comprovar_noms_update_usuari_empty(request):
     if request.method == 'GET':
         nom1=request.GET['nom1']
@@ -1161,6 +1207,10 @@ def comprovar_noms_update_usuari_empty(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode AJAX que comprova que els noms siguin iguals i que el nom que es posa sigui diferent al nom d'usuari, en aquest cas,
+dóna l'OK per a actualitzar-lo. 
+"""
 def comprovar_noms_update_usuari(request):
     if request.method=='GET':
         nom1=request.GET['nom1']
@@ -1176,6 +1226,9 @@ def comprovar_noms_update_usuari(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode AJAX auxiliar que verifica que els camps del cognom estiguin informats per a poder actualizar-lo.
+"""
 def comprovar_cognom_update_usuari_empty(request):
     if request.method == 'GET':
         cognom1=request.GET['cognom1']
@@ -1187,6 +1240,9 @@ def comprovar_cognom_update_usuari_empty(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode AJAX que comprova que els cognoms siguin iguals i dóna l'OK per a actualitzar-lo.
+"""
 def comprovar_cognom_update_usuari(request):
     if request.method == 'GET':
         cognom1=request.GET['cognom1']
@@ -1198,6 +1254,9 @@ def comprovar_cognom_update_usuari(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode AJAX auxiliar que verifica que els camps de la contrassenya estiguin informats per a poder actualizar-lo.
+"""
 def comprovar_contrassenya_update_usuari_empty(request):
     if request.method == 'GET':
         passwd1=request.GET['passwd1']
@@ -1209,6 +1268,9 @@ def comprovar_contrassenya_update_usuari_empty(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode AJAX que comprova que les contrassenyes tinguin més de 8 caràcters alfanumèrics i que siguin iguals. En aquest cas, dóna l'OK per a actualitzar-lo.
+"""
 def comprovar_contrassenya_update_usuari(request):
     if request.method == 'GET':
         passwd1=request.GET['passwd1']
@@ -1223,17 +1285,29 @@ def comprovar_contrassenya_update_usuari(request):
         res_json=json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode que permet donar de baixa un usuari.
+"""
 def baixa(request):
     curr_usr = request.user
     User.objects.all().filter(username=curr_usr).delete()
     return redirect("/")
 
+"""
+Mètode que renderitza la pàgina de no autoritzat.
+"""
 def unauthorizedpage(response):
     return render(response, "errors/NoAutoritzat.html", {})
 
+"""
+Mètode que renderitza la pàgina d'error
+"""
 def errorpage(request):
     return render(request, "errors/ErrorFile.html", {})
 
+"""
+Mètode AJAX auxiliar per a totes aquelles pantalles que requereixin les ciutats de la BD i les recupera.
+"""
 def ciutatsPerProvincia(request):
     if request.method == 'GET':
         provincia = request.GET['provincia']
@@ -1248,6 +1322,9 @@ def ciutatsPerProvincia(request):
         loc = json.dumps(res)
         return HttpResponse(loc, content_type='json')
 
+"""
+Mètode AJAX que permet fer les estadístiques al instant que l'usuari va modificant els filtres.
+"""
 def res_ajax_estadistiques(request):
     if request.method == 'GET':
         ciutat = urllib.parse.unquote(request.GET['poblacio'])
@@ -1366,6 +1443,9 @@ def res_ajax_estadistiques(request):
         res_json = json.dumps(res)
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode que permet accedir a la url d'afegir un nou punt sempre i quan aquest usuari sigui adimistrador de la pàgina.
+"""
 @user_passes_test(lambda u: u.is_superuser)
 def crearNouPuntInteres(request):       #Només pots entrar si és administrador de la pàgina
     provincies = localitzacio.objects.all().values_list('provincia', flat=True).distinct()
@@ -1430,6 +1510,9 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
             return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'provincies':provinciesMostrar ,'categories': categoriesMostrar, 'poblacions':poblacionsMostrar, 'punts': punts, 'lenLlista':midaLlista})
     return render(request, "puntsGeografics/afegirNouPunt.html", {'provincies':provinciesMostrar,'categories':categoriesMostrar, 'poblacions':poblacionsMostrar,'punts':[], 'lenLlista':0})
 
+"""
+Mètode AJAX auxiliar del anterior mètode, que permet comprovar que els camps estiguin informats
+"""
 def check_values_new_point_empty(request):
     if request.method == 'GET':
         nomLocal = urllib.parse.unquote(request.GET['nomLocal'])
@@ -1443,6 +1526,9 @@ def check_values_new_point_empty(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode AJAX auxiliar que comprova que els camps del formulari del local, per al nou punt estiguin ben informats.
+"""
 def check_values_new_point(request):
     if request.method == 'GET':
         nomLocal = urllib.parse.unquote(request.GET['nomLocal'])
