@@ -242,7 +242,7 @@
     </div>
     <input type="hidden" name="categoria" id="categoriaSeleccionada" value="Restauració">
     <input type="hidden" name="esActiu" id="estat" value="False">
-    <input type="hidden" name="poblacio" id="pobleSeleccionat" value="Aiguamúrcia (Alt Camp), Tarragona">
+    <input type="hidden" name="poblacio" id="pobleSeleccionat" value="">
     <br><br>
 
 <script>
@@ -287,7 +287,7 @@ function inicialitzacioEstadistiques(){
     var totescategories = JSON.parse(`{{totesCategories | safe}}`);
     var divProvincies = document.getElementById("provincies");
     var provincies =JSON.parse(`{{ provincies | safe }}`);
-
+    document.getElementById("pobleSeleccionat").value=`{{primeraLocalitatLlista | safe}}`;
     var llProvincies = Object.values(provincies);
     var llPoblesTGN = Object.values(poblesTGN);
     var categoriesToDo = [];
@@ -338,6 +338,10 @@ function inicialitzacioEstadistiques(){
     $.ajax({
             type: 'GET',
             url : '/v1/geoInfoSystem/estadistiques_inicials/',
+            data:{
+                'categoria':document.getElementById("categoriaSeleccionada").value,
+                'poblacio': document.getElementById("pobleSeleccionat").value
+            },
             dataType:'json',
             success:
                 function (data){
@@ -429,13 +433,12 @@ function inicialitzacioEstadistiques(){
 
 function poblacionsPerProvincia(){
     var elem = document.getElementById("provinciaSeleccio");
-    var inputOcult = document.getElementById("pobleSeleccionat");
     elem.childNodes.forEach(node => {
       if(node.selected){
             var defecte=node.value;
             $.ajax({
                 type: 'GET',
-                url : '/v1/geoInfoSystem/poblacions_per_provincia/',
+                url : '/v1/geoInfoSystem/poblacions_per_provincia_estadistiques/',
                 data:{
                     'provincia' : defecte
                 },
@@ -446,25 +449,158 @@ function poblacionsPerProvincia(){
                         var pobles = Object.values(data1[0]);
                         var divpoble = document.getElementById("ubicacio");
                         divpoble.innerHTML="";
-                        //console.log(pobles);
-                        var sPoble = document.createElement("SELECT");
-                        sPoble.setAttribute("id", "poblacioSeleccio");
-                        sPoble.setAttribute("class", "form-control");
-                        sPoble.setAttribute("onchange", "guardarPoblacio()");
-                        divpoble.appendChild(sPoble);
-                        for(var j=0; j<pobles.length; j++){
+                        if (pobles.length!== 0){
+                            //console.log(pobles);
+                            var sPoble = document.createElement("SELECT");
+                            sPoble.setAttribute("id", "poblacioSeleccio");
+                            sPoble.setAttribute("class", "form-control");
+                            sPoble.setAttribute("onchange", "guardarPoblacio()");
+                            divpoble.appendChild(sPoble);
+                            for(var j=0; j<pobles.length; j++){
                             let option = document.createElement("option");
                             option.setAttribute("value", pobles[j]+", "+defecte);
                             let t = document.createTextNode(pobles[j]+", "+defecte);
                             option.appendChild(t);
                             document.getElementById("poblacioSeleccio").appendChild(option);
+                            }
+                            setvalor(pobles[0]+", "+defecte);
+
+                            if (document.getElementById("tipusSeleccio").disabled === true)
+                                document.getElementById("tipusSeleccio").disabled = false;
+                            if (document.getElementById("esActiu").disabled === true)
+                                document.getElementById("esActiu").disabled=false;
+                            if(document.getElementById("bttnconsultaActual").disabled === true)
+                                document.getElementById("bttnconsultaActual").disabled=false;
+                            if(document.getElementById("bttntotcontrari").disabled=== true)
+                                document.getElementById("bttntotcontrari").disabled=false;
+                            if(document.getElementById("bttntotesdades").disabled=== true)
+                                document.getElementById("bttntotesdades").disabled=false;
+                            if(document.getElementById("bttnmateixaCiutat").disabled=== true)
+                                document.getElementById("bttnmateixaCiutat").disabled=false;
+                            if(document.getElementById("bttnactiunegatMateixaCategoria").disabled=== true)
+                                document.getElementById("bttnactiunegatMateixaCategoria").disabled=false;
+                            if(document.getElementById("bttnlocalsdiferents").disabled=== true)
+                                document.getElementById("bttnlocalsdiferents").disabled=false;
+                            if(document.getElementById("bttnlocalsaltrespobles").disabled=== true)
+                                document.getElementById("bttnlocalsaltrespobles").disabled=false;
+                        }else{
+                            var b = document.createElement("B");
+                            var t = document.createTextNode("No hi ha localitzacions amb punts d'interès en aquesta província.");
+                            b.appendChild(t);
+                            b.setAttribute("style", "color:red");
+                            divpoble.appendChild(b);
+                            document.getElementById("tipusSeleccio").disabled= true;
+                            document.getElementById("esActiu").disabled = true;
+                            document.getElementById("bttnconsultaActual").disabled = true;
+                            document.getElementById("bttntotcontrari").disabled = true;
+                            document.getElementById("bttntotesdades").disabled = true;
+                            document.getElementById("bttnmateixaCiutat").disabled = true;
+                            document.getElementById("bttnactiunegatMateixaCategoria").disabled = true;
+                            document.getElementById("bttnlocalsdiferents").disabled = true;
+                            document.getElementById("bttnlocalsaltrespobles").disabled = true;
                         }
-                        inputOcult.value = pobles[0]+", "+defecte;
+
                     }
             });
       }
     });
 }
+
+function setvalor(myValue) {
+     $('#pobleSeleccionat').val(myValue)
+                 .trigger('change');
+}
+$('#pobleSeleccionat').change( function() {
+    console.log('vaaa jeje');
+    var actiu = document.getElementById("estat");
+    var categoria =document.getElementById("categoriaSeleccionada");
+    $.ajax({
+                type: 'GET',
+                url : '/v1/geoInfoSystem/estadistiques/',
+                data:{
+                    'poblacio' : $('#pobleSeleccionat').val(),
+                    'actiu' : actiu.value,
+                    'categoria' : categoria.value
+                },
+                dataType:'json',
+                success:
+                    function (data){
+                        var data1 = Object.values(data);
+                        console.log(data1);
+                        netejarEstadistiques();
+                        for(var i = 0; i<7; i++){
+                            let dades = Object.values(data1[i]);
+                            if (dades[2]!=='0'){
+                                let information = JSON.parse(dades[0]);
+                                let infoToDo = [];
+                                for(infoReal of information){
+                                    infoToDo.push({
+                                        'fk_puntInteres':infoReal.fields.localitzacio,
+                                        'nomLocal' : infoReal.fields.nomLocal,
+                                        'anyConstruccio' : infoReal.fields.anyConstruccio,
+                                        'descripcio' : infoReal.fields.descripcio
+                                    });
+                                }
+                                let pInteresInfo = JSON.parse(dades[3]);
+                                let infoPuntInteres = [];
+                                for (puntI of pInteresInfo){
+                                    infoPuntInteres.push({
+                                        'pk':puntI.pk,
+                                        'latitud' : puntI.fields.latitud,
+                                        'longitud' : puntI.fields.longitud,
+                                        'latitudS': puntI.fields.latitud.toString(),
+                                        'longitudS':puntI.fields.longitud.toString()
+                                    });
+                                }
+                                for(var j=0; j<infoToDo.length; j++){
+                                    let liNomLocal = document.createElement("LI");
+                                    let liAnyConstruccio = document.createElement("LI");
+                                    let liDescripcio = document.createElement("LI");
+                                    let liLinkToSpecificWeb = document.createElement("LI");
+                                    crearLink(infoToDo[j], infoPuntInteres, liLinkToSpecificWeb);
+                                    let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
+                                    let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
+                                    let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
+                                    liNomLocal.appendChild(tNomLocal);
+                                    liAnyConstruccio.appendChild(tAnyConstruccio);
+                                    liDescripcio.appendChild(tDescripcio);
+                                    let itemNom = document.createElement("LI");
+                                    let itemAnyConstruccio = document.createElement("LI");
+                                    let itemDescripcio = document.createElement("LI");
+                                    let itemLink = document.createElement("LI");
+                                    itemLink.setAttribute("class", "list-group-item");
+                                    itemNom.setAttribute("class","list-group-item");
+                                    itemAnyConstruccio.setAttribute("class", "list-group-item");
+                                    itemDescripcio.setAttribute("class", "list-group-item");
+                                    itemNom.appendChild(liNomLocal);
+                                    itemAnyConstruccio.appendChild(liAnyConstruccio);
+                                    itemDescripcio.appendChild(liDescripcio);
+                                    itemLink.appendChild(liLinkToSpecificWeb);
+                                    document.getElementById("resultats"+(i+1)).appendChild(itemNom);
+                                    document.getElementById("resultats"+(i+1)).appendChild(itemAnyConstruccio);
+                                    document.getElementById("resultats"+(i+1)).appendChild(itemDescripcio);
+                                    document.getElementById("resultats"+(i+1)).appendChild(itemLink);
+                                    if(j!==infoToDo.length-1){
+                                        let separator=document.createElement("LI");
+                                        separator.setAttribute("class", "nav-divider");
+                                        separator.setAttribute("style", "background-color: #2A3B56; list-style: none; color:#2A3B56;");
+                                        let tAuxLiDivider = document.createTextNode("s");
+                                        separator.appendChild(tAuxLiDivider);
+                                        document.getElementById("resultats"+(i+1)).appendChild(separator);
+                                    }
+                                }
+                                document.getElementById("textNumElems"+(i+1)).innerHTML+=infoToDo.length.toString();
+                                document.getElementById("li-divider"+(i+1)).hidden = false;
+                            }else{
+                                document.getElementById("textNumElems"+(i+1)).innerHTML = "No hi ha resultats en aquesta pestanya.";
+                            }
+                        }
+                    }
+            });
+
+
+
+});
 
 function switchStatisticsData(idbtn) {
     switch (idbtn) {
@@ -681,96 +817,11 @@ function netejarEstadistiques(){
 function guardarPoblacio(){
     var inputOcult = document.getElementById("pobleSeleccionat");
     var elem = document.getElementById("poblacioSeleccio");
-    var actiu = document.getElementById("estat");
-    var categoria =document.getElementById("categoriaSeleccionada");
+
     elem.childNodes.forEach(node => {
         if(node.selected){
             //console.log(node.value);
-            inputOcult.value = node.value;
-            var poble=node.value;
-            $.ajax({
-                type: 'GET',
-                url : '/v1/geoInfoSystem/estadistiques/',
-                data:{
-                    'poblacio' : poble,
-                    'actiu' : actiu.value,
-                    'categoria' : categoria.value
-                },
-                dataType:'json',
-                success:
-                    function (data){
-                        var data1 = Object.values(data);
-                        console.log(data1);
-                        netejarEstadistiques();
-                        for(var i = 0; i<7; i++){
-                            let dades = Object.values(data1[i]);
-                            if (dades[2]!=='0'){
-                                let information = JSON.parse(dades[0]);
-                                let infoToDo = [];
-                                for(infoReal of information){
-                                    infoToDo.push({
-                                        'fk_puntInteres':infoReal.fields.localitzacio,
-                                        'nomLocal' : infoReal.fields.nomLocal,
-                                        'anyConstruccio' : infoReal.fields.anyConstruccio,
-                                        'descripcio' : infoReal.fields.descripcio
-                                    });
-                                }
-                                let pInteresInfo = JSON.parse(dades[3]);
-                                let infoPuntInteres = [];
-                                for (puntI of pInteresInfo){
-                                    infoPuntInteres.push({
-                                        'pk':puntI.pk,
-                                        'latitud' : puntI.fields.latitud,
-                                        'longitud' : puntI.fields.longitud,
-                                        'latitudS': puntI.fields.latitud.toString(),
-                                        'longitudS':puntI.fields.longitud.toString()
-                                    });
-                                }
-                                for(var j=0; j<infoToDo.length; j++){
-                                    let liNomLocal = document.createElement("LI");
-                                    let liAnyConstruccio = document.createElement("LI");
-                                    let liDescripcio = document.createElement("LI");
-                                    let liLinkToSpecificWeb = document.createElement("LI");
-                                    crearLink(infoToDo[j], infoPuntInteres, liLinkToSpecificWeb);
-                                    let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
-                                    let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
-                                    let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
-                                    liNomLocal.appendChild(tNomLocal);
-                                    liAnyConstruccio.appendChild(tAnyConstruccio);
-                                    liDescripcio.appendChild(tDescripcio);
-                                    let itemNom = document.createElement("LI");
-                                    let itemAnyConstruccio = document.createElement("LI");
-                                    let itemDescripcio = document.createElement("LI");
-                                    let itemLink = document.createElement("LI");
-                                    itemLink.setAttribute("class", "list-group-item");
-                                    itemNom.setAttribute("class","list-group-item");
-                                    itemAnyConstruccio.setAttribute("class", "list-group-item");
-                                    itemDescripcio.setAttribute("class", "list-group-item");
-                                    itemNom.appendChild(liNomLocal);
-                                    itemAnyConstruccio.appendChild(liAnyConstruccio);
-                                    itemDescripcio.appendChild(liDescripcio);
-                                    itemLink.appendChild(liLinkToSpecificWeb);
-                                    document.getElementById("resultats"+(i+1)).appendChild(itemNom);
-                                    document.getElementById("resultats"+(i+1)).appendChild(itemAnyConstruccio);
-                                    document.getElementById("resultats"+(i+1)).appendChild(itemDescripcio);
-                                    document.getElementById("resultats"+(i+1)).appendChild(itemLink);
-                                    if(j!==infoToDo.length-1){
-                                        let separator=document.createElement("LI");
-                                        separator.setAttribute("class", "nav-divider");
-                                        separator.setAttribute("style", "background-color: #2A3B56; list-style: none; color:#2A3B56;");
-                                        let tAuxLiDivider = document.createTextNode("s");
-                                        separator.appendChild(tAuxLiDivider);
-                                        document.getElementById("resultats"+(i+1)).appendChild(separator);
-                                    }
-                                }
-                                document.getElementById("textNumElems"+(i+1)).innerHTML+=infoToDo.length.toString();
-                                document.getElementById("li-divider"+(i+1)).hidden = false;
-                            }else{
-                                document.getElementById("textNumElems"+(i+1)).innerHTML = "No hi ha resultats en aquesta pestanya.";
-                            }
-                        }
-                    }
-            });
+            setvalor(node.value);
         }
     });
 }
@@ -990,6 +1041,7 @@ function crearLink(local, puntsInteres, linkIE){
     //console.log(local);
     //console.log(puntsInteres);
 }
+
 
 </script>
 </body>

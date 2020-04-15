@@ -825,7 +825,6 @@ def mostrarMapa(request):
     pIntRand_longitud = str(puntInteres.objects.all().filter(id=rand_id_puntInteres)[0].longitud)
     nom_local_rand = local.objects.all().filter(localitzacio=rand_id_puntInteres)[0].nomLocal
 
-    #LIMITACIO DE NO PAGAR API: NO PUC FER CERQUES.... (searchbox item de google)
     return render(request, "puntsGeografics/map.html", {'latitudRand': pIntRand_latitud, 'longitudRand': pIntRand_longitud, 'nomLocalRand':nom_local_rand, 'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions})
 
 def estadistiques(request):
@@ -836,17 +835,18 @@ def estadistiques(request):
         dict['prov' + str(i)] = res
         i = i + 1
     provincies = json.dumps(dict)
-    print(provincies)
-    poblesTgn = localitzacio.objects.all().filter(provincia='Tarragona').values_list('ciutat', 'comarca')
+    fk_pobles_puntsInteres = puntInteres.objects.all().values_list('localitat', flat=True)
+    poblesTgn = localitzacio.objects.all().filter(provincia='Tarragona', id__in=fk_pobles_puntsInteres).values_list('ciutat', 'comarca')
     dict = {}
     i = 1
     for res in poblesTgn:
         dict['poble' + str(i)] = res[0] + " (" + res[1] + "), " + "Tarragona"
         i = i + 1
+    print(dict['poble1'])
     poblesDeTgn = json.dumps(dict)
     tipus = categoriaLocal.objects.all()
     categoriesT = serializers.serialize('json', tipus)
-    return render(request, "puntsGeografics/estadistiques.html", {'totesCategories': categoriesT, 'poblesTGN': poblesDeTgn, 'provincies':provincies})
+    return render(request, "puntsGeografics/estadistiques.html", {'totesCategories': categoriesT, 'poblesTGN': poblesDeTgn, 'provincies':provincies, 'primeraLocalitatLlista':dict['poble1']})
 
 """
 Mètode AJAX auxiliar al mètode anterior. Aquest permet que el mòdul estadístic no estigui buit a l'inici, sinó que tal com l'usuari
@@ -855,8 +855,10 @@ entra en la vista de la web, ja vegi les estadístiques inicials mostrades en la
 def estadistiques_inicials(request):
     resultatsInicials = {}
     res = {}
-    categoriaInicial = categoriaLocal.objects.all().filter(categoria='Restauració')[0]
-    pobleInicial = localitzacio.objects.all().filter(ciutat='Aiguamúrcia')[0]
+    categoria = urllib.parse.unquote(request.GET['categoria'])
+    ciutat=urllib.parse.unquote(request.GET['poblacio']).split(' (')[0]
+    categoriaInicial = categoriaLocal.objects.all().filter(categoria=categoria)[0]
+    pobleInicial = localitzacio.objects.all().filter(ciutat=ciutat)[0]
     actiu = False
     # RESULTAT AMB ELS FILTRES ESTABLERTS
     punt_filtre1 = puntInteres.objects.all().filter(localitat=pobleInicial, actiu=actiu)
@@ -1320,6 +1322,21 @@ def ciutatsPerProvincia(request):
         for elem in localitzacions:
             dict['localitzacio'+str(i)] = elem[0]+" ("+elem[1]+")"
             i = i +1
+        res['data'] = dict
+        loc = json.dumps(res)
+        return HttpResponse(loc, content_type='json')
+
+def ciutatsPerProvincia_estadistiques(request):
+    if request.method == 'GET':
+        provincia = request.GET['provincia']
+        fk_localitzacio = puntInteres.objects.all().values_list('localitat', flat=True)
+        localitzacions=localitzacio.objects.all().filter(provincia=provincia, id__in=fk_localitzacio).values_list('ciutat', 'comarca')
+        dict={}
+        res={}
+        i=1
+        for elem in localitzacions:
+            dict['localitzacio'+str(i)]=elem[0]+" ("+elem[1]+")"
+            i=i+1
         res['data'] = dict
         loc = json.dumps(res)
         return HttpResponse(loc, content_type='json')
