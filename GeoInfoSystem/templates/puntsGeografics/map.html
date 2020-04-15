@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
     <style>
         /* Style the header with a grey background and some padding */
     .header {
@@ -105,221 +107,94 @@
     <hr>
     <div class="container">
         <h2><img src="https://img.icons8.com/ios/64/000000/worldwide-location.png"/> Sistema GIS</h2>
-        <div class="col-xs-12 col-md-8" style="float:none; margin:auto;">
-            <div id="map"></div>
+        <div style="float:none; margin:auto;">
+            <br>
+            <div id="mapid" style="height: 400px"></div>
         </div>
     </div>
     <br>
-    <div class="container">
-        <div class="card card-body">
-            <h2><img height="70px" src="https://img.icons8.com/dotty/80/000000/user-manual.png"/> Informació sobre el mòdul estadístic</h2>
-            <ol>
-                <li><b>Aplicar els filtres:</b>
-                    <ul>
-                        <li><b><i>Provincia:</i></b> En aquest desplegable es selecciona la província per a que els pobles apareixin els que hi ha en aquesta província específicament.</li>
-                        <li><b><i>Ciutat:</i></b> Un cop s'ha escollit la província desitjanda, en aquest desplegable es selecciona la població desitjada.</li>
-                        <li><b><i>Tipus:</i></b> S'escull la categoria o tipus de local que es vol.</li>
-                        <li><b><i>Actiu:</i></b> Apretant el botó permetem que el servidor interpreti que el/s locals que es cerquen són actius. En cas que no s'apreti, s'interpretarà que són no actius.</li>
-                    </ul>
-                </li>
-                <li><b>Visualització dels resultats:</b>
-                    Un cop aplicats els filtres que es creguin convenients, el sistema GIS ja té la solució a tot el que es demana. Simplement, s'ha d'anar navegant amb la botonera de la part inferior i es poden anar visualitzant les respostes.<br>
-                    Cada botó obté una solució diferent, aquests són:
-                    <ul>
-                        <li><b><i>Botó "Consulta Actual":</i></b> Conté el resultat d'haver aplicat els filtres establerts en la pestanya de fer les consultes.</li>
-                        <li><b><i>Botó "Locals mateixa ciutat":</i></b> Conté tots els locals de la mateixa ciutat, tant actius com no actius.</li>
-                        <li><b><i>Botó "Locals mateixa categoria":</i></b> Conté el resultat d'haver negat l'actiu donat, però mantenint la mateixa categoria.</li>
-                        <li><b><i>Botó "Locals diferent categoria":</i></b> Conté el resultat de mantenir l'actiu i el poble, però diferent categoria.</li>
-                        <li><b><i>Botó "Locals altres pobles i categoria actual":</i></b> Conté el resultat de mantenir l'actiu i la categoria però canviant el poble.</li>
-                        <li><b><i>Botó "Resulta contrari":</i></b> Conté el resultat d'haver negat tots els valors d'entrada.</li>
-                        <li><b><i>Botó "Consultar tota la informació":</i></b> Independentment dels filtres que hi hagi, en aquesta pestanya hi ha tots els locals que hi ha en el sistema GIS.</li>
-                    </ul>
-                </li>
-            </ol>
-        </div>
-    </div>
-    <br>
-    <div class="container" id="estadistiques">
-        <div class="row">
-            <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;" class="card card-body">
-                <h2><img src="https://img.icons8.com/ios/50/000000/statistics.png"/> Estadístiques</h2>
-                <p>En aquest espai pots filtrar la informació que apareix en el mapa. Fes click damunt de cadascun dels botons per anar veient els resultats obtinguts al aplicar cada filtre.</p>
-                <div id="filtres">
-                    <div class="col-sm">
-                        <h3 style="text-align: center"><img style="height: 26px" src="https://img.icons8.com/ios/80/000000/empty-filter.png"/> Filtres</h3>
-                    </div>
-                    <div class="col-sm">
-                        <p class="same-line-block-elem1"><b>Provincia</b><div class="same-line-block-elem2" id="provincies"></div></p>
-                    </div>
-                    <div class="col-sm">
-                        <p class="same-line-block-elem1"><b>Ciutat</b><div style="margin-left: 25px" class="same-line-block-elem2" id="ubicacio"></div></p>
-                    </div>
-                    <div class="col-sm">
-                        <p class="same-line-block-elem1"><b>Tipus</b><div style="margin-left: 29px" class="same-line-block-elem2" id="tipus"></div></p>
-                    </div>
-                    <div class="col-sm">
-                        <p class="same-line-block-elem1"><input class="same-line-block-elem2" type="checkbox" onclick="canviEstat()" name="actiu" id="esActiu"> <b>Actiu</b></p>
-                    </div>
-                </div>
-                <div class="btn-group" role="group" aria-label="Basic example">
-                    <!--<button type="button" class="btn btn-outline-secondary" data-toggle="tooltip" data-placement="top" title="Consultes sobre el sistema GIS."  id="bttnconsultes" value="Consultes sobre el sistema GIS." onclick="mostrarPanellIntroduccioDades()">Fer consultes</button>-->
-                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat de la consulta actual." onclick="switchStatisticsData(this.id)" id="bttnconsultaActual"  value="Resultat de la consulta actual">Consulta Actual</button>
-                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat d'aplicar un poble diferent al donat, actiu negat i no mateixa categoria." onclick="switchStatisticsData(this.id)" id="bttntotcontrari"  value="Resultat d'aplicar un poble diferent al donat, actiu negat i no mateixa categoria.">Resultat contrari</button>
-                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Totes les dades." onclick="switchStatisticsData(this.id)"  id="bttntotesdades"   value="Totes les dades.">Consultar tota la informació</button>
-                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)." onclick="switchStatisticsData(this.id)" id="bttnmateixaCiutat"  value="Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)">Locals mateixa ciutat</button>
-                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultats obtinguts deprès d'haver negat si és actiu i mantenint la mateixa categoria." onclick="switchStatisticsData(this.id)" id="bttnactiunegatMateixaCategoria"  value="Resultats obtinguts deprès d'haver negat si és actiu i mantenint la mateixa categoria">Locals mateixa categoria</button>
-                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat obtingut de aplicar el mateix poble amb l'actiu que s'ha donat i una categoria diferent a la donada.." onclick="switchStatisticsData(this.id)" id="bttnlocalsdiferents"  value="Resultat obtingut de aplicar el mateix poble amb l'actiu que s'ha donat i una categoria diferent a la donada.">Locals diferent categoria </button>
-                    <button type="button" class="btn btn-outline-secondary" data-placement="top" title="Resultat de aplicar altres pobles i actiu que s'ha donat i la mateixa categoria donada." onclick="switchStatisticsData(this.id)" id="bttnlocalsaltrespobles"  value="Resultat de aplicar altres pobles i actiu que s'ha donat i la mateixa categoria donada.">Locals altres pobles i categoria actual</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <br>
-    <div id="containerInformatiu" class="container">
-        <div class="card card-body">
-            <p>Apreta els botons de la botonera per anar veien els resultats.</p>
-        </div>
-    </div>
-    <div class="container">
-        <div id="resTOT1" hidden><!--RESULTATS CONSULTA ACTUAL-->
-            <div class="card card-group text-center">
-                <b style="font-size: 30px; margin:0px auto;">Resultat de la consulta actual</b>
-            </div>
-            <ul class="list-group" id="resultats1">
-                <li class="list-group-item" id="li-numElems1"><b id="textNumElems1">Nombre de resultats: </b></li>
-                <li class="nav-divider" id="li-divider1" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
-            </ul>
-        </div>
-        <div id="resTOT2" hidden> <!--RESULTATS LOCALS MATEIXA CIUTAT-->
-            <div class="card card-group text-center">
-                <b style="font-size: 30px; margin:0px auto;">Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)</b>
-            </div>
-            <ul class="list-group" id="resultats2">
-                <li class="list-group-item" id="li-numElems2"><b id="textNumElems2">Nombre de resultats: </b></li>
-                <li class="nav-divider" id="li-divider2" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
-            </ul>
-        </div>
-        <div id="resTOT3" hidden> <!--RESULTATS LOCALS MATEIXA CATEGORIA-->
-            <div class="card card-group text-center">
-                <b style="font-size: 30px; margin:0px auto;">Resultats obtinguts actiu negat, mateixa categoria i poble</b>
-            </div>
-            <ul class="list-group" id="resultats3">
-                <li class="list-group-item" id="li-numElems3"><b id="textNumElems3">Nombre de resultats: </b></li>
-                <li class="nav-divider" id="li-divider3" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
-            </ul>
-        </div>
-        <div id="resTOT4" hidden> <!--RESULTATS LOCALS DIFERENT CATEGORIA-->
-            <div class="card card-group text-center">
-                <b style="font-size: 30px; margin:0px auto;">Resultat obtingut mateix poble i actiu, però diferent categoria</b>
-            </div>
-            <ul class="list-group" id="resultats4">
-                <li class="list-group-item" id="li-numElems4"><b id="textNumElems4">Nombre de resultats: </b></li>
-                <li class="nav-divider" id="li-divider4" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
-            </ul>
-        </div>
-        <div id="resTOT5" hidden> <!--RESULTATS LOCALS ALTRES POBLES I CATEGORIA ACTUAL-->
-            <div class="card card-group text-center">
-                <b style="font-size: 30px; margin:0px auto;">Resultat de mantenir mateix actiu i categoria, però canviant la localitat</b>
-            </div>
-            <ul class="list-group" id="resultats5">
-                <li class="list-group-item" id="li-numElems5"><b id="textNumElems5">Nombre de resultats: </b></li>
-                <li class="nav-divider" id="li-divider5" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
-            </ul>
-        </div>
-        <div id="resTOT6" hidden> <!--RESULTATS RESULTAT CONTRARI-->
-            <div class="card card-group text-center">
-                <b style="font-size: 30px; margin:0px auto;">Resultat de negar totes les dades d'entrada</b>
-            </div>
-            <ul class="list-group" id="resultats6">
-                <li class="list-group-item" id="li-numElems6"><b id="textNumElems6">Nombre de resultats: </b></li>
-                <li class="nav-divider" id="li-divider6" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
-            </ul>
-        </div>
-        <div id="resTOT7" hidden> <!--RESULTATS CONSULTAR TOTA LA INFORMACIÓ-->
-            <div class="card card-group text-center">
-                <b style="font-size: 30px; margin:0px auto;">Totes les dades del sistema GIS</b>
-            </div>
-            <ul class="list-group" id="resultats7">
-                <li class="list-group-item" id="li-numElems7"><b id="textNumElems7">Nombre de resultats: </b></li>
-                <li class="nav-divider" id="li-divider7" style="background-color: #2A3B56; list-style: none; color:#2A3B56;" hidden>s</li>
-            </ul>
-        </div>
-    </div>
-    <input type="hidden" name="categoria" id="categoriaSeleccionada" value="Restauració">
-    <input type="hidden" name="esActiu" id="estat" value="False">
-    <input type="hidden" name="poblacio" id="pobleSeleccionat" value="Aiguamúrcia (Alt Camp), Tarragona">
     <br><br>
 <script>
-    var map;
-// Initialize and add the map
-function initMap() {
-    //Localitzem en el món Catalunya
-    var catalunya = {lat: 41.8204600, lng: 1.8676800};
-    // Mapa centrat a Catalunya
-    map = new google.maps.Map(document.getElementById('map'), {zoom: 7, center: catalunya});
-    // Marquem els punts en el mapa.
-    var punts=JSON.parse('{{ puntsInteres | safe }}');
+var mymap;
+function iniPagina() {
+
+    mymap = L.map('mapid').setView([41.8204600, 1.8676800], 7);
+    L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2VzY2Z0IiwiYSI6ImNrOTA0OWlxYTAxd2czdHFkMWt2eDVjN20ifQ.ORNTQ7oImBoHmaGJ_jGYvg', {
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        maxZoom: 18,
+        id: 'mapbox/streets-v11',
+        tileSize: 512,
+        zoomOffset: -1,
+        accessToken: 'pk.eyJ1IjoiY2VzY2Z0IiwiYSI6ImNrOTA0OWlxYTAxd2czdHFkMWt2eDVjN20ifQ.ORNTQ7oImBoHmaGJ_jGYvg'
+    }).addTo(mymap);
+
+    var nomLocalRand = `{{ nomLocalRand | safe }}`;
+    var latitudRand = `{{ latitudRand | safe }}`;
+    var longitudRand = `{{ longitudRand | safe }}`;
+    var punts = JSON.parse('{{ puntsInteres | safe }}');
     var locals = JSON.parse(`{{ locals | safe }}`);
     var localitzacions = JSON.parse(`{{ localitzacionsMapa | safe }}`);
     var categories = JSON.parse(`{{ categoriesMapa | safe }}`);
 
     var posicioPuntInteres;
-    var pointsToDo=[];
-    var localsToDo=[];
+    var pointsToDo = [];
+    var localsToDo = [];
     var localitzacionsToDo = [];
     var categoriesToDo = [];
 
 
-    for(categoria of categories){
+    for (categoria of categories) {
         categoriesToDo.push({
             "pk": categoria.pk,
-           "categoria" : categoria.fields.categoria
+            "categoria": categoria.fields.categoria
         });
     }
 
     //console.log(categoriesToDo);
 
-    for (localitzacio of localitzacions){
+    for (localitzacio of localitzacions) {
         localitzacionsToDo.push({
-            "pk" : localitzacio.pk,
-            "ciutat" :localitzacio.fields.ciutat,
-            "comarca":localitzacio.fields.comarca,
-            "provincia":localitzacio.fields.provincia
+            "pk": localitzacio.pk,
+            "ciutat": localitzacio.fields.ciutat,
+            "comarca": localitzacio.fields.comarca,
+            "provincia": localitzacio.fields.provincia
         });
     }
-    console.log(localitzacionsToDo);
+    //console.log(localitzacionsToDo);
 
-    for(local of locals){
+    for (local of locals) {
         localsToDo.push({
-            "localitzacio" : local.fields.localitzacio,
-            "nomLocal" : local.fields.nomLocal,
-            "puntuacio" : local.fields.estat_conservacio,
-            "puntuacioS" : local.fields.estat_conservacio.toString(),
-            "categoria" : local.fields.categoria,
-            "anyConstruccio" : local.fields.anyConstruccio,
-            "anyConstruccioS" : local.fields.anyConstruccio.toString(),
-            "descripcio" : local.fields.descripcio
+            "localitzacio": local.fields.localitzacio,
+            "nomLocal": local.fields.nomLocal,
+            "puntuacio": local.fields.estat_conservacio,
+            "puntuacioS": local.fields.estat_conservacio.toString(),
+            "categoria": local.fields.categoria,
+            "anyConstruccio": local.fields.anyConstruccio,
+            "anyConstruccioS": local.fields.anyConstruccio.toString(),
+            "descripcio": local.fields.descripcio
         });
     }
     //console.log(localsToDo);
-    for(punt of punts){
+    for (punt of punts) {
         pointsToDo.push({
-            "position" : new google.maps.LatLng(punt.fields.latitud, punt.fields.longitud),
-            "pk" : punt.pk ,
-            "latitud" : punt.fields.latitud,
-            "longitud" : punt.fields.longitud,
-            "latitudS" : punt.fields.latitud.toString(),
-            "longitudS" : punt.fields.longitud.toString(),
-            "Superficie" : punt.fields.superficie.toString(),
-            "Localitat" : punt.fields.localitat.toString()
+            "pk": punt.pk,
+            "latitud": punt.fields.latitud,
+            "longitud": punt.fields.longitud,
+            "latitudS": punt.fields.latitud.toString(),
+            "longitudS": punt.fields.longitud.toString(),
+            "Superficie": punt.fields.superficie.toString(),
+            "Localitat": punt.fields.localitat.toString()
         });
     }
 
-    //console.log(pointsToDo);
+    document.getElementById("pgRand").setAttribute("href", "/v1/geoInfoSystem/info_especifica/" + encodeURI(nomLocalRand) + "/" + latitudRand + "/" + longitudRand + "/");
 
-    for(var i=0; i<pointsToDo.length; i++){
-        for(var j=0; j<localsToDo.length; j++){
-            if(pointsToDo[i]['pk'] == localsToDo[j]['localitzacio']){
+
+
+
+    for (var i = 0; i < pointsToDo.length; i++) {
+        for (var j = 0; j < localsToDo.length; j++) {
+            if (pointsToDo[i]['pk'] == localsToDo[j]['localitzacio']) {
                 //console.log(localsToDo[j]['descripcio']);
                 let fkLocalitat = pointsToDo[i]['Localitat'];
                 let ciutat = localitzacionsToDo.find(x => x.pk == fkLocalitat).ciutat;
@@ -327,771 +202,33 @@ function initMap() {
                 let provincia = localitzacionsToDo.find(x => x.pk == fkLocalitat).provincia;
                 let fkCategoria = localsToDo[j]['categoria'];
                 let categoria = categoriesToDo.find(x => x.pk == fkCategoria).categoria;
-                var string ="";
-                    string+="<div><br>";
-                    string+="<table>";
-                    string +="<thread><tr><th><b>INFORMACIÓ D'INTERÈS:</b></th></tr></thread>";
-                    string +="<tr><td><b>- Coordenades:</b></td> <td>("+pointsToDo[i]['latitudS']+","+ pointsToDo[i]['longitudS']+")</td></tr>";
-                    string +="<tr><td><b>- Superficie:</b></td> <td> "+pointsToDo[i]['Superficie']+"</td></tr>";
-                    string +="<tr><td><b>- Categoria:</b></td> <td> "+categoria+"</td></tr>";
-                    string +="<tr><td><b>- Any Construcció:</b></td> <td> "+localsToDo[j]['anyConstruccioS']+"</td></tr>";
-                    string +="<tr><td><b>- Localitat:</b></td> <td> "+ciutat+" ("+comarca+"), "+provincia+", Catalunya</td></tr>";
-                    string += "</table>";
-                    string+="</div>";
-                var url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+localsToDo[j]['nomLocal']+"/"+pointsToDo[i]['latitud']+"/"+pointsToDo[i]['longitud']+"/";
+                var string = "";
+                string += "<div>";
+                string += "<table>";
+                string += "<thread><tr><th><b>INFORMACIÓ D'INTERÈS:</b></th></tr></thread>";
+                string += "<tr><td><b>- Categoria:</b></td> <td> " + categoria + "</td></tr>";
+                string += "<tr><td><b>- Any Construcció:</b></td> <td> " + localsToDo[j]['anyConstruccioS'] + "</td></tr>";
+                string += "<tr><td><b>- Localitat:</b></td> <td> " + ciutat + " (" + comarca + "), " + provincia + ", Catalunya</td></tr>";
+                string += "</table>";
+                string += "</div>";
+                var url = "localhost:8000/v1/geoInfoSystem/info_especifica/" + localsToDo[j]['nomLocal'] + "/" + pointsToDo[i]['latitud'] + "/" + pointsToDo[i]['longitud'] + "/";
                 url = encodeURI(url);
 
-            let contentString = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<h1 id="firstHeading" class="firstHeading">'+localsToDo[j]['nomLocal']+'</h1>'+
-            '<div id="bodyContent">'+
-            '<table><tr><p><b>'+localsToDo[j]['nomLocal']+'</b><tr>'+localsToDo[j]['descripcio']+'</p></tr></tr></table>'+
-            string+
-             '<a target="_blank" rel="noopener noreferrer" href='+url+'>Click aquí per a més informació</a>'+
-            '</div>'+
-            '</div>';
+                let contentString = '<div id="content">' +
+                    '<div id="siteNotice">' +
+                    '</div>' +
+                    '<div id="bodyContent">' +
+                    '<table><tr><p><b>' + localsToDo[j]['nomLocal'] + '</b><tr>' + localsToDo[j]['descripcio'] + '</p></tr></tr></table>' +
+                    string +
+                    '<a target="_blank" rel="noopener noreferrer" href=' + url + '>Click aquí per a més informació</a>' +
+                    '</div>' +
+                    '</div>';
 
-            let infowindow= new google.maps.InfoWindow({
-                content: contentString
-            });
-           let marker = new google.maps.Marker({position: pointsToDo[i]['position'], map: map, title:localsToDo[j]['nomLocal']});
-            marker.addListener('click', function () {
-                infowindow.open(map, marker);
-            });
+                let marker = L.marker([pointsToDo[i]['latitud'], pointsToDo[i]['longitud']]).addTo(mymap).bindPopup(contentString);
+            }
         }
-    }
     }
 }
-
-    function switchStatisticsData(idbtn) {
-        switch (idbtn) {
-            case "bttnconsultaActual":
-                //console.log('consulta actuaaal');
-                document.getElementById("resTOT1").hidden = document.getElementById("resTOT1").hidden == true ? false : true;
-                document.getElementById("resTOT2").hidden = true;
-                document.getElementById("resTOT3").hidden = true;
-                document.getElementById("resTOT4").hidden = true;
-                document.getElementById("resTOT5").hidden = true;
-                document.getElementById("resTOT6").hidden = true;
-                document.getElementById("resTOT7").hidden = true;
-                if(document.getElementById("resTOT1").hidden == false){
-                    document.getElementById("containerInformatiu").hidden=true;
-                }else{
-                    document.getElementById("containerInformatiu").hidden = false;
-                }
-                break;
-            case "bttnmateixaCiutat":
-                //console.log('consulta de la mateixa ciutat');
-                document.getElementById("resTOT1").hidden = true;
-                document.getElementById("resTOT2").hidden = document.getElementById("resTOT2").hidden == true ? false : true;
-                document.getElementById("resTOT3").hidden = true;
-                document.getElementById("resTOT4").hidden = true;
-                document.getElementById("resTOT5").hidden = true;
-                document.getElementById("resTOT6").hidden = true;
-                document.getElementById("resTOT7").hidden = true;
-                if(document.getElementById("resTOT2").hidden == false){
-                    document.getElementById("containerInformatiu").hidden=true;
-                }else{
-                    document.getElementById("containerInformatiu").hidden = false;
-                }
-                break;
-            case "bttnactiunegatMateixaCategoria":
-                //console.log('consulta actiu negat i la mateixa categoria');
-                document.getElementById("resTOT1").hidden = true;
-                document.getElementById("resTOT2").hidden = true;
-                document.getElementById("resTOT3").hidden = document.getElementById("resTOT3").hidden == true ? false : true;
-                document.getElementById("resTOT4").hidden = true;
-                document.getElementById("resTOT5").hidden = true;
-                document.getElementById("resTOT6").hidden = true;
-                document.getElementById("resTOT7").hidden = true;
-                if(document.getElementById("resTOT3").hidden == false){
-                    document.getElementById("containerInformatiu").hidden=true;
-                }else{
-                    document.getElementById("containerInformatiu").hidden = false;
-                }
-                break;
-            case "bttnlocalsdiferents":
-                //console.log('consulta actiu que em ve categoria diferent mateixa ciutat');
-                document.getElementById("resTOT1").hidden = true;
-                document.getElementById("resTOT2").hidden = true;
-                document.getElementById("resTOT3").hidden = true;
-                document.getElementById("resTOT4").hidden = document.getElementById("resTOT4").hidden == true ? false : true;
-                document.getElementById("resTOT5").hidden = true;
-                document.getElementById("resTOT6").hidden = true;
-                document.getElementById("resTOT7").hidden = true;
-                if(document.getElementById("resTOT4").hidden == false){
-                    document.getElementById("containerInformatiu").hidden=true;
-                }else{
-                    document.getElementById("containerInformatiu").hidden = false;
-                }
-                break;
-            case "bttnlocalsaltrespobles":
-                //console.log('consulta altres pobles amb la mateixa categoria');
-                document.getElementById("resTOT1").hidden = true;
-                document.getElementById("resTOT2").hidden = true;
-                document.getElementById("resTOT3").hidden = true;
-                document.getElementById("resTOT4").hidden = true;
-                document.getElementById("resTOT5").hidden = document.getElementById("resTOT5").hidden == true ? false : true;
-                document.getElementById("resTOT6").hidden = true;
-                document.getElementById("resTOT7").hidden = true;
-                if(document.getElementById("resTOT5").hidden == false){
-                    document.getElementById("containerInformatiu").hidden=true;
-                }else{
-                    document.getElementById("containerInformatiu").hidden = false;
-                }
-                break;
-            case "bttntotcontrari":
-                //console.log('resultat contrari');
-                document.getElementById("resTOT1").hidden = true;
-                document.getElementById("resTOT2").hidden = true;
-                document.getElementById("resTOT3").hidden = true;
-                document.getElementById("resTOT4").hidden = true;
-                document.getElementById("resTOT5").hidden = true;
-                document.getElementById("resTOT6").hidden = document.getElementById("resTOT6").hidden == true ? false : true;
-                document.getElementById("resTOT7").hidden = true;
-                if(document.getElementById("resTOT6").hidden == false){
-                    document.getElementById("containerInformatiu").hidden=true;
-                }else{
-                    document.getElementById("containerInformatiu").hidden = false;
-                }
-                break;
-            case "bttntotesdades":
-                //console.log('dades db');
-                document.getElementById("resTOT1").hidden = true;
-                document.getElementById("resTOT2").hidden = true;
-                document.getElementById("resTOT3").hidden = true;
-                document.getElementById("resTOT4").hidden = true;
-                document.getElementById("resTOT5").hidden = true;
-                document.getElementById("resTOT6").hidden = true;
-                document.getElementById("resTOT7").hidden = document.getElementById("resTOT7").hidden == true ? false : true;
-                if(document.getElementById("resTOT7").hidden == false){
-                    document.getElementById("containerInformatiu").hidden=true;
-                }else{
-                    document.getElementById("containerInformatiu").hidden = false;
-                }
-                break;
-        }
-    }
-
-    function crearInformacio(id_div){
-        switch (id_div) {
-            case "resTOT1":
-                var div1 = document.createElement("DIV");
-                var b1 = document.createElement("B");
-                var t1 = document.createTextNode("Resultat de la consulta actual");
-                b1.setAttribute("style", "font-size: 30px; margin:0px auto;");
-                div1.setAttribute("class", "card card-group text-center");
-                b1.appendChild(t1);
-                div1.appendChild(b1);
-                document.getElementById(id_div).appendChild(div1);
-                break;
-            case "resTOT2":
-                var div2 = document.createElement("DIV");
-                var b2 = document.createElement("B");
-                var t2 = document.createTextNode("Resultat de negar totes les dades d'entrada");
-                b2.setAttribute("style", "font-size: 30px; margin:0px auto;");
-                div2.setAttribute("class", "card card-group text-center");
-                b2.appendChild(t2);
-                div2.appendChild(b2);
-                document.getElementById(id_div).appendChild(div2);
-                break;
-            case "resTOT3":
-                var div3 = document.createElement("DIV");
-                var b3 = document.createElement("B");
-                var t3 = document.createTextNode("Totes les dades del sistema GIS");
-                b3.setAttribute("style", "font-size: 30px; margin:0px auto;");
-                div3.setAttribute("class", "card card-group text-center");
-                b3.appendChild(t3);
-                div3.appendChild(b3);
-                document.getElementById(id_div).appendChild(div3);
-                break;
-            case "resTOT4":
-                var div4 = document.createElement("DIV");
-                var b4 = document.createElement("B");
-                var t4 = document.createTextNode("Tots els locals que es troben en la mateixa ciutat (tant actius com no actius)");
-                b4.setAttribute("style", "font-size: 30px; margin:0px auto;");
-                div4.setAttribute("class", "card card-group text-center");
-                b4.appendChild(t4);
-                div4.appendChild(b4);
-                document.getElementById(id_div).appendChild(div4);
-                break;
-            case "resTOT5":
-                var div5 = document.createElement("DIV");
-                var b5 = document.createElement("B");
-                var t5 = document.createTextNode("Resultats obtinguts actiu negat, mateixa categoria i poble");
-                b5.setAttribute("style", "font-size: 30px; margin:0px auto;");
-                div5.setAttribute("class", "card card-group text-center");
-                b5.appendChild(t5);
-                div5.appendChild(b5);
-                document.getElementById(id_div).appendChild(div5);
-                break;
-            case "resTOT6":
-                var div6 = document.createElement("DIV");
-                var b6 = document.createElement("B");
-                var t6 = document.createTextNode("Resultat obtingut mateix poble i actiu, però diferent categoria");
-                b6.setAttribute("style", "font-size: 30px; margin:0px auto;");
-                div6.setAttribute("class", "card card-group text-center");
-                b6.appendChild(t6);
-                div6.appendChild(b6);
-                document.getElementById(id_div).appendChild(div6);
-                break;
-            case "resTOT7":
-                var div7 = document.createElement("DIV");
-                var b7 = document.createElement("B");
-                var t7 = document.createTextNode("Resultat de mantenir mateix actiu i categoria, però canviant la localitat");
-                b7.setAttribute("style", "font-size: 30px; margin:0px auto;");
-                div7.setAttribute("class", "card card-group text-center");
-                b7.appendChild(t7);
-                div7.appendChild(b7);
-                document.getElementById(id_div).appendChild(div7);
-                break;
-        }
-    }
-    function netejarEstadistiques(){
-        for(var i=1; i<=7; i++){
-            document.getElementById("resTOT"+i).innerHTML='';
-            crearInformacio("resTOT"+i);
-            let ulData = document.createElement("UL");
-            let liData = document.createElement("LI");
-            let liDivider = document.createElement("LI");
-            let bInfo = document.createElement("B");
-            bInfo.setAttribute("id", "textNumElems"+i);
-            let textB = document.createTextNode("Nombre de resultats: ");
-            bInfo.appendChild(textB);
-            liData.setAttribute("class", "list-group-item");
-            liData.setAttribute("id", "li-numElems"+i);
-            liDivider.setAttribute("class", "nav-divider");
-            liDivider.setAttribute("id", "li-divider"+i);
-            liDivider.setAttribute("style", "background-color: #2A3B56; list-style: none; color:#2A3B56;");
-            liDivider.setAttribute("hidden", "true");
-            let tLiDivider = document.createTextNode("s");
-            liDivider.appendChild(tLiDivider);
-            liData.appendChild(bInfo);
-            ulData.setAttribute("class", "list-group");
-            ulData.setAttribute("id", "resultats"+i);
-            ulData.appendChild(liData);
-            ulData.appendChild(liDivider);
-            document.getElementById("resTOT"+i).appendChild(ulData);
-        }
-    }
-
-    function guardarPoblacio(){
-        var inputOcult = document.getElementById("pobleSeleccionat");
-        var elem = document.getElementById("poblacioSeleccio");
-        var actiu = document.getElementById("estat");
-        var categoria =document.getElementById("categoriaSeleccionada");
-        elem.childNodes.forEach(node => {
-            if(node.selected){
-                //console.log(node.value);
-                inputOcult.value = node.value;
-                var poble=node.value;
-                $.ajax({
-                    type: 'GET',
-                    url : '/v1/geoInfoSystem/estadistiques/',
-                    data:{
-                        'poblacio' : poble,
-                        'actiu' : actiu.value,
-                        'categoria' : categoria.value
-                    },
-                    dataType:'json',
-                    success:
-                        function (data){
-                            var data1 = Object.values(data);
-                            console.log(data1);
-                            netejarEstadistiques();
-                            for(var i = 0; i<7; i++){
-                                let dades = Object.values(data1[i]);
-                                if (dades[2]!=='0'){
-                                    let information = JSON.parse(dades[0]);
-                                    let infoToDo = [];
-                                    for(infoReal of information){
-                                        infoToDo.push({
-                                            'fk_puntInteres':infoReal.fields.localitzacio,
-                                            'nomLocal' : infoReal.fields.nomLocal,
-                                            'anyConstruccio' : infoReal.fields.anyConstruccio,
-                                            'descripcio' : infoReal.fields.descripcio
-                                        });
-                                    }
-                                    let pInteresInfo = JSON.parse(dades[3]);
-                                    let infoPuntInteres = [];
-                                    for (puntI of pInteresInfo){
-                                        infoPuntInteres.push({
-                                            'pk':puntI.pk,
-                                            'latitud' : puntI.fields.latitud,
-                                            'longitud' : puntI.fields.longitud,
-                                            'latitudS': puntI.fields.latitud.toString(),
-                                            'longitudS':puntI.fields.longitud.toString()
-                                        });
-                                    }
-                                    for(var j=0; j<infoToDo.length; j++){
-                                        let liNomLocal = document.createElement("LI");
-                                        let liAnyConstruccio = document.createElement("LI");
-                                        let liDescripcio = document.createElement("LI");
-                                        let liLinkToSpecificWeb = document.createElement("LI");
-                                        crearLink(infoToDo[j], infoPuntInteres, liLinkToSpecificWeb);
-                                        let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
-                                        let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
-                                        let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
-                                        liNomLocal.appendChild(tNomLocal);
-                                        liAnyConstruccio.appendChild(tAnyConstruccio);
-                                        liDescripcio.appendChild(tDescripcio);
-                                        let itemNom = document.createElement("LI");
-                                        let itemAnyConstruccio = document.createElement("LI");
-                                        let itemDescripcio = document.createElement("LI");
-                                        let itemLink = document.createElement("LI");
-                                        itemLink.setAttribute("class", "list-group-item");
-                                        itemNom.setAttribute("class","list-group-item");
-                                        itemAnyConstruccio.setAttribute("class", "list-group-item");
-                                        itemDescripcio.setAttribute("class", "list-group-item");
-                                        itemNom.appendChild(liNomLocal);
-                                        itemAnyConstruccio.appendChild(liAnyConstruccio);
-                                        itemDescripcio.appendChild(liDescripcio);
-                                        itemLink.appendChild(liLinkToSpecificWeb);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemNom);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemAnyConstruccio);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemDescripcio);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemLink);
-                                        if(j!==infoToDo.length-1){
-                                            let separator=document.createElement("LI");
-                                            separator.setAttribute("class", "nav-divider");
-                                            separator.setAttribute("style", "background-color: #2A3B56; list-style: none; color:#2A3B56;");
-                                            let tAuxLiDivider = document.createTextNode("s");
-                                            separator.appendChild(tAuxLiDivider);
-                                            document.getElementById("resultats"+(i+1)).appendChild(separator);
-                                        }
-                                    }
-                                    document.getElementById("textNumElems"+(i+1)).innerHTML+=infoToDo.length.toString();
-                                    document.getElementById("li-divider"+(i+1)).hidden = false;
-                                }else{
-                                    document.getElementById("textNumElems"+(i+1)).innerHTML = "No hi ha resultats en aquesta pestanya.";
-                                }
-                            }
-                        }
-                });
-            }
-        });
-    }
-
-
-    function canviEstat(){
-        var inputhidden = document.getElementById("estat");
-        if (inputhidden.value == 'False'){
-            inputhidden.value = 'True';
-        }else inputhidden.value = 'False';
-        $.ajax({
-                    type: 'GET',
-                    url : '/v1/geoInfoSystem/estadistiques/',
-                    data:{
-                        'poblacio' : document.getElementById('pobleSeleccionat').value,
-                        'actiu' : inputhidden.value,
-                        'categoria' : document.getElementById("categoriaSeleccionada").value
-                    },
-                    dataType:'json',
-                    success:
-                        function (data){
-                            var data1 = Object.values(data);
-                            console.log(data1);
-                            netejarEstadistiques();
-                            for(var i = 0; i<7; i++){
-                                let dades = Object.values(data1[i]);
-                                if (dades[2]!=='0'){
-                                    let information = JSON.parse(dades[0]);
-                                    let infoToDo = [];
-                                    for(infoReal of information){
-                                        infoToDo.push({
-                                            'fk_puntInteres':infoReal.fields.localitzacio,
-                                            'nomLocal' : infoReal.fields.nomLocal,
-                                            'anyConstruccio' : infoReal.fields.anyConstruccio,
-                                            'descripcio' : infoReal.fields.descripcio
-                                        });
-                                    }
-                                    let pInteresInfo = JSON.parse(dades[3]);
-                                    let infoPuntInteres = [];
-                                    for (puntI of pInteresInfo){
-                                        infoPuntInteres.push({
-                                            'pk':puntI.pk,
-                                            'latitud' : puntI.fields.latitud,
-                                            'longitud' : puntI.fields.longitud,
-                                            'latitudS': puntI.fields.latitud.toString(),
-                                            'longitudS':puntI.fields.longitud.toString()
-                                        });
-                                    }
-                                    for(var j=0; j<infoToDo.length; j++){
-                                        let liNomLocal = document.createElement("LI");
-                                        let liAnyConstruccio = document.createElement("LI");
-                                        let liDescripcio = document.createElement("LI");
-                                        let liLinkToSpecificWeb = document.createElement("LI");
-                                        crearLink(infoToDo[j],infoPuntInteres,liLinkToSpecificWeb);
-                                        let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
-                                        let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
-                                        let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
-                                        liNomLocal.appendChild(tNomLocal);
-                                        liAnyConstruccio.appendChild(tAnyConstruccio);
-                                        liDescripcio.appendChild(tDescripcio);
-                                        let itemNom = document.createElement("LI");
-                                        let itemAnyConstruccio = document.createElement("LI");
-                                        let itemDescripcio = document.createElement("LI");
-                                        let itemLink = document.createElement("LI");
-                                        itemLink.setAttribute("class", "list-group-item");
-                                        itemNom.setAttribute("class","list-group-item");
-                                        itemAnyConstruccio.setAttribute("class", "list-group-item");
-                                        itemDescripcio.setAttribute("class", "list-group-item");
-                                        itemNom.appendChild(liNomLocal);
-                                        itemAnyConstruccio.appendChild(liAnyConstruccio);
-                                        itemDescripcio.appendChild(liDescripcio);
-                                        itemLink.appendChild(liLinkToSpecificWeb);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemNom);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemAnyConstruccio);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemDescripcio);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemLink);
-                                        if(j!==infoToDo.length-1){
-                                            let separator=document.createElement("LI");
-                                            separator.setAttribute("class", "nav-divider");
-                                            separator.setAttribute("style", "background-color: #2A3B56; list-style: none; color:#2A3B56;");
-                                            let tAuxDivider = document.createTextNode("s");
-                                            separator.appendChild(tAuxDivider);
-                                            document.getElementById("resultats"+(i+1)).appendChild(separator);
-                                        }
-                                    }
-                                    document.getElementById("textNumElems"+(i+1)).innerHTML+=infoToDo.length.toString();
-                                    document.getElementById("li-divider"+(i+1)).hidden = false;
-                                }else{
-                                    document.getElementById("textNumElems"+(i+1)).innerHTML = "No hi ha resultats en aquesta pestanya.";
-                                }
-                            }
-                        }
-                });
-    }
-    function guardarTipus(){
-        var inputhidden = document.getElementById("categoriaSeleccionada");
-        var elem = document.getElementById("tipusSeleccio");
-        elem.childNodes.forEach(node => {
-            if(node.selected){
-                //console.log(node.value);
-                inputhidden.value = node.value;
-                $.ajax({
-                    type: 'GET',
-                    url : '/v1/geoInfoSystem/estadistiques/',
-                    data:{
-                        'poblacio' : document.getElementById('pobleSeleccionat').value,
-                        'actiu' : document.getElementById('estat').value,
-                        'categoria' : inputhidden.value
-                    },
-                    dataType:'json',
-                    success:
-                        function (data){
-                            var data1 = Object.values(data);
-                            console.log(data1);
-                            netejarEstadistiques();
-                            for(var i = 0; i<7; i++){
-                                let dades = Object.values(data1[i]);
-                                if (dades[2]!=='0'){
-                                    let information = JSON.parse(dades[0]);
-                                    let infoToDo = [];
-                                    for(infoReal of information){
-                                        infoToDo.push({
-                                            'fk_puntInteres': infoReal.fields.localitzacio,
-                                            'nomLocal' : infoReal.fields.nomLocal,
-                                            'anyConstruccio' : infoReal.fields.anyConstruccio,
-                                            'descripcio' : infoReal.fields.descripcio
-                                        });
-                                    }
-                                    let pInteresInfo = JSON.parse(dades[3]);
-                                    let infoPuntInteres = [];
-                                    for (puntI of pInteresInfo){
-                                        infoPuntInteres.push({
-                                            'pk':puntI.pk,
-                                            'latitud' : puntI.fields.latitud,
-                                            'longitud' : puntI.fields.longitud,
-                                            'latitudS': puntI.fields.latitud.toString(),
-                                            'longitudS':puntI.fields.longitud.toString()
-                                        });
-                                    }
-                                    for(var j=0; j<infoToDo.length; j++){
-                                        let liNomLocal = document.createElement("LI");
-                                        let liAnyConstruccio = document.createElement("LI");
-                                        let liDescripcio = document.createElement("LI");
-                                        let liLinkToSpecificWeb = document.createElement("LI");
-                                        crearLink(infoToDo[j], infoPuntInteres, liLinkToSpecificWeb);
-                                        let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
-                                        let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
-                                        let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
-                                        liNomLocal.appendChild(tNomLocal);
-                                        liAnyConstruccio.appendChild(tAnyConstruccio);
-                                        liDescripcio.appendChild(tDescripcio);
-                                        let itemNom = document.createElement("LI");
-                                        let itemAnyConstruccio = document.createElement("LI");
-                                        let itemDescripcio = document.createElement("LI");
-                                        let itemLink = document.createElement("LI");
-                                        itemLink.setAttribute("class", "list-group-item");
-                                        itemNom.setAttribute("class","list-group-item");
-                                        itemAnyConstruccio.setAttribute("class", "list-group-item");
-                                        itemDescripcio.setAttribute("class", "list-group-item");
-                                        itemNom.appendChild(liNomLocal);
-                                        itemAnyConstruccio.appendChild(liAnyConstruccio);
-                                        itemDescripcio.appendChild(liDescripcio);
-                                        itemLink.appendChild(liLinkToSpecificWeb);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemNom);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemAnyConstruccio);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemDescripcio);
-                                        document.getElementById("resultats"+(i+1)).appendChild(itemLink);
-                                        if(j!==infoToDo.length-1){
-                                            let separator=document.createElement("LI");
-                                            separator.setAttribute("class", "nav-divider");
-                                            separator.setAttribute("style", "background-color: #2A3B56; list-style: none; color:#2A3B56;");
-                                            let tAux = document.createTextNode("s");
-                                            separator.appendChild(tAux);
-                                            document.getElementById("resultats"+(i+1)).appendChild(separator);
-                                        }
-                                    }
-                                    document.getElementById("textNumElems"+(i+1)).innerHTML+=infoToDo.length.toString();
-                                    document.getElementById("li-divider"+(i+1)).hidden = false;
-                                }else{
-                                    document.getElementById("textNumElems"+(i+1)).innerHTML = "No hi ha resultats en aquesta pestanya.";
-                                }
-                            }
-                        }
-                });
-            }
-        });
-    }
-
-    function mostrarPanellIntroduccioDades(){
-        var control = document.getElementById("filtres");
-        control.hidden = control.hidden == true ? false : true;
-        document.getElementById("resTOT1").hidden = true;
-        document.getElementById("resTOT2").hidden = true;
-        document.getElementById("resTOT3").hidden = true;
-        document.getElementById("resTOT4").hidden = true;
-        document.getElementById("resTOT5").hidden = true;
-        document.getElementById("resTOT6").hidden = true;
-        document.getElementById("resTOT7").hidden = true;
-    }
-    function iniPagina(){
-        var divpobles = document.getElementById("ubicacio");
-        var divtipus =document.getElementById("tipus");
-        var poblesTGN = JSON.parse(`{{poblesTGN | safe}}`);
-        var totescategories = JSON.parse(`{{totesCategories | safe}}`);
-        var divProvincies = document.getElementById("provincies");
-        var provincies =JSON.parse(`{{ provincies | safe }}`);
-        var nomLocalRand = `{{ nomLocalRand | safe }}`;
-        var latitudRand = `{{ latitudRand | safe }}`;
-        var longitudRand = `{{ longitudRand | safe }}`;
-
-
-        var llProvincies = Object.values(provincies);
-        var llPoblesTGN = Object.values(poblesTGN);
-        var categoriesToDo = [];
-        for(categoria of totescategories)
-        {
-            categoriesToDo.push({
-                "categoria" : categoria.fields.categoria
-            });
-        }
-
-        //console.log(llPoblesTGN);
-        var sPoble = document.createElement("SELECT");
-        sPoble.setAttribute("id", "poblacioSeleccio");
-        sPoble.setAttribute("class", "form-control");
-        sPoble.setAttribute("onchange", "guardarPoblacio()");
-        divpobles.appendChild(sPoble);
-        for(var j=0; j<llPoblesTGN.length; j++){
-            let option = document.createElement("option");
-            option.setAttribute("value", llPoblesTGN[j]);
-            let t = document.createTextNode(llPoblesTGN[j]);
-            option.appendChild(t);
-            document.getElementById("poblacioSeleccio").appendChild(option);
-        }
-
-        var sCategoria = document.createElement("SELECT");
-        sCategoria.setAttribute("id", "tipusSeleccio");
-        sCategoria.setAttribute("class", "form-control");
-        sCategoria.setAttribute("onchange", "guardarTipus()");
-        divtipus.appendChild(sCategoria);
-        for(var i=0; i<categoriesToDo.length; i++){
-            let option = document.createElement("option");
-            option.setAttribute("value", categoriesToDo[i]['categoria']);
-            let t = document.createTextNode(categoriesToDo[i]['categoria']);
-            option.appendChild(t);
-            document.getElementById("tipusSeleccio").appendChild(option);
-        }
-        var sProvincia = document.createElement("SELECT");
-        sProvincia.setAttribute("id", "provinciaSeleccio");
-        sProvincia.setAttribute("class", "form-control");
-        sProvincia.setAttribute("onchange", "poblacionsPerProvincia()");
-        divProvincies.appendChild(sProvincia);
-        for(var k=0; k<llProvincies.length; k++){
-            let option = document.createElement("option");
-            option.setAttribute("value", llProvincies[k]);
-            let t = document.createTextNode(llProvincies[k]);
-            option.appendChild(t);
-            document.getElementById("provinciaSeleccio").appendChild(option);
-        }
-        document.getElementById("pgRand").setAttribute("href", "/v1/geoInfoSystem/info_especifica/"+encodeURI(nomLocalRand)+"/"+latitudRand+"/"+longitudRand+"/");
-        $.ajax({
-                type: 'GET',
-                url : '/v1/geoInfoSystem/estadistiques_inicials/',
-                dataType:'json',
-                success:
-                    function (data){
-                        var data1 = Object.values(data);
-                        //console.log(data1);
-                        for(var i = 0; i<7; i++){
-                            let infoReal = Object.values(data1[i]);
-                            if(infoReal[1] !=='0'){
-                                let info = JSON.parse(infoReal[0]);
-                                let infoToDo = [];
-                                for (informacio of info){
-                                    //console.log(informacio);
-                                    infoToDo.push({
-                                        'fk_puntInteres': informacio.fields.localitzacio,
-                                        'nomLocal' : informacio.fields.nomLocal,
-                                        'anyConstruccio' : informacio.fields.anyConstruccio,
-                                        'descripcio' : informacio.fields.descripcio
-                                    });
-                                }
-                                let infoPI = JSON.parse(infoReal[2]);
-                                let infoPuntInteres = [];
-                                for(pInteres of infoPI){
-                                    infoPuntInteres.push({
-                                        'pk':pInteres.pk,
-                                        'latitud' : pInteres.fields.latitud,
-                                        'longitud' : pInteres.fields.longitud,
-                                        'latitudS':pInteres.fields.latitud.toString(),
-                                        'longitudS':pInteres.fields.longitud.toString()
-                                    });
-                                }
-                                for(var j = 0; j<infoToDo.length; j++){
-                                    //hidden.value += (j+1)+", Nom del local: "+infoToDo[j]['nomLocal']+", Any de construcció: "+infoToDo[j]['anyConstruccio']+", Descripció: "+infoToDo[j]['descripcio']+"\n";
-                                    //console.log(infoToDo[j]);
-                                    let liNomLocal = document.createElement("LI");
-                                    let liAnyConstruccio = document.createElement("LI");
-                                    let liDescripcio = document.createElement("LI");
-                                    let liLinkToSpecificWeb = document.createElement("LI");
-                                    crearLink(infoToDo[j],infoPuntInteres, liLinkToSpecificWeb);
-                                    let tNomLocal = document.createTextNode("Nom del local: "+infoToDo[j]['nomLocal']);
-                                    let tAnyConstruccio = document.createTextNode("Any de construcció: "+infoToDo[j]['anyConstruccio'].toString());
-                                    let tDescripcio = document.createTextNode("Descripció: "+infoToDo[j]['descripcio']);
-                                    //let divNew = document.createElement("DIV");
-                                    //divNew.setAttribute("style", "background-color: blue; color: whitesmoke;");
-                                    //divNew.appendChild(t);
-                                    //li.appendChild(divNew);
-                                    liNomLocal.appendChild(tNomLocal);
-                                    liAnyConstruccio.appendChild(tAnyConstruccio);
-                                    liDescripcio.appendChild(tDescripcio);
-                                    let itemNom = document.createElement("LI");
-                                    let itemAnyConstruccio = document.createElement("LI");
-                                    let itemDescripcio = document.createElement("LI");
-                                    let itemLink = document.createElement("LI");
-                                    itemLink.setAttribute("class", "list-group-item");
-                                    itemNom.setAttribute("class","list-group-item");
-                                    itemAnyConstruccio.setAttribute("class", "list-group-item");
-                                    itemDescripcio.setAttribute("class", "list-group-item");
-                                    //item.setAttribute("style", "background-color: "+colorBg+"; color: whitesmoke;");
-                                    itemNom.appendChild(liNomLocal);
-                                    itemAnyConstruccio.appendChild(liAnyConstruccio);
-                                    itemDescripcio.appendChild(liDescripcio);
-                                    itemLink.appendChild(liLinkToSpecificWeb);
-                                    document.getElementById("resultats"+(i+1)).appendChild(itemNom);
-                                    document.getElementById("resultats"+(i+1)).appendChild(itemAnyConstruccio);
-                                    document.getElementById("resultats"+(i+1)).appendChild(itemDescripcio);
-                                    document.getElementById("resultats"+(i+1)).appendChild(itemLink);
-                                    if(j!== infoToDo.length-1){
-                                        let separator=document.createElement("LI");
-                                        separator.setAttribute("class", "nav-divider");
-                                        separator.setAttribute("style", "background-color: #2A3B56; list-style:none; color: #2A3B56;");
-                                        let t = document.createTextNode("s");
-                                        separator.appendChild(t);
-                                        document.getElementById("resultats"+(i+1)).appendChild(separator);
-                                    }
-                                }
-                                //hidden.value+="|"+infoToDo.length;
-                                //console.log(infoToDo.length);
-                                document.getElementById("textNumElems"+(i+1)).innerHTML+=infoToDo.length.toString();
-                                document.getElementById("li-divider"+(i+1)).hidden = false;
-                            }else{
-                                //let s = "resStatistics"+(i+1)+"INI";
-                                //let hidden = document.getElementById(s);
-                                //hidden.value = "0 No hi ha resultats en la cerca.";
-                                document.getElementById("textNumElems"+(i+1)).innerHTML = "No hi ha resultats en aquesta pestanya.";
-                            }
-                        }
-                    }
-        });
-    }
-
-    function crearLink(local, puntsInteres, linkIE){
-        for(var n=0; n<puntsInteres.length; n++){
-            if(local['fk_puntInteres'] == puntsInteres[n]['pk']){
-                let url = "localhost:8000/v1/geoInfoSystem/info_especifica/"+local['nomLocal']+"/"+puntsInteres[n]['latitudS']+"/"+puntsInteres[n]['longitudS']+"/";
-                url = encodeURI(url);
-                //console.log(url);
-                let link  = document.createElement("A");
-                link.setAttribute("href", url);
-                link.setAttribute("target", "_blank");
-                link.setAttribute("rel", "noopener noreferrer");
-                let tLink = document.createTextNode("Click aquí per a veure més informació.");
-                link.appendChild(tLink);
-                linkIE.appendChild(link);
-                break;
-            }
-        }
-        //console.log(local);
-        //console.log(puntsInteres);
-    }
-
-
-    function poblacionsPerProvincia(){
-        var elem = document.getElementById("provinciaSeleccio");
-        var inputOcult = document.getElementById("pobleSeleccionat");
-        elem.childNodes.forEach(node => {
-          if(node.selected){
-                var defecte=node.value;
-                $.ajax({
-                    type: 'GET',
-                    url : '/v1/geoInfoSystem/poblacions_per_provincia/',
-                    data:{
-                        'provincia' : defecte
-                    },
-                    dataType:'json',
-                    success:
-                        function (data){
-                            var data1 = Object.values(data);
-                            var pobles = Object.values(data1[0]);
-                            var divpoble = document.getElementById("ubicacio");
-                            divpoble.innerHTML="";
-                            //console.log(pobles);
-                            var sPoble = document.createElement("SELECT");
-                            sPoble.setAttribute("id", "poblacioSeleccio");
-                            sPoble.setAttribute("class", "form-control");
-                            sPoble.setAttribute("onchange", "guardarPoblacio()");
-                            divpoble.appendChild(sPoble);
-                            for(var j=0; j<pobles.length; j++){
-                                let option = document.createElement("option");
-                                option.setAttribute("value", pobles[j]+", "+defecte);
-                                let t = document.createTextNode(pobles[j]+", "+defecte);
-                                option.appendChild(t);
-                                document.getElementById("poblacioSeleccio").appendChild(option);
-                            }
-                            inputOcult.value = pobles[0]+", "+defecte;
-                        }
-                });
-          }
-        });
-
-    }
-
-    </script>
-    <!--Load the API from the specified URL
-    * The async attribute allows the browser to render the page while the API loads
-    * The key parameter will contain your own API key (which is not needed for this tutorial)
-    * The callback parameter executes the initMap() function
-    -->
-    <script async defer
-src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZYY_D7EaLWIBwLuuXQOM2PSpsTD-5kMs&callback=initMap">
 </script>
-
-
 </body>
 </html>

@@ -819,24 +819,6 @@ def mostrarMapa(request):
     categories = serializers.serialize("json", categoriesCercades)
     localitzacions = serializers.serialize("json", localitzacionsC)
 
-    provincies = localitzacio.objects.all().values_list('provincia', flat=True).distinct()
-    dict={}
-    i=1
-    for res in provincies:
-       dict['prov'+str(i)] = res
-       i = i + 1
-    provincies = json.dumps(dict)
-    print(provincies)
-    poblesTgn = localitzacio.objects.all().filter(provincia = 'Tarragona').values_list('ciutat', 'comarca')
-    dict = {}
-    i=1
-    for res in poblesTgn:
-        dict['poble'+str(i)] = res[0]+" ("+res[1]+"), "+"Tarragona"
-        i= i + 1
-    poblesDeTgn = json.dumps(dict)
-    tipus = categoriaLocal.objects.all()
-    categoriesT = serializers.serialize('json', tipus)
-
     rand_id_puntInteres = random.choice(list(puntInteres.objects.all().values_list('id',flat=True)))
 
     pIntRand_latitud = str(puntInteres.objects.all().filter(id=rand_id_puntInteres)[0].latitud)
@@ -844,7 +826,27 @@ def mostrarMapa(request):
     nom_local_rand = local.objects.all().filter(localitzacio=rand_id_puntInteres)[0].nomLocal
 
     #LIMITACIO DE NO PAGAR API: NO PUC FER CERQUES.... (searchbox item de google)
-    return render(request, "puntsGeografics/map.html", {'latitudRand': pIntRand_latitud, 'longitudRand': pIntRand_longitud, 'nomLocalRand':nom_local_rand,'totesCategories':categoriesT,'poblesTGN':poblesDeTgn, 'provincies':provincies,'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions})
+    return render(request, "puntsGeografics/map.html", {'latitudRand': pIntRand_latitud, 'longitudRand': pIntRand_longitud, 'nomLocalRand':nom_local_rand, 'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions})
+
+def estadistiques(request):
+    provincies = localitzacio.objects.all().values_list('provincia', flat=True).distinct()
+    dict = {}
+    i = 1
+    for res in provincies:
+        dict['prov' + str(i)] = res
+        i = i + 1
+    provincies = json.dumps(dict)
+    print(provincies)
+    poblesTgn = localitzacio.objects.all().filter(provincia='Tarragona').values_list('ciutat', 'comarca')
+    dict = {}
+    i = 1
+    for res in poblesTgn:
+        dict['poble' + str(i)] = res[0] + " (" + res[1] + "), " + "Tarragona"
+        i = i + 1
+    poblesDeTgn = json.dumps(dict)
+    tipus = categoriaLocal.objects.all()
+    categoriesT = serializers.serialize('json', tipus)
+    return render(request, "puntsGeografics/estadistiques.html", {'totesCategories': categoriesT, 'poblesTGN': poblesDeTgn, 'provincies':provincies})
 
 """
 Mètode AJAX auxiliar al mètode anterior. Aquest permet que el mòdul estadístic no estigui buit a l'inici, sinó que tal com l'usuari

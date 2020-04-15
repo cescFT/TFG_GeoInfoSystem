@@ -52,6 +52,7 @@ urlpatterns = [
     path('baixa_usuari/', views.baixa, name='baixa'),
     path('nouPunt/', views.crearNouPuntInteres, name='nou punt'),
     path('poblacions_per_provincia/', views.ciutatsPerProvincia, name='poblacionsxprovincies'),
+    path('estadistiquesGIS/', views.estadistiques, name='statistics'),
     path('estadistiques/', views.res_ajax_estadistiques, name='ajaxestadistiques'),
     path('estadistiques_inicials/', views.estadistiques_inicials, name='ajaxestadistiquesInicials'),
     path('comprovarInputsLogIn/', views.checkInputsLogIn, name="checkInputLogIn"),
