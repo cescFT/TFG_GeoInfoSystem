@@ -395,8 +395,8 @@ function tractamentDadesEstadistiques(data, quines_dades){
                     afegirInfoCasellaEspecifica((j+1), 2, "resTOT"+(i+1).toString() ,categoria);
                     afegirInfoCasellaEspecifica((j+1), 3, "resTOT"+(i+1).toString() ,infoToDo[j]['estat_conservacio'].toString());
                     afegirInfoCasellaEspecifica((j+1), 4, "resTOT"+(i+1).toString() ,infoToDo[j]['anyConstruccio'].toString());
-                    afegirInfoCasellaEspecifica((j+1), 5, "resTOT"+(i+1).toString() ,infoToDo[j]['descripcio']);
-                    afegirInfoCasellaEspecifica((j+1), 6, "resTOT"+(i+1).toString(), localitat)
+                    afegirInfoCasellaEspecifica((j+1), 5, "resTOT"+(i+1).toString(), localitat);
+                    afegirInfoCasellaEspecifica((j+1), 6, "resTOT"+(i+1).toString() ,infoToDo[j]['descripcio']);
                 }
             }else{
                 var llistatBotons = document.getElementById("botonera").children;
@@ -788,7 +788,7 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
     document.getElementById(id_div_sortida).innerHTML='';
     onlyInfo(descipcioResultat, id_div_sortida);
     if(files === -1 || files === 0){
-
+        //nore
     }else{
         var table=document.createElement("TABLE");
         var primertr = document.createElement("TR");
@@ -852,13 +852,21 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     break;
                 case 5:
                     let th5 = document.createElement("TH");
-                    let t5 = document.createTextNode("Descripció");
-                    th5.appendChild(t5);
+                    let t5 = document.createTextNode("Localitat");
+                    let bttn_ordenar5=document.createElement("BUTTON");
+                    let divRow5=document.createElement("DIV");
+                    divRow5.setAttribute("class", "row");
+                    divRow5.setAttribute("style", "margin:0px auto;");
+                    bttn_ordenar5.innerHTML='<img style="height: 15px" src="https://www.flaticon.com/premium-icon/icons/svg/245/245625.svg">';
+                    //bttn_ordenar5.setAttribute("onclick", "");
+                    divRow5.appendChild(t5);
+                    divRow5.appendChild(bttn_ordenar5);
+                    th5.appendChild(divRow5);
                     document.getElementById(id_div_sortida).appendChild(th5);
                     break;
                 case 6:
                     let th6 = document.createElement("TH");
-                    let t6 = document.createTextNode("Localitat");
+                    let t6 = document.createTextNode("Descripció");
                     th6.appendChild(t6);
                     document.getElementById(id_div_sortida).appendChild(th6);
                     break;
