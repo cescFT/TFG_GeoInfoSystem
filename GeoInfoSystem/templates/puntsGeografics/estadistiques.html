@@ -335,7 +335,25 @@ function inicialitzacioEstadistiques(){
 }
 
 function tractamentDadesEstadistiques(data, quines_dades){
-    if(quines_dades ==='inicials'){
+    var totescategories = JSON.parse(`{{totesCategories | safe}}`);
+    var totesLocalitzacions = JSON.parse(`{{totesLocalitzacions |safe}}`);
+    var categoriesToDo = [];
+    var localitzacionsToDo=[];
+    for(localitzacio of totesLocalitzacions){
+        localitzacionsToDo.push({
+            'pk':localitzacio.pk,
+            'ciutat':localitzacio.fields.ciutat
+        });
+    }
+
+    for(categoria of totescategories)
+    {
+        categoriesToDo.push({
+            'pk':categoria.pk,
+            "categoria" : categoria.fields.categoria
+        });
+    }
+    if(quines_dades ==='inicials' || quines_dades === 'estadistiques'){
         var data1 = Object.values(data);
         for (var i=0; i<7; i++){
             let infoReal = Object.values(data1[i]);
@@ -348,7 +366,9 @@ function tractamentDadesEstadistiques(data, quines_dades){
                         'fk_puntInteres': informacio.fields.localitzacio,
                         'nomLocal' : informacio.fields.nomLocal,
                         'anyConstruccio' : informacio.fields.anyConstruccio,
-                        'descripcio' : informacio.fields.descripcio
+                        'descripcio' : informacio.fields.descripcio,
+                        'fk_categoria' : informacio.fields.categoria,
+                        'estat_conservacio':informacio.fields.estat_conservacio
                     });
                 }
                 let infoPI = JSON.parse(infoReal[2]);
@@ -359,7 +379,8 @@ function tractamentDadesEstadistiques(data, quines_dades){
                         'latitud' : pInteres.fields.latitud,
                         'longitud' : pInteres.fields.longitud,
                         'latitudS':pInteres.fields.latitud.toString(),
-                        'longitudS':pInteres.fields.longitud.toString()
+                        'longitudS':pInteres.fields.longitud.toString(),
+                        'fk_localitzacio':pInteres.fields.localitat
                     });
                 }
                 switchInfoGraellaAMBdades(infoToDo.length, "resTOT"+(i+1).toString());
@@ -367,65 +388,46 @@ function tractamentDadesEstadistiques(data, quines_dades){
                 for(var j = 0; j<infoToDo.length; j++){
                     var link=crearLink(infoToDo[j],infoPuntInteres); //objecte link
                     //fila, columna, id_div_sortida, infoToPut
+                    var categoria=cercarCategoria(infoToDo[j]['fk_categoria'], categoriesToDo);
+                    var punt_fk_localitzacio=cercarPuntInteres(infoToDo[j]['fk_puntInteres'], infoPuntInteres);
+                    var localitat = cercarLocalitat(punt_fk_localitzacio, localitzacionsToDo);
                     afegirInfoCasellaEspecifica((j+1), 1, "resTOT"+(i+1).toString() ,link);
-                    afegirInfoCasellaEspecifica((j+1), 2, "resTOT"+(i+1).toString() ,"categoria...");
-                    afegirInfoCasellaEspecifica((j+1), 3, "resTOT"+(i+1).toString() ,"estat conserv...");
+                    afegirInfoCasellaEspecifica((j+1), 2, "resTOT"+(i+1).toString() ,categoria);
+                    afegirInfoCasellaEspecifica((j+1), 3, "resTOT"+(i+1).toString() ,infoToDo[j]['estat_conservacio'].toString());
                     afegirInfoCasellaEspecifica((j+1), 4, "resTOT"+(i+1).toString() ,infoToDo[j]['anyConstruccio'].toString());
                     afegirInfoCasellaEspecifica((j+1), 5, "resTOT"+(i+1).toString() ,infoToDo[j]['descripcio']);
+                    afegirInfoCasellaEspecifica((j+1), 6, "resTOT"+(i+1).toString(), localitat)
                 }
             }else{
                 var llistatBotons = document.getElementById("botonera").children;
                 onlyInfo(llistatBotons[i].value,"resTOT"+(i+1).toString());
-                console.log(llistatBotons[i].value);
-            }
-        }
-    }else if (quines_dades === 'estadistiques'){
-         var data1 = Object.values(data);
-        netejarEstadistiques();
-        for(var i=0; i<7; i++){
-            let dades = Object.values(data1[i]);
-            if (dades[2]!=='0'){
-                let information = JSON.parse(dades[0]);
-                let infoToDo = [];
-                for(infoReal of information){
-                    infoToDo.push({
-                        'fk_puntInteres':infoReal.fields.localitzacio,
-                        'nomLocal' : infoReal.fields.nomLocal,
-                        'anyConstruccio' : infoReal.fields.anyConstruccio,
-                        'descripcio' : infoReal.fields.descripcio
-                    });
-                }
-                let pInteresInfo = JSON.parse(dades[3]);
-                let infoPuntInteres = [];
-                for (puntI of pInteresInfo){
-                    infoPuntInteres.push({
-                        'pk':puntI.pk,
-                        'latitud' : puntI.fields.latitud,
-                        'longitud' : puntI.fields.longitud,
-                        'latitudS': puntI.fields.latitud.toString(),
-                        'longitudS':puntI.fields.longitud.toString()
-                    });
-                }
-                switchInfoGraellaAMBdades(infoToDo.length, "resTOT"+(i+1).toString());
-                document.getElementById("textNumElems"+(i+1).toString()).innerHTML="Nombre de resultats: "+infoToDo.length.toString();
-                for(var j=0; j<infoToDo.length; j++){
-                     var link=crearLink(infoToDo[j],infoPuntInteres); //objecte link
-                    //fila, columna, id_div_sortida, infoToPut
-                    afegirInfoCasellaEspecifica((j+1), 1, "resTOT"+(i+1).toString() ,link);
-                    afegirInfoCasellaEspecifica((j+1), 2, "resTOT"+(i+1).toString() ,"categoria...");
-                    afegirInfoCasellaEspecifica((j+1), 3, "resTOT"+(i+1).toString() ,"estat conserv...");
-                    afegirInfoCasellaEspecifica((j+1), 4, "resTOT"+(i+1).toString() ,infoToDo[j]['anyConstruccio'].toString());
-                    afegirInfoCasellaEspecifica((j+1), 5, "resTOT"+(i+1).toString() ,infoToDo[j]['descripcio']);
-                }
-            }else{
-                 var llistatBotons = document.getElementById("botonera").children;
-                 onlyInfo(llistatBotons[i].value,"resTOT"+(i+1).toString());
-                 console.log(llistatBotons[i].value);
             }
         }
     }
-
 }
+
+function cercarLocalitat(fk_localitat, totesLocalitats){
+    for(var i=0; i<totesLocalitats.length; i++){
+        if(fk_localitat === totesLocalitats[i]['pk']){
+            return totesLocalitats[i]['ciutat'];
+        }
+    }
+}
+function cercarPuntInteres(fk_puntInteres, totsPuntsInteres){
+    for(var i=0; i<totsPuntsInteres.length; i++){
+        if(fk_puntInteres === totsPuntsInteres[i]['pk']){
+            return totsPuntsInteres[i]['fk_localitzacio']
+        }
+    }
+}
+function cercarCategoria(fk_categoria, totesCategories) {
+    for(var i=0; i<totesCategories.length; i++){
+        if(fk_categoria === totesCategories[i]['pk']){
+            return totesCategories[i]['categoria'];
+        }
+    }
+}
+
 function switchInfoGraellaAMBdades(files, id_div_sortida){
     switch (id_div_sortida) {
         case "resTOT1":
@@ -790,7 +792,7 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
     }else{
         var table=document.createElement("TABLE");
         var primertr = document.createElement("TR");
-        for(var k=0; k<5; k++){
+        for(var k=0; k<6; k++){
             switch (k+1){
                 case 1:
                     let th1 = document.createElement("TH");
@@ -854,11 +856,17 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     th5.appendChild(t5);
                     document.getElementById(id_div_sortida).appendChild(th5);
                     break;
+                case 6:
+                    let th6 = document.createElement("TH");
+                    let t6 = document.createTextNode("Localitat");
+                    th6.appendChild(t6);
+                    document.getElementById(id_div_sortida).appendChild(th6);
+                    break;
             }
         }
         for (var i = 0; i<files; i++){
             let tr = document.createElement("TR");
-            for(var j=0; j<5; j++){
+            for(var j=0; j<6; j++){
                 let td = document.createElement("TD");
                 td.setAttribute("id", "infofil"+(i+1).toString()+"col"+(j+1).toString()+" "+id_div_sortida);
                 tr.appendChild(td);

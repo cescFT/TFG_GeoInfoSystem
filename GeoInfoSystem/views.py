@@ -846,7 +846,9 @@ def estadistiques(request):
     poblesDeTgn = json.dumps(dict)
     tipus = categoriaLocal.objects.all()
     categoriesT = serializers.serialize('json', tipus)
-    return render(request, "puntsGeografics/estadistiques.html", {'totesCategories': categoriesT, 'poblesTGN': poblesDeTgn, 'provincies':provincies, 'primeraLocalitatLlista':dict['poble1']})
+    localitzacions = localitzacio.objects.all()
+    localitzacions = serializers.serialize('json', localitzacions)
+    return render(request, "puntsGeografics/estadistiques.html", {'totesLocalitzacions':localitzacions,'totesCategories': categoriesT, 'poblesTGN': poblesDeTgn, 'provincies':provincies, 'primeraLocalitatLlista':dict['poble1']})
 
 """
 Mètode AJAX auxiliar al mètode anterior. Aquest permet que el mòdul estadístic no estigui buit a l'inici, sinó que tal com l'usuari
@@ -1366,9 +1368,9 @@ def res_ajax_estadistiques(request):
         res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['resFiltres'] = data
-        dict['descripcio'] = 'Resultat obtingut desprès d\'aplicar tots els filtres.'
         dict['numlocalsTotsFiltres'] = str(len(lloc))
         dict['puntIntersFiltresActuals'] = res_json_lat_lng
+        dict['descripcio'] = 'Resultat obtingut desprès d\'aplicar tots els filtres.'
         res['AllFilters'] = dict
 
 
@@ -1381,9 +1383,9 @@ def res_ajax_estadistiques(request):
         res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['llocMateixPoble'] = data
-        dict['descripcio'] = 'Tots els locals que es troben en la mateixa ciutat (tant actius com no actius).'
         dict['numLocalsMateixPoble'] = str(len(lloc))
         dict['puntsIntersMateixPoble'] = res_json_lat_lng
+        dict['descripcio'] = 'Tots els locals que es troben en la mateixa ciutat (tant actius com no actius).'
         res['FilterMateixPoble'] = dict
 
         dict = {}
@@ -1395,9 +1397,9 @@ def res_ajax_estadistiques(request):
         res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['llocFilterNegat'] = data
-        dict['descripcio'] = 'Resultats obtinguts deprès d\'haver negat si és actiu i mantenint la mateixa categoria.'
         dict['numLocalsNegantActiuMateixaCategoria'] = str(len(lloc))
         dict['puntInteresNegatActiuMateixaCategoria'] = res_json_lat_lng
+        dict['descripcio'] = 'Resultats obtinguts deprès d\'haver negat si és actiu i mantenint la mateixa categoria.'
         res['FilterNegantActiu'] = dict
 
 
@@ -1411,9 +1413,9 @@ def res_ajax_estadistiques(request):
         res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['filtreEstrany'] = data
-        dict['descripcio'] = 'Resultat obtingut de aplicar el mateix poble amb l\'actiu que s\'ha donat i una categoria diferent a la donada.'
         dict['numResMateixPobleNotMateixaCategoria'] = str(len(lloc))
-        dict['puntsInteresfiltreExtrany'] =res_json_lat_lng
+        dict['puntsInteresfiltreExtrany'] = res_json_lat_lng
+        dict['descripcio'] = 'Resultat obtingut de aplicar el mateix poble amb l\'actiu que s\'ha donat i una categoria diferent a la donada.'
         res['FiltreResMateixPobleNotCategoriaDonada'] = dict
 
         dict = {}
@@ -1425,9 +1427,9 @@ def res_ajax_estadistiques(request):
         res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['filtreEstrany']=data
-        dict['descripcio'] = 'Resultat de aplicar altres pobles i actiu que s\'ha donat i la mateixa categoria donada.'
         dict['numResNoMateixPobleMateixaCategoria'] = str(len(lloc))
         dict['puntsInteresfiltreExtrany'] = res_json_lat_lng
+        dict['descripcio'] = 'Resultat de aplicar altres pobles i actiu que s\'ha donat i la mateixa categoria donada.'
         res['FiltreResNoMateixPobleMateixaCategoria'] = dict
 
         dict = {}
@@ -1440,9 +1442,9 @@ def res_ajax_estadistiques(request):
         res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['filtreEstrany'] = data
-        dict['descripcio'] = 'Resultat de aplicar un poble diferent al donat, actiu negat i no mateixa categoria.'
         dict['numResNoMateixPobleNoMateixaCategoria'] = str(len(lloc))
         dict['PuntInteresfiltreExtrany'] = res_json_lat_lng
+        dict['descripcio'] = 'Resultat de aplicar un poble diferent al donat, actiu negat i no mateixa categoria.'
         res['FiltreResNoMateixPobleNoMateixaCategoria'] = dict
 
         dict = {}
@@ -1454,10 +1456,9 @@ def res_ajax_estadistiques(request):
         res_json_lat_lng = serializers.serialize('json', res_lat_lng)
         data = serializers.serialize('json', lloc)
         dict['llocsDB'] = data
-        dict['descripcio'] = 'Totes les dades.'
         dict['numElemsReals'] = str(len(lloc))
         dict['puntsInteresLlocsDB'] = res_json_lat_lng
-
+        dict['descripcio'] = 'Totes les dades.'
         res['RealsDB'] = dict
         res_json = json.dumps(res)
         return HttpResponse(res_json, content_type='json')
