@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/estadistiques.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/estadistiques.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -321,7 +321,7 @@
       <workItem from="1586941824298" duration="17255000" />
       <workItem from="1587044049750" duration="2617000" />
       <workItem from="1587062156146" duration="110000" />
-      <workItem from="1587113820735" duration="2996000" />
+      <workItem from="1587113820735" duration="25406000" />
     </task>
     <servers />
   </component>
@@ -394,11 +394,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="771" y="439" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1586337689600" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1586967392579">
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1587138008557">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1586252498084" />
-    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1586967392579" />
+    <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587138008557" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_categories.coverage" NAME="insert_data_categories Coverage Results" MODIFIED="1584811249791" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
