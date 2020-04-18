@@ -62,5 +62,6 @@ urlpatterns = [
     path('comprovarRegistre/', views.check_values_register_data, name="checkRegister"),
     path('comprovarValorsBuitsNouPunt/', views.check_values_new_point_empty, name='checkEmptyNewPoint'),
     path('comprovarDadesNouPunt/', views.check_values_new_point, name='checkDataNewPoint'),
-    path('error/', views.errorpage, name='errorpage')
+    path('error/', views.errorpage, name='errorpage'),
+    path('ordenacio/', views.ordenament, name='ordenamentSortida')
 ]

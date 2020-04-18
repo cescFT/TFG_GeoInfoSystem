@@ -225,6 +225,49 @@ tr:nth-child(even) {
     <input type="hidden" name="categoria" id="categoriaSeleccionada" value="Restauració">
     <input type="hidden" name="esActiu" id="estat" value="False">
     <input type="hidden" name="poblacio" id="pobleSeleccionat" value="">
+
+    <input type="hidden" name="resTOT1-OrdenacioPerLocal" id="resTOT1-OrdenacioPerLocal" value="ordena">
+    <input type="hidden" name="resTOT1-OrdenacioPerCategoria" id="resTOT1-OrdenacioPerCategoria" value="ordena">
+    <input type="hidden" name="resTOT1-OrdenacioPerEstatConservacio" id="resTOT1-OrdenacioPerEstatConservacio" value="ordena">
+    <input type="hidden" name="resTOT1-OrdenacioPerAnyConstruccio" id="resTOT1-OrdenacioPerAnyConstruccio" value="ordena">
+    <input type="hidden" name="resTOT1-OrdenacioPerLocalitat" id="resTOT1-OrdenacioPerLocalitat" value="ordena">
+
+    <input type="hidden" name="resTOT2-OrdenacioPerLocal" id="resTOT2-OrdenacioPerLocal" value="ordena">
+    <input type="hidden" name="resTOT2-OrdenacioPerCategoria" id="resTOT2-OrdenacioPerCategoria" value="ordena">
+    <input type="hidden" name="resTOT2-OrdenacioPerEstatConservacio" id="resTOT2-OrdenacioPerEstatConservacio" value="ordena">
+    <input type="hidden" name="resTOT2-OrdenacioPerAnyConstruccio" id="resTOT2-OrdenacioPerAnyConstruccio" value="ordena">
+    <input type="hidden" name="resTOT2-OrdenacioPerLocalitat" id="resTOT2-OrdenacioPerLocalitat" value="ordena">
+
+    <input type="hidden" name="resTOT3-OrdenacioPerLocal" id="resTOT3-OrdenacioPerLocal" value="ordena">
+    <input type="hidden" name="resTOT3-OrdenacioPerCategoria" id="resTOT3-OrdenacioPerCategoria" value="ordena">
+    <input type="hidden" name="resTOT3-OrdenacioPerEstatConservacio" id="resTOT3-OrdenacioPerEstatConservacio" value="ordena">
+    <input type="hidden" name="resTOT3-OrdenacioPerAnyConstruccio" id="resTOT3-OrdenacioPerAnyConstruccio" value="ordena">
+    <input type="hidden" name="resTOT3-OrdenacioPerLocalitat" id="resTOT3-OrdenacioPerLocalitat" value="ordena">
+
+    <input type="hidden" name="resTOT4-OrdenacioPerLocal" id="resTOT4-OrdenacioPerLocal" value="ordena">
+    <input type="hidden" name="resTOT4-OrdenacioPerCategoria" id="resTOT4-OrdenacioPerCategoria" value="ordena">
+    <input type="hidden" name="resTOT4-OrdenacioPerEstatConservacio" id="resTOT4-OrdenacioPerEstatConservacio" value="ordena">
+    <input type="hidden" name="resTOT4-OrdenacioPerAnyConstruccio" id="resTOT4-OrdenacioPerAnyConstruccio" value="ordena">
+    <input type="hidden" name="resTOT4-OrdenacioPerLocalitat" id="resTOT4-OrdenacioPerLocalitat" value="ordena">
+
+    <input type="hidden" name="resTOT5-OrdenacioPerLocal" id="resTOT5-OrdenacioPerLocal" value="ordena">
+    <input type="hidden" name="resTOT5-OrdenacioPerCategoria" id="resTOT5-OrdenacioPerCategoria" value="ordena">
+    <input type="hidden" name="resTOT5-OrdenacioPerEstatConservacio" id="resTOT5-OrdenacioPerEstatConservacio" value="ordena">
+    <input type="hidden" name="resTOT5-OrdenacioPerAnyConstruccio" id="resTOT5-OrdenacioPerAnyConstruccio" value="ordena">
+    <input type="hidden" name="resTOT5-OrdenacioPerLocalitat" id="resTOT5-OrdenacioPerLocalitat" value="ordena">
+
+    <input type="hidden" name="resTOT6-OrdenacioPerLocal" id="resTOT6-OrdenacioPerLocal" value="ordena">
+    <input type="hidden" name="resTOT6-OrdenacioPerCategoria" id="resTOT6-OrdenacioPerCategoria" value="ordena">
+    <input type="hidden" name="resTOT6-OrdenacioPerEstatConservacio" id="resTOT6-OrdenacioPerEstatConservacio" value="ordena">
+    <input type="hidden" name="resTOT6-OrdenacioPerAnyConstruccio" id="resTOT6-OrdenacioPerAnyConstruccio" value="ordena">
+    <input type="hidden" name="resTOT6-OrdenacioPerLocalitat" id="resTOT6-OrdenacioPerLocalitat" value="ordena">
+
+    <input type="hidden" name="resTOT7-OrdenacioPerLocal" id="resTOT7-OrdenacioPerLocal" value="ordena">
+    <input type="hidden" name="resTOT7-OrdenacioPerCategoria" id="resTOT7-OrdenacioPerCategoria" value="ordena">
+    <input type="hidden" name="resTOT7-OrdenacioPerEstatConservacio" id="resTOT7-OrdenacioPerEstatConservacio" value="ordena">
+    <input type="hidden" name="resTOT7-OrdenacioPerAnyConstruccio" id="resTOT7-OrdenacioPerAnyConstruccio" value="ordena">
+    <input type="hidden" name="resTOT7-OrdenacioPerLocalitat" id="resTOT7-OrdenacioPerLocalitat" value="ordena">
+
     <br><br>
 
 <script>
@@ -493,9 +536,7 @@ function crearLink(local, puntsInteres){
 }
 
 
-function afegirInfoCasellaEspecifica(fila, columna, id_div_sortida, infoToPut){
-    document.getElementById("infofil"+fila.toString()+"col"+columna.toString()+" "+id_div_sortida).innerHTML=infoToPut;
-}
+
 function poblacionsPerProvincia(){
     var elem = document.getElementById("provinciaSeleccio");
     elem.childNodes.forEach(node => {
@@ -845,7 +886,8 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     divRow2.setAttribute("class", "row");
                     divRow2.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar2.innerHTML='<img style="height: 15px" src="https://www.flaticon.com/premium-icon/icons/svg/245/245625.svg">';
-                    bttn_ordenar2.setAttribute("onclick", "ordenarPerCategories()");
+                    bttn_ordenar2.setAttribute("onclick", "ordenarPerCategories(this.id)");
+                    bttn_ordenar2.setAttribute("id", "bttnORDNL "+id_div_sortida);
                     divRow2.appendChild(t2);
                     divRow2.appendChild(bttn_ordenar2);
                     th2.appendChild(divRow2);
@@ -859,7 +901,8 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     divRow3.setAttribute("class", "row");
                     divRow3.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar3.innerHTML='<img style="height: 15px" src="https://image.flaticon.com/icons/svg/1828/1828135.svg">';
-                    bttn_ordenar3.setAttribute("onclick", "ordenarPerEstatConservacio()");
+                    bttn_ordenar3.setAttribute("onclick", "ordenarPerEstatConservacio(this.id)");
+                    bttn_ordenar3.setAttribute("id", "bttnORDNL "+id_div_sortida);
                     divRow3.appendChild(t3);
                     divRow3.appendChild(bttn_ordenar3);
                     th3.appendChild(divRow3);
@@ -873,7 +916,8 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     divRow4.setAttribute("class", "row");
                     divRow4.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar4.innerHTML='<img style="height: 15px" src="https://image.flaticon.com/icons/svg/1828/1828135.svg">';
-                    bttn_ordenar4.setAttribute("onclick", "ordenarPerAnyConstrucccio()");
+                    bttn_ordenar4.setAttribute("onclick", "ordenarPerAnyConstrucccio(this.id)");
+                    bttn_ordenar4.setAttribute("id", "bttnORDNL "+id_div_sortida);
                     divRow4.appendChild(t4);
                     divRow4.appendChild(bttn_ordenar4);
                     th4.appendChild(divRow4);
@@ -887,7 +931,8 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     divRow5.setAttribute("class", "row");
                     divRow5.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar5.innerHTML='<img style="height: 15px" src="https://www.flaticon.com/premium-icon/icons/svg/245/245625.svg">';
-                    bttn_ordenar5.setAttribute("onclick", "ordenarPerLocalitat()");
+                    bttn_ordenar5.setAttribute("onclick", "ordenarPerLocalitat(this.id)");
+                    bttn_ordenar5.setAttribute("id", "bttnORDNL "+id_div_sortida);
                     divRow5.appendChild(t5);
                     divRow5.appendChild(bttn_ordenar5);
                     th5.appendChild(divRow5);
@@ -922,22 +967,162 @@ function getNumResultat(id_div_res){
 }
 
 
+function afegirInfoCasellaEspecifica(fila, columna, id_div_sortida, infoToPut){
+    document.getElementById("infofil"+fila.toString()+"col"+columna.toString()+" "+id_div_sortida).innerHTML=infoToPut;
+}
 
+function treureObjecteCasella(id_td){
+    return document.getElementById(id_td);
+}
 
+function getAllTRs(llistatTags){
+    var llistatObjectes=[];
+    for(var i=0; i<llistatTags.length; i++){
+        if(llistatTags[i].nodeName ==='TR'){
+            llistatObjectes.push(llistatTags[i]);
+        }
+    }
+    return llistatObjectes;
+}
+function getJSONData(element_TR){
+    var objectes=element_TR.childNodes;
+    var JSON_data={};
+    var estatConservacio=0;
+    var k=0;
+    for(var i=0; i<objectes.length; i++){
+        let objecte=treureObjecteCasella(objectes[i].id);
+        let contingut=objecte.childNodes;
+        for(var j=0; j<contingut.length;j++){
+            switch(contingut[j].tagName){
+                case "A":
+                    JSON_data['nomLocal']=contingut[j].innerHTML;
+                    JSON_data['url']=contingut[j].href;
+                    break;
+                case "I":
+                    if(contingut[j].classList.value === 'fa fa-star checked'){
+                        estatConservacio=estatConservacio+1;
+                    }
+                    break;
+                default:
+                    JSON_data['colsText'+(k+1).toString()]=contingut[j].textContent;
+                    k=k+1;
+                    break;
+            }
+        }
+    }
+    JSON_data["estatConservacio"]=estatConservacio;
+    return JSON_data;
+}
+function afegirInfoCasellaEspecifica(fila, columna, id_div_sortida, infoToPut){
+    document.getElementById("infofil"+fila.toString()+"col"+columna.toString()+" "+id_div_sortida).innerHTML=infoToPut;
+}
 function ordenarPerNomLocals(id_boto){
-    console.log(id_boto);
-}
-function ordenarPerCategories(){
+    var divSortida=id_boto.split(' ')[1];
+    //console.log(divSortida);
+    var llistatTags = document.getElementById(divSortida).childNodes;
+    var trs=getAllTRs(llistatTags);
+    //console.log(trs);
+    var llistatfiles=[];
+    for(var i=0; i<trs.length; i++){
+        llistatfiles.push(JSON.stringify(getJSONData(trs[i])));
+    }
+
+    if(document.getElementById(divSortida+"-OrdenacioPerLocal").value==='ordena'){
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/ordenacio/',
+            data:{
+                'tipusOrdenacio': 'nomLocal',
+                'informacio' : JSON.stringify(llistatfiles),
+            },
+            dataType:'json',
+            success:
+                function (data){
+                    var data1 = Object.values(data);
+                    crearGraella(data1.length, '', divSortida);
+                    document.getElementById("textNumElems"+getNumResultat(divSortida).toString()).innerHTML="Nombre de resultats: "+data1.length;
+                    for(var i=0; i<data1.length; i++){
+                        let info_array = Object.values(data1[i]);
+                        for(var j=1; j<info_array.length; j++){
+                            console.log(info_array[j]);
+                            if(j === 1){
+                                afegirInfoCasellaEspecifica(i+1, j, divSortida, '<a href="'+info_array[j]+'" target="_blank" rel="noopener noreferrer">'+info_array[0]+'</a>')
+                            }else if (j===3){
+                                afegirInfoCasellaEspecifica(i+1, j, divSortida, estrelles(info_array[j], info_array[0]));
+                            }else{
+                                afegirInfoCasellaEspecifica(i+1,j,divSortida, info_array[j]);
+                            }
+                        }
+                    }
+                }
+        });
+        document.getElementById(divSortida+"-OrdenacioPerLocal").value='NoOrdena';
+    }else{
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/estadistiques/',
+            data:{
+                'poblacio' : document.getElementById('pobleSeleccionat').value,
+                'actiu' : document.getElementById('estat').value,
+                'categoria' : document.getElementById("categoriaSeleccionada").value
+            },
+            dataType:'json',
+            success:
+                function (data) {
+                    tractamentDadesEstadistiques(data, 'estadistiques');
+                }
+        });
+        document.getElementById(divSortida+"-OrdenacioPerLocal").value='ordena';
+    }
 
 }
-function ordenarPerEstatConservacio(){
-
+function ordenarPerCategories(id_boto){
+    var divSortida=id_boto.split(' ')[1];
+    //console.log(divSortida);
+    var llistatTags = document.getElementById(divSortida).childNodes;
+    var trs=getAllTRs(llistatTags);
+    //console.log(trs);
+    var llistatfiles=[];
+    for(var i=0; i<trs.length; i++){
+        llistatfiles.push(JSON.stringify(getJSONData(trs[i])));
+    }
+    console.log(llistatfiles);
 }
-function ordenarPerAnyConstrucccio(){
-
+function ordenarPerEstatConservacio(id_boto){
+    var divSortida=id_boto.split(' ')[1];
+    //console.log(divSortida);
+    var llistatTags = document.getElementById(divSortida).childNodes;
+    var trs=getAllTRs(llistatTags);
+    //console.log(trs);
+    var llistatfiles=[];
+    for(var i=0; i<trs.length; i++){
+        llistatfiles.push(JSON.stringify(getJSONData(trs[i])));
+    }
+    console.log(llistatfiles);
 }
-function ordenarPerLocalitat(){
-
+function ordenarPerAnyConstrucccio(id_boto){
+    var divSortida=id_boto.split(' ')[1];
+    //console.log(divSortida);
+    var llistatTags = document.getElementById(divSortida).childNodes;
+    var trs=getAllTRs(llistatTags);
+    //console.log(trs);
+    var llistatfiles=[];
+    for(var i=0; i<trs.length; i++){
+        llistatfiles.push(JSON.stringify(getJSONData(trs[i])));
+    }
+    console.log(llistatfiles);
+}
+function ordenarPerLocalitat(id_boto){
+    var divSortida=id_boto.split(' ')[1];
+    //console.log(divSortida);
+    var llistatTags = document.getElementById(divSortida).childNodes;
+    var trs=getAllTRs(llistatTags);
+    //console.log(trs);
+    var llistatfiles=[];
+    for(var i=0; i<trs.length; i++){
+        llistatfiles.push(JSON.stringify(getJSONData(trs[i])));
+    }
+    console.log(llistatfiles);
 }
 
 </script>

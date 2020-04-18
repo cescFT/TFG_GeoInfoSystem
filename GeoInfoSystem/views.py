@@ -15,6 +15,7 @@ from GeoInfoSystem.models import *
 from GeoInfoSystem.serializers import *
 from Exceptions import *
 from django.core import serializers
+from ast import literal_eval
 import json
 import re
 import random
@@ -1580,6 +1581,41 @@ def check_values_new_point(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
+def ordenament(request):
+    if request.method=='GET':
+        tipusOrdenament=request.GET['tipusOrdenacio']
+        informacio = urllib.parse.unquote(request.GET['informacio'])
+        json_data=json.loads(informacio)
+        localsEnviats=[]
+        for elem in json_data:
+            dict = literal_eval(elem)
+            localsEnviats.append(dict)
+        if tipusOrdenament == 'nomLocal':
+            nomsLocals=[]
+            for dict in localsEnviats:
+                nomsLocals.append(dict['nomLocal'])
+            nomsLocals_ordenat=sorted(nomsLocals)
+            #print(nomsLocals_ordenat)
+            new_dict={}
+            ordenat = []
+            for nom_local_ordenat in nomsLocals_ordenat:
+                dict=trobarLocal(nom_local_ordenat, localsEnviats)
+                new_dict['nomLocal']=dict['nomLocal']
+                new_dict['url']=dict['url']
+                new_dict['categoria']=dict['colsText1']
+                new_dict['estatConservacio']=dict['estatConservacio']
+                new_dict['anyConstruccio']=dict['colsText2']
+                new_dict['localitat']=dict['colsText3']
+                new_dict['descripcio']=dict['colsText4']
+                ordenat.append(new_dict)
+                new_dict={}
+            res_json=json.dumps(ordenat)
+            return HttpResponse(res_json, content_type='json')
+
+def trobarLocal(nomLocal, llistatDiccionaris):
+    for dict in llistatDiccionaris:
+        if dict['nomLocal'] == nomLocal:
+            return dict
 
 """
 AIXO ES PERQ AIXI ES COMPROVA SI ÉS SUPERUSUARI, EN ALTRE CAS NO ENTRARA
