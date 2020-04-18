@@ -95,6 +95,12 @@ td, th {
 tr:nth-child(even) {
   background-color: #dddddd;
 }
+.checked{
+    color:gold;
+}
+.unchecked{
+    color: black;
+}
     </style>
 
 
@@ -391,9 +397,10 @@ function tractamentDadesEstadistiques(data, quines_dades){
                     var categoria=cercarCategoria(infoToDo[j]['fk_categoria'], categoriesToDo);
                     var punt_fk_localitzacio=cercarPuntInteres(infoToDo[j]['fk_puntInteres'], infoPuntInteres);
                     var localitat = cercarLocalitat(punt_fk_localitzacio, localitzacionsToDo);
+                    var sEstrelletes=estrelles(infoToDo[j]['estat_conservacio'], infoToDo[j]['nomLocal']);
                     afegirInfoCasellaEspecifica((j+1), 1, "resTOT"+(i+1).toString() ,link);
                     afegirInfoCasellaEspecifica((j+1), 2, "resTOT"+(i+1).toString() ,categoria);
-                    afegirInfoCasellaEspecifica((j+1), 3, "resTOT"+(i+1).toString() ,infoToDo[j]['estat_conservacio'].toString());
+                    afegirInfoCasellaEspecifica((j+1), 3, "resTOT"+(i+1).toString() ,sEstrelletes);
                     afegirInfoCasellaEspecifica((j+1), 4, "resTOT"+(i+1).toString() ,infoToDo[j]['anyConstruccio'].toString());
                     afegirInfoCasellaEspecifica((j+1), 5, "resTOT"+(i+1).toString(), localitat);
                     afegirInfoCasellaEspecifica((j+1), 6, "resTOT"+(i+1).toString() ,infoToDo[j]['descripcio']);
@@ -405,7 +412,28 @@ function tractamentDadesEstadistiques(data, quines_dades){
         }
     }
 }
-
+function estrelles(numEstrelles, nomLocal){
+    switch(numEstrelles){
+        case 0:
+            return '<i class="fa fa-star unchecked" id="1<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="2<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="3<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="4<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="5<>'+nomLocal+'"></i>';;
+            break;
+        case 1:
+            return '<i class="fa fa-star checked" id="1<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="2<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="3<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="4<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="5<>'+nomLocal+'"></i>';;
+            break;
+        case 2:
+            return '<i class="fa fa-star checked" id="1<>'+nomLocal+'"></i><i class="fa fa-star checked" id="2<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="3<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="4<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="5<>'+nomLocal+'"></i>';;
+            break;
+        case 3:
+            return '<i class="fa fa-star checked" id="1<>'+nomLocal+'"></i><i class="fa fa-star checked" id="2<>'+nomLocal+'"></i><i class="fa fa-star checked" id="3<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="4<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="5<>'+nomLocal+'"></i>';;
+            break;
+        case 4:
+            return '<i class="fa fa-star checked" id="1<>'+nomLocal+'"></i><i class="fa fa-star checked" id="2<>'+nomLocal+'"></i><i class="fa fa-star checked" id="3<>'+nomLocal+'"></i><i class="fa fa-star checked" id="4<>'+nomLocal+'"></i><i class="fa fa-star unchecked" id="5<>'+nomLocal+'"></i>';;
+            break;
+        case 5:
+            return '<i class="fa fa-star checked" id="1<>'+nomLocal+'"></i><i class="fa fa-star checked" id="2<>'+nomLocal+'"></i><i class="fa fa-star checked" id="3<>'+nomLocal+'"></i><i class="fa fa-star checked" id="4<>'+nomLocal+'"></i><i class="fa fa-star checked" id="5<>'+nomLocal+'"></i>';;
+            break;
+    }
+}
 function cercarLocalitat(fk_localitat, totesLocalitats){
     for(var i=0; i<totesLocalitats.length; i++){
         if(fk_localitat === totesLocalitats[i]['pk']){
@@ -802,7 +830,8 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     divRow1.setAttribute("class", "row");
                     divRow1.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar1.innerHTML='<img style="height: 15px" src="https://www.flaticon.com/premium-icon/icons/svg/245/245625.svg">';
-                    //bttn_ordenar1.setAttribute("onclick", "");
+                    bttn_ordenar1.setAttribute("onclick", "ordenarPerNomLocals(this.id)");
+                    bttn_ordenar1.setAttribute("id", "bttnORDNL "+id_div_sortida);
                     divRow1.appendChild(t1);
                     divRow1.appendChild(bttn_ordenar1);
                     th1.appendChild(divRow1);
@@ -816,7 +845,7 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     divRow2.setAttribute("class", "row");
                     divRow2.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar2.innerHTML='<img style="height: 15px" src="https://www.flaticon.com/premium-icon/icons/svg/245/245625.svg">';
-                    //bttn_ordenar2.setAttribute("onclick", "");
+                    bttn_ordenar2.setAttribute("onclick", "ordenarPerCategories()");
                     divRow2.appendChild(t2);
                     divRow2.appendChild(bttn_ordenar2);
                     th2.appendChild(divRow2);
@@ -830,7 +859,7 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     divRow3.setAttribute("class", "row");
                     divRow3.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar3.innerHTML='<img style="height: 15px" src="https://image.flaticon.com/icons/svg/1828/1828135.svg">';
-                    //bttn_ordenar3.setAttribute("onclick", "");
+                    bttn_ordenar3.setAttribute("onclick", "ordenarPerEstatConservacio()");
                     divRow3.appendChild(t3);
                     divRow3.appendChild(bttn_ordenar3);
                     th3.appendChild(divRow3);
@@ -844,7 +873,7 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     divRow4.setAttribute("class", "row");
                     divRow4.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar4.innerHTML='<img style="height: 15px" src="https://image.flaticon.com/icons/svg/1828/1828135.svg">';
-                    //bttn_ordenar4.setAttribute("onclick", "");
+                    bttn_ordenar4.setAttribute("onclick", "ordenarPerAnyConstrucccio()");
                     divRow4.appendChild(t4);
                     divRow4.appendChild(bttn_ordenar4);
                     th4.appendChild(divRow4);
@@ -858,7 +887,7 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     divRow5.setAttribute("class", "row");
                     divRow5.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar5.innerHTML='<img style="height: 15px" src="https://www.flaticon.com/premium-icon/icons/svg/245/245625.svg">';
-                    //bttn_ordenar5.setAttribute("onclick", "");
+                    bttn_ordenar5.setAttribute("onclick", "ordenarPerLocalitat()");
                     divRow5.appendChild(t5);
                     divRow5.appendChild(bttn_ordenar5);
                     th5.appendChild(divRow5);
@@ -890,6 +919,25 @@ function getNumResultat(id_div_res){
     var match;
     match = regex.exec(str);
     return match[0];
+}
+
+
+
+
+function ordenarPerNomLocals(id_boto){
+    console.log(id_boto);
+}
+function ordenarPerCategories(){
+
+}
+function ordenarPerEstatConservacio(){
+
+}
+function ordenarPerAnyConstrucccio(){
+
+}
+function ordenarPerLocalitat(){
+
 }
 
 </script>
