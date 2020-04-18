@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/static/9To1ico.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/estadistiques.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/estadistiques.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
@@ -323,7 +324,7 @@
       <workItem from="1587044049750" duration="2617000" />
       <workItem from="1587062156146" duration="110000" />
       <workItem from="1587113820735" duration="28910000" />
-      <workItem from="1587199947484" duration="19582000" />
+      <workItem from="1587199947484" duration="23730000" />
     </task>
     <servers />
   </component>
