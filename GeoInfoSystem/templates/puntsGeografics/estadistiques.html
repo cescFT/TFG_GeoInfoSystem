@@ -193,12 +193,16 @@ tr:nth-child(even) {
         </div>
     </div>
     <br>
-<div id="containerInformatiu" class="container">
+    <div id="containerInformatiu" class="container">
         <div class="card card-body">
             <p>Apreta els botons de la botonera per anar veient els resultats.</p>
         </div>
     </div>
-    <div id="prova"></div>
+    <div id="containerInformatiu-NoCiutats" class="container" hidden>
+        <div class="card card-body">
+            <p>Tot deshabilitat perquè no hi ha localitzacions possibles.</p>
+        </div>
+    </div>
     <div class="container">
         <div id="resTOT1" hidden><!--RESULTATS CONSULTA ACTUAL-->
 
@@ -589,6 +593,8 @@ function poblacionsPerProvincia(){
                                 document.getElementById("bttnlocalsdiferents").disabled=false;
                             if(document.getElementById("bttnlocalsaltrespobles").disabled=== true)
                                 document.getElementById("bttnlocalsaltrespobles").disabled=false;
+                            document.getElementById("containerInformatiu-NoCiutats").hidden=true;
+                            document.getElementById("containerInformatiu").hidden=false;
                         }else{
                             var b = document.createElement("B");
                             var t = document.createTextNode("No hi ha localitzacions amb punts d'interès en aquesta província.");
@@ -604,12 +610,21 @@ function poblacionsPerProvincia(){
                             document.getElementById("bttnactiunegatMateixaCategoria").disabled = true;
                             document.getElementById("bttnlocalsdiferents").disabled = true;
                             document.getElementById("bttnlocalsaltrespobles").disabled = true;
+                            totsResHiddenIMostrarInformacio();
                         }
 
                     }
             });
       }
     });
+}
+
+function totsResHiddenIMostrarInformacio(){
+    for(var i=1; i<=7; i++){
+        document.getElementById("resTOT"+i).hidden=true;
+    }
+    document.getElementById("containerInformatiu-NoCiutats").hidden=false;
+    document.getElementById("containerInformatiu").hidden=true;
 }
 
 function setvalor(myValue) {
@@ -868,13 +883,17 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     let bttn_ordenar1 = document.createElement("BUTTON");
                     let t1 = document.createTextNode("Nom local");
                     let divRow1=document.createElement("DIV");
-                    divRow1.setAttribute("class", "row");
+                    divRow1.setAttribute("class", "col");
                     divRow1.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar1.innerHTML='<img style="height: 15px" src="https://www.flaticon.com/premium-icon/icons/svg/245/245625.svg">';
                     bttn_ordenar1.setAttribute("onclick", "ordenarPerNomLocals(this.id)");
+                    bttn_ordenar1.setAttribute("class", "btn btn-outline-info");
                     bttn_ordenar1.setAttribute("id", "bttnORDNL "+id_div_sortida);
                     divRow1.appendChild(t1);
-                    divRow1.appendChild(bttn_ordenar1);
+                    let divRowButton1=document.createElement("DIV");
+                    divRowButton1.setAttribute("style", "margin-top:10px");
+                    divRowButton1.appendChild(bttn_ordenar1);
+                    divRow1.appendChild(divRowButton1);
                     th1.appendChild(divRow1);
                     document.getElementById(id_div_sortida).appendChild(th1);
                     break;
@@ -883,13 +902,17 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     let t2 = document.createTextNode("Categoria");
                     let bttn_ordenar2 = document.createElement("BUTTON");
                     let divRow2=document.createElement("DIV");
-                    divRow2.setAttribute("class", "row");
+                    divRow2.setAttribute("class", "col");
                     divRow2.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar2.innerHTML='<img style="height: 15px" src="https://www.flaticon.com/premium-icon/icons/svg/245/245625.svg">';
                     bttn_ordenar2.setAttribute("onclick", "ordenarPerCategories(this.id)");
+                    bttn_ordenar2.setAttribute("class", "btn btn-outline-info");
                     bttn_ordenar2.setAttribute("id", "bttnORDNL "+id_div_sortida);
                     divRow2.appendChild(t2);
-                    divRow2.appendChild(bttn_ordenar2);
+                    let divRowButton2=document.createElement("DIV");
+                    divRowButton2.setAttribute("style", "margin-top:30px; text-align:center;");
+                    divRowButton2.appendChild(bttn_ordenar2);
+                    divRow2.appendChild(divRowButton2);
                     th2.appendChild(divRow2);
                     document.getElementById(id_div_sortida).appendChild(th2);
                     break;
@@ -898,13 +921,17 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     let t3 = document.createTextNode("Estat de conservació");
                     let bttn_ordenar3 = document.createElement("BUTTON");
                     let divRow3=document.createElement("DIV");
-                    divRow3.setAttribute("class", "row");
+                    divRow3.setAttribute("class", "col");
                     divRow3.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar3.innerHTML='<img style="height: 15px" src="https://image.flaticon.com/icons/svg/1828/1828135.svg">';
                     bttn_ordenar3.setAttribute("onclick", "ordenarPerEstatConservacio(this.id)");
+                    bttn_ordenar3.setAttribute("class", "btn btn-outline-info");
                     bttn_ordenar3.setAttribute("id", "bttnORDNL "+id_div_sortida);
                     divRow3.appendChild(t3);
-                    divRow3.appendChild(bttn_ordenar3);
+                    let divRowButton3=document.createElement("DIV");
+                    divRowButton3.setAttribute("style", "margin-top: 7px; text-align:center;");
+                    divRowButton3.appendChild(bttn_ordenar3);
+                    divRow3.appendChild(divRowButton3);
                     th3.appendChild(divRow3);
                     document.getElementById(id_div_sortida).appendChild(th3);
                     break;
@@ -913,13 +940,17 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     let t4 = document.createTextNode("Any de construcció");
                     let bttn_ordenar4 = document.createElement("BUTTON");
                     let divRow4=document.createElement("DIV");
-                    divRow4.setAttribute("class", "row");
+                    divRow4.setAttribute("class", "col");
                     divRow4.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar4.innerHTML='<img style="height: 15px" src="https://image.flaticon.com/icons/svg/1828/1828135.svg">';
                     bttn_ordenar4.setAttribute("onclick", "ordenarPerAnyConstrucccio(this.id)");
+                    bttn_ordenar4.setAttribute("class", "btn btn-outline-info");
                     bttn_ordenar4.setAttribute("id", "bttnORDNL "+id_div_sortida);
                     divRow4.appendChild(t4);
-                    divRow4.appendChild(bttn_ordenar4);
+                    let divRowButton4 = document.createElement("DIV");
+                    divRowButton4.setAttribute("style", "margin-top:7px; text-align:center;");
+                    divRowButton4.appendChild(bttn_ordenar4);
+                    divRow4.appendChild(divRowButton4);
                     th4.appendChild(divRow4);
                     document.getElementById(id_div_sortida).appendChild(th4);
                     break;
@@ -928,13 +959,17 @@ function crearGraella(files, descipcioResultat, id_div_sortida){
                     let t5 = document.createTextNode("Localitat");
                     let bttn_ordenar5=document.createElement("BUTTON");
                     let divRow5=document.createElement("DIV");
-                    divRow5.setAttribute("class", "row");
+                    divRow5.setAttribute("class", "col");
                     divRow5.setAttribute("style", "margin:0px auto;");
                     bttn_ordenar5.innerHTML='<img style="height: 15px" src="https://www.flaticon.com/premium-icon/icons/svg/245/245625.svg">';
                     bttn_ordenar5.setAttribute("onclick", "ordenarPerLocalitat(this.id)");
+                    bttn_ordenar5.setAttribute("class", "btn btn-outline-info");
                     bttn_ordenar5.setAttribute("id", "bttnORDNL "+id_div_sortida);
                     divRow5.appendChild(t5);
-                    divRow5.appendChild(bttn_ordenar5);
+                    let divRowButton5=document.createElement("DIV");
+                    divRowButton5.setAttribute("style", "margin-top:30px; text-align:center;");
+                    divRowButton5.appendChild(bttn_ordenar5);
+                    divRow5.appendChild(divRowButton5);
                     th5.appendChild(divRow5);
                     document.getElementById(id_div_sortida).appendChild(th5);
                     break;
@@ -1086,7 +1121,53 @@ function ordenarPerCategories(id_boto){
     for(var i=0; i<trs.length; i++){
         llistatfiles.push(JSON.stringify(getJSONData(trs[i])));
     }
-    console.log(llistatfiles);
+    if(document.getElementById(divSortida+"-OrdenacioPerCategoria").value==='ordena'){
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/ordenacio/',
+            data:{
+                'tipusOrdenacio': 'categoria',
+                'informacio' : JSON.stringify(llistatfiles),
+            },
+            dataType:'json',
+            success:
+                function (data){
+                    var data1 = Object.values(data);
+                    crearGraella(data1.length, '', divSortida);
+                    document.getElementById("textNumElems"+getNumResultat(divSortida).toString()).innerHTML="Nombre de resultats: "+data1.length;
+                    for(var i=0; i<data1.length; i++){
+                        let info_array = Object.values(data1[i]);
+                        for(var j=1; j<info_array.length; j++){
+                            console.log(info_array[j]);
+                            if(j === 1){
+                                afegirInfoCasellaEspecifica(i+1, j, divSortida, '<a href="'+info_array[j]+'" target="_blank" rel="noopener noreferrer">'+info_array[0]+'</a>')
+                            }else if (j===3){
+                                afegirInfoCasellaEspecifica(i+1, j, divSortida, estrelles(info_array[j], info_array[0]));
+                            }else{
+                                afegirInfoCasellaEspecifica(i+1,j,divSortida, info_array[j]);
+                            }
+                        }
+                    }
+                }
+        });
+        document.getElementById(divSortida+"-OrdenacioPerCategoria").value='NoOrdena';
+    }else{
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/estadistiques/',
+            data:{
+                'poblacio' : document.getElementById('pobleSeleccionat').value,
+                'actiu' : document.getElementById('estat').value,
+                'categoria' : document.getElementById("categoriaSeleccionada").value
+            },
+            dataType:'json',
+            success:
+                function (data) {
+                    tractamentDadesEstadistiques(data, 'estadistiques');
+                }
+        });
+        document.getElementById(divSortida+"-OrdenacioPerCategoria").value='ordena';
+    }
 }
 function ordenarPerEstatConservacio(id_boto){
     var divSortida=id_boto.split(' ')[1];
@@ -1098,7 +1179,53 @@ function ordenarPerEstatConservacio(id_boto){
     for(var i=0; i<trs.length; i++){
         llistatfiles.push(JSON.stringify(getJSONData(trs[i])));
     }
-    console.log(llistatfiles);
+    if(document.getElementById(divSortida+"-OrdenacioPerEstatConservacio").value==='ordena'){
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/ordenacio/',
+            data:{
+                'tipusOrdenacio': 'estatConservacio',
+                'informacio' : JSON.stringify(llistatfiles),
+            },
+            dataType:'json',
+            success:
+                function (data){
+                    var data1 = Object.values(data);
+                    crearGraella(data1.length, '', divSortida);
+                    document.getElementById("textNumElems"+getNumResultat(divSortida).toString()).innerHTML="Nombre de resultats: "+data1.length;
+                    for(var i=0; i<data1.length; i++){
+                        let info_array = Object.values(data1[i]);
+                        for(var j=1; j<info_array.length; j++){
+                            console.log(info_array[j]);
+                            if(j === 1){
+                                afegirInfoCasellaEspecifica(i+1, j, divSortida, '<a href="'+info_array[j]+'" target="_blank" rel="noopener noreferrer">'+info_array[0]+'</a>')
+                            }else if (j===3){
+                                afegirInfoCasellaEspecifica(i+1, j, divSortida, estrelles(info_array[j], info_array[0]));
+                            }else{
+                                afegirInfoCasellaEspecifica(i+1,j,divSortida, info_array[j]);
+                            }
+                        }
+                    }
+                }
+        });
+        document.getElementById(divSortida+"-OrdenacioPerEstatConservacio").value='NoOrdena';
+    }else{
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/estadistiques/',
+            data:{
+                'poblacio' : document.getElementById('pobleSeleccionat').value,
+                'actiu' : document.getElementById('estat').value,
+                'categoria' : document.getElementById("categoriaSeleccionada").value
+            },
+            dataType:'json',
+            success:
+                function (data) {
+                    tractamentDadesEstadistiques(data, 'estadistiques');
+                }
+        });
+        document.getElementById(divSortida+"-OrdenacioPerEstatConservacio").value='ordena';
+    }
 }
 function ordenarPerAnyConstrucccio(id_boto){
     var divSortida=id_boto.split(' ')[1];
@@ -1110,7 +1237,53 @@ function ordenarPerAnyConstrucccio(id_boto){
     for(var i=0; i<trs.length; i++){
         llistatfiles.push(JSON.stringify(getJSONData(trs[i])));
     }
-    console.log(llistatfiles);
+    if(document.getElementById(divSortida+"-OrdenacioPerAnyConstruccio").value==='ordena'){
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/ordenacio/',
+            data:{
+                'tipusOrdenacio': 'anyConstruccio',
+                'informacio' : JSON.stringify(llistatfiles),
+            },
+            dataType:'json',
+            success:
+                function (data){
+                    var data1 = Object.values(data);
+                    crearGraella(data1.length, '', divSortida);
+                    document.getElementById("textNumElems"+getNumResultat(divSortida).toString()).innerHTML="Nombre de resultats: "+data1.length;
+                    for(var i=0; i<data1.length; i++){
+                        let info_array = Object.values(data1[i]);
+                        for(var j=1; j<info_array.length; j++){
+                            console.log(info_array[j]);
+                            if(j === 1){
+                                afegirInfoCasellaEspecifica(i+1, j, divSortida, '<a href="'+info_array[j]+'" target="_blank" rel="noopener noreferrer">'+info_array[0]+'</a>')
+                            }else if (j===3){
+                                afegirInfoCasellaEspecifica(i+1, j, divSortida, estrelles(info_array[j], info_array[0]));
+                            }else{
+                                afegirInfoCasellaEspecifica(i+1,j,divSortida, info_array[j]);
+                            }
+                        }
+                    }
+                }
+        });
+        document.getElementById(divSortida+"-OrdenacioPerAnyConstruccio").value='NoOrdena';
+    }else{
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/estadistiques/',
+            data:{
+                'poblacio' : document.getElementById('pobleSeleccionat').value,
+                'actiu' : document.getElementById('estat').value,
+                'categoria' : document.getElementById("categoriaSeleccionada").value
+            },
+            dataType:'json',
+            success:
+                function (data) {
+                    tractamentDadesEstadistiques(data, 'estadistiques');
+                }
+        });
+        document.getElementById(divSortida+"-OrdenacioPerAnyConstruccio").value='ordena';
+    }
 }
 function ordenarPerLocalitat(id_boto){
     var divSortida=id_boto.split(' ')[1];
@@ -1122,7 +1295,53 @@ function ordenarPerLocalitat(id_boto){
     for(var i=0; i<trs.length; i++){
         llistatfiles.push(JSON.stringify(getJSONData(trs[i])));
     }
-    console.log(llistatfiles);
+    if(document.getElementById(divSortida+"-OrdenacioPerLocalitat").value==='ordena'){
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/ordenacio/',
+            data:{
+                'tipusOrdenacio': 'localitat',
+                'informacio' : JSON.stringify(llistatfiles),
+            },
+            dataType:'json',
+            success:
+                function (data){
+                    var data1 = Object.values(data);
+                    crearGraella(data1.length, '', divSortida);
+                    document.getElementById("textNumElems"+getNumResultat(divSortida).toString()).innerHTML="Nombre de resultats: "+data1.length;
+                    for(var i=0; i<data1.length; i++){
+                        let info_array = Object.values(data1[i]);
+                        for(var j=1; j<info_array.length; j++){
+                            console.log(info_array[j]);
+                            if(j === 1){
+                                afegirInfoCasellaEspecifica(i+1, j, divSortida, '<a href="'+info_array[j]+'" target="_blank" rel="noopener noreferrer">'+info_array[0]+'</a>')
+                            }else if (j===3){
+                                afegirInfoCasellaEspecifica(i+1, j, divSortida, estrelles(info_array[j], info_array[0]));
+                            }else{
+                                afegirInfoCasellaEspecifica(i+1,j,divSortida, info_array[j]);
+                            }
+                        }
+                    }
+                }
+        });
+        document.getElementById(divSortida+"-OrdenacioPerLocalitat").value='NoOrdena';
+    }else{
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/estadistiques/',
+            data:{
+                'poblacio' : document.getElementById('pobleSeleccionat').value,
+                'actiu' : document.getElementById('estat').value,
+                'categoria' : document.getElementById("categoriaSeleccionada").value
+            },
+            dataType:'json',
+            success:
+                function (data) {
+                    tractamentDadesEstadistiques(data, 'estadistiques');
+                }
+        });
+        document.getElementById(divSortida+"-OrdenacioPerAnyConstruccio").value='ordena';
+    }
 }
 
 </script>

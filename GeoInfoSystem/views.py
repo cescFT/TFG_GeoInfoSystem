@@ -1611,6 +1611,74 @@ def ordenament(request):
                 new_dict={}
             res_json=json.dumps(ordenat)
             return HttpResponse(res_json, content_type='json')
+        if tipusOrdenament == 'categoria':
+            categoriesEnviades=[]
+            aux={}
+            for dict in localsEnviats:
+                aux['nomLocal']=dict['nomLocal']
+                aux['url']=dict['url']
+                aux['categoria']=dict['colsText1']
+                aux['estatConservacio']=dict['estatConservacio']
+                aux['anyConstruccio']=dict['colsText2']
+                aux['localitat']=dict['colsText3']
+                aux['descripcio']=dict['colsText4']
+                categoriesEnviades.append(aux)
+                aux={}
+
+            categories_ordenades=sorted(categoriesEnviades, key=lambda k: k['categoria'])
+            res_json=json.dumps(categories_ordenades)
+            return HttpResponse(res_json, content_type='json')
+        if tipusOrdenament == 'estatConservacio':
+            estatsConservacioEnviats=[]
+            aux={}
+            for dict in localsEnviats:
+                aux['nomLocal'] = dict['nomLocal']
+                aux['url'] = dict['url']
+                aux['categoria'] = dict['colsText1']
+                aux['estatConservacio'] = dict['estatConservacio']
+                aux['anyConstruccio'] = dict['colsText2']
+                aux['localitat'] = dict['colsText3']
+                aux['descripcio'] = dict['colsText4']
+                estatsConservacioEnviats.append(aux)
+                aux = {}
+            estats_conservacio_ordenats=sorted(estatsConservacioEnviats, key=lambda k: k['estatConservacio'], reverse=True)
+            res_json=json.dumps(estats_conservacio_ordenats)
+            return HttpResponse(res_json, content_type='json')
+        if tipusOrdenament == 'anyConstruccio':
+            anysConstruccioEnviats=[]
+            aux={}
+            for dict in localsEnviats:
+                aux['nomLocal'] = dict['nomLocal']
+                aux['url'] = dict['url']
+                aux['categoria'] = dict['colsText1']
+                aux['estatConservacio'] = dict['estatConservacio']
+                aux['anyConstruccio'] = int(dict['colsText2'])
+                aux['localitat'] = dict['colsText3']
+                aux['descripcio'] = dict['colsText4']
+                anysConstruccioEnviats.append(aux)
+                aux = {}
+            anys_construccio_ordenats=sorted(anysConstruccioEnviats, key=lambda k: k['anyConstruccio'])
+            res_json=json.dumps(anys_construccio_ordenats)
+            return HttpResponse(res_json, content_type='json')
+        if tipusOrdenament == 'localitat':
+            localitatsEnviades=[]
+            aux={}
+            for dict in localsEnviats:
+                aux['nomLocal'] = dict['nomLocal']
+                aux['url'] = dict['url']
+                aux['categoria'] = dict['colsText1']
+                aux['estatConservacio'] = dict['estatConservacio']
+                aux['anyConstruccio'] = dict['colsText2']
+                aux['localitat'] = dict['colsText3']
+                aux['descripcio'] = dict['colsText4']
+                localitatsEnviades.append(aux)
+                aux = {}
+            localitats_ordenades=sorted(localitatsEnviades, key=lambda k: k['localitat'])
+            res_json=json.dumps(localitats_ordenades)
+            return HttpResponse(res_json, content_type='json')
+
+
+
 
 def trobarLocal(nomLocal, llistatDiccionaris):
     for dict in llistatDiccionaris:
