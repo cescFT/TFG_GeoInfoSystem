@@ -90,6 +90,7 @@
         <a href="/" class="logo active"><i class="fa fa-home" aria-hidden="true"></i> Sistema d'Informació Geogràfica</a>
         <div class="header-right">
             <a id="pgRand"><i class="fa fa-info" aria-hidden="true"></i> Informació aleatòria d'un local</a>
+            <a href="/v1/geoInfoSystem/estadistiquesGIS/"><img style="height: 20px" src="https://img.icons8.com/ios/50/000000/statistics.png"> Mòdul estadístic</a>
             {% if user.is_staff and user.is_superuser %}
                 <a href="/v1/geoInfoSystem/nouPunt/"><i class="fa fa-magic"></i> Afegir nous punts</a>
             {% endif %}

@@ -221,7 +221,7 @@
                             <div id="errorsProcessament" class="text-center" style="color:red" hidden><b><i class="fa fa-exclamation-triangle"></i> Error al processar. Revisa les <a class="text-danger" href="#errorcomu">preguntes freqüents</a></b></div>
                             <br>
                             <div class="form-group">
-                                <form id="form_guardar_nou_punt" onsubmit="return checkValues()" method="POST" action="/v1/geoInfoSystem/nouPunt/">
+                                <form id="form_guardar_nou_punt" onsubmit="return checkValues()" method="POST" action="/v1/geoInfoSystem/nouPunt/" enctype="multipart/form-data">
                                     {%csrf_token%}
                                     <div class="form-group">
                                         <div class="row">
@@ -301,6 +301,16 @@
                                             </div>
                                             <div class="col-sm">
                                                 <input type="text" name="any" id="any" placeholder="Ex: 1714" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col-sm">
+                                                <label class="font-weight-bold">Fotografia del local</label>
+                                            </div>
+                                            <div class="col-sm">
+                                                <input type="file" accept="image/*" name="image"/>
                                             </div>
                                         </div>
                                     </div>

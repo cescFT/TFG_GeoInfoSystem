@@ -1,4 +1,5 @@
 from django.db import models
+from PIL import Image
 # Create your models here.
 
 """
@@ -46,5 +47,6 @@ class local(models.Model):
     def __str__(self):
         return "{"+"nomLocal:\"" + str(self.nomLocal) + "\", puntuacio:\"" + str(self.estat_conservacio) + "\", categoria:\"" + str(self.categoria) + "\", anyConstruccio:\"" + str(self.anyConstruccio) + "\", descripcio:\"" + str(self.descripcio)+ "\", superficie:\""+"}";
 
-
-
+class imageLocal(models.Model):
+    imatge = models.ImageField(upload_to='photo')
+    local=models.ForeignKey(local, on_delete=models.CASCADE)

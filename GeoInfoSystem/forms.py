@@ -4,7 +4,8 @@ from django.contrib.auth.models import User
 from django import forms
 from GeoInfoSystem.models import *
 
-
+class ImageUploadForm(forms.Form):
+    image=forms.ImageField()
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField()

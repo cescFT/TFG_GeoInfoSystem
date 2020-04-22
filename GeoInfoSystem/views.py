@@ -13,6 +13,7 @@ from rest_framework.response import Response
 from Exceptions import NoContingut
 from GeoInfoSystem.models import *
 from GeoInfoSystem.serializers import *
+from GeoInfoSystem.forms import *
 from Exceptions import *
 from django.core import serializers
 from ast import literal_eval
@@ -1511,6 +1512,15 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
         categoria = categoriaLocal.objects.all().filter(categoria=tipus)[0]
         localNou = local(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio), categoria=categoria, anyConstruccio=int(any), descripcio=descripcioLocal)
         localNou.save()
+        localGuardat=local.objects.all().filter(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio), categoria=categoria, anyConstruccio=int(any), descripcio=descripcioLocal)[0]
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            l = local.objects.all().filter(id=localGuardat.id)
+            img_local = imageLocal()
+            img_local.local = l[0]
+            img_local.imatge = form.cleaned_data['image']
+            img_local.save()
+            # TODO REDIMENSIONAR IMATGE A 800x600
         dict = {}
         llista = []
         i = 0
@@ -1690,9 +1700,6 @@ def ordenament(request):
             localitats_ordenades=sorted(localitatsEnviades, key=lambda k: k['localitat'], reverse=reverse)
             res_json=json.dumps(localitats_ordenades)
             return HttpResponse(res_json, content_type='json')
-
-
-
 
 def trobarLocal(nomLocal, llistatDiccionaris):
     for dict in llistatDiccionaris:
