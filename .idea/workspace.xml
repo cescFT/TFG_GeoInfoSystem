@@ -2,12 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/camp_futbol.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/camp_futbol_hXtGcaq.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/Noimatge.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -339,7 +334,7 @@
       <workItem from="1587546525038" duration="11044000" />
       <workItem from="1587596337805" duration="28000" />
       <workItem from="1587631126900" duration="5508000" />
-      <workItem from="1587651131339" duration="5488000" />
+      <workItem from="1587651131339" duration="5890000" />
     </task>
     <servers />
   </component>
