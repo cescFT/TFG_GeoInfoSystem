@@ -983,6 +983,12 @@ def mostrarPuntEspecific(request, nomLocal,latitud, longitud):
     print(localitat)
     localEspecific = local.objects.all().filter(nomLocal=nomLocal)
     categoria = localEspecific[0].categoria
+    l=local.objects.all().filter(nomLocal=nomLocal)[0]
+    imatge_local=imageLocal.objects.all().filter(local=l.id)
+    if imatge_local:
+        imatge_local=imatge_local[0]
+    else:
+        imatge_local=''
     print(categoria)
     altresPuntsInteres = list(puntInteres.objects.all().filter(localitat=p.localitat).exclude(latitud=latitud, longitud=longitud))
     """punts=[]
@@ -1001,9 +1007,9 @@ def mostrarPuntEspecific(request, nomLocal,latitud, longitud):
     #altresLocals = serializers.serialize("json", altresLocals)
     #punts = serializers.serialize("json", punts)
     if len(altresPuntsInteres)>0:
-        return render(request, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat,'puntInteres':punt, 'local': localE, 'altres': True})
+        return render(request, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat,'puntInteres':punt, 'local': localE, 'altres': True, 'imatge':imatge_local})
     else:
-        return render(request, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat, 'puntInteres': punt, 'local': localE, 'altres': False})
+        return render(request, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat, 'puntInteres': punt, 'local': localE, 'altres': False, 'imatge':imatge_local})
 
 """
 Mètode AJAX auxiliar del mètode anterior que permet que quan en un punt d'una ciutat hi ha més punts, permet la obtenció dels altres punts específics i l'usuari hi pot accedir, sense cap problema.

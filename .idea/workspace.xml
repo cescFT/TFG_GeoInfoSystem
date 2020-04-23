@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/camp_futbol.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/camp_futbol_hXtGcaq.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/Noimatge.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -52,7 +55,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ArrodonirSortides" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
@@ -336,6 +339,7 @@
       <workItem from="1587546525038" duration="11044000" />
       <workItem from="1587596337805" duration="28000" />
       <workItem from="1587631126900" duration="5508000" />
+      <workItem from="1587651131339" duration="5488000" />
     </task>
     <servers />
   </component>
@@ -354,11 +358,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="242" height="189" key="DatabaseViewActions_Filter/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910235326" />
-    <state x="739" y="265" key="FileChooserDialogImpl" timestamp="1587581183568">
+    <state x="739" y="265" key="FileChooserDialogImpl" timestamp="1587651637350">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1582754460179" />
-    <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1587581183568" />
+    <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1587651637350" />
     <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1584830362702">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

@@ -12,6 +12,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {%load static%}
     <style>
         /* Style the header with a grey background and some padding */
     .header {
@@ -91,64 +92,76 @@
     <br>
     <h1 style="text-align: center">INFORMACIÓ ESPECÍFICA DEL LOCAL</h1>
     <hr>
-    <div class="container">
-
-        <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;" class="card card-body">
-            <h1 id="nomLloc"></h1>
-            <div class="row">
-                <div class="form-group col-sm-10 offset-md-1">
-                    <label class="font-weight-bold">Descripcio</label>
-                    <p id="descripcio"></p>
+    <div class="container mt-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card card-body">
+                    <h1 id="nomLloc"></h1>
+                    <div class="row">
+                        <div class="form-group col-sm-10 offset-md-1">
+                            <label class="font-weight-bold">Descripcio</label>
+                            <p id="descripcio"></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-10 offset-md-1">
+                            <label class="font-weight-bold">Ciutat</label>
+                            <p id="city"></p>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="row">
+                        <div class="form-group col-sm-10 offset-md-1">
+                            <label class="font-weight-bold">Coordenades</label>
+                            <p id="coordenades"></p>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="row">
+                        <div class="form-group col-sm-10 offset-md-1">
+                            <label class="font-weight-bold">Categoria</label>
+                            <p id="categoria"></p>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="row">
+                        <div class="form-group col-sm-10 offset-md-1">
+                            <label class="font-weight-bold">Estat de Conservació</label>
+                            <p id="estatconservacio"> </p>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="row">
+                        <div class="form-group col-sm-10 offset-md-1">
+                            <label class="font-weight-bold">Any Construcció</label>
+                            <p id="anyconstruccio"></p>
+                        </div>
+                    </div>
+                    <div class="w-100"></div>
+                    <div class="row">
+                        <div class="form-group col-sm-10 offset-md-1">
+                            <label class="font-weight-bold">Superficie</label>
+                            <p id="superficie"></p>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                    {% if altres %}
+                    <!-- Button trigger modal -->
+                    <button style="margin:0px auto;" type="button" onclick="posarCiutat()" class="btn btn-outline-info" data-toggle="modal" data-target=".bd-example-modal-lg"><b>Altres punts en la localitat</b></button>
+                    {% else %}
+                     <p>No hi ha més punts d'interès en aquesta ciutat.</p>
+                    {% endif %}
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                <div class="form-group col-sm-10 offset-md-1">
-                    <label class="font-weight-bold">Ciutat</label>
-                    <p id="city"></p>
+            <div class="col-md-5 offset-md-1">
+                <div class="text-center" style="margin:0px auto;">
+                    {%if not imatge%}
+                        <img style="border-width: 2px; border-style: solid; margin:0px auto;" src="{% static 'Noimatge.png' %}"/>
+                    {%else%}
+                        <img src="{{imatge.imatge.url}}" style="border-width: 2px; border-style: solid; margin:0px auto;">
+                    {%endif%}
                 </div>
-            </div>
-            <div class="w-100"></div>
-            <div class="row">
-                <div class="form-group col-sm-10 offset-md-1">
-                    <label class="font-weight-bold">Coordenades</label>
-                    <p id="coordenades"></p>
-                </div>
-            </div>
-            <div class="w-100"></div>
-            <div class="row">
-                <div class="form-group col-sm-10 offset-md-1">
-                    <label class="font-weight-bold">Categoria</label>
-                    <p id="categoria"></p>
-                </div>
-            </div>
-            <div class="w-100"></div>
-            <div class="row">
-                <div class="form-group col-sm-10 offset-md-1">
-                    <label class="font-weight-bold">Estat de Conservació</label>
-                    <p id="estatconservacio"> </p>
-                </div>
-            </div>
-            <div class="w-100"></div>
-            <div class="row">
-                <div class="form-group col-sm-10 offset-md-1">
-                    <label class="font-weight-bold">Any Construcció</label>
-                    <p id="anyconstruccio"></p>
-                </div>
-            </div>
-            <div class="w-100"></div>
-            <div class="row">
-                <div class="form-group col-sm-10 offset-md-1">
-                    <label class="font-weight-bold">Superficie</label>
-                    <p id="superficie"></p>
-                </div>
-            </div>
-            <div class="text-center">
-            {% if altres %}
-            <!-- Button trigger modal -->
-            <button style="margin:0px auto;" type="button" onclick="posarCiutat()" class="btn btn-outline-info" data-toggle="modal" data-target=".bd-example-modal-lg"><b>Altres punts en la localitat</b></button>
-            {% else %}
-             <p>No hi ha més punts d'interès en aquesta ciutat.</p>
-            {% endif %}
             </div>
         </div>
     </div>
@@ -173,7 +186,7 @@
     </div>
 
     <input type="hidden" id="auxiliarBoolea" name="auxiliarBoolea" value="false">
-
+    <br><br>
 <script>
     function prettySite() {
         var h1 = document.getElementById("nomLloc");
