@@ -310,7 +310,7 @@
                                                 <label class="font-weight-bold">Fotografia del local</label>
                                             </div>
                                             <div class="col-sm">
-                                                <input type="file" accept="image/*" name="image"/>
+                                                <input type="file" accept="image/*" name="image" id="image"/>
                                             </div>
                                         </div>
                                     </div>
@@ -689,6 +689,7 @@ function checkInputs(){
             'descripcioLocal': document.getElementById("descripcio").value,
             'superficie': document.getElementById("superficie").value,
             'any': document.getElementById("any").value,
+            'foto':document.getElementById("image").value
         },
         dataType:'json',
         success:

@@ -1574,9 +1574,10 @@ def check_values_new_point_empty(request):
         descripcioLocal = urllib.parse.unquote(request.GET['descripcioLocal'])
         superficie = request.GET['superficie']
         any = request.GET['any']
+        foto=urllib.parse.unquote(request.GET['foto'])
         data={}
         data['tot_ok']='true'
-        if nomLocal == '' or descripcioLocal == '' or superficie == '' or any == '':
+        if nomLocal == '' or descripcioLocal == '' or superficie == '' or any == '' or foto == '':
             data['tot_ok']='false'
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
