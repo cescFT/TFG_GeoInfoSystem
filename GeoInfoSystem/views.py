@@ -17,6 +17,9 @@ from GeoInfoSystem.forms import *
 from Exceptions import *
 from django.core import serializers
 from ast import literal_eval
+from django.core.files.storage import FileSystemStorage
+from PIL import Image
+from django.conf import settings
 import json
 import re
 import random
@@ -1520,7 +1523,28 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
             img_local.local = l[0]
             img_local.imatge = form.cleaned_data['image']
             img_local.save()
-            # TODO REDIMENSIONAR IMATGE A 800x600
+            imatge_local_emmagatzemat=imageLocal.objects.all().filter(local=localGuardat.id)[0]
+            path_img_saved=imatge_local_emmagatzemat.imatge.url #/media/photo/<nom_foto>
+            media_root = settings.MEDIA_ROOT.split('/')[0].replace('\\', '/')
+            path = media_root+path_img_saved
+            path=path.replace('/', '\\')
+            #aplicar PIL
+            img_pil = Image.open(path)
+            resize = (800, 600)
+            img_width, img_height = float(img_pil.size[0]), float(img_pil.size[1])
+            if img_width <= resize[0] and img_height <= resize[1]:
+                img_pil.save(path)
+            else:
+                width = resize[0]
+                height = resize[1]
+                if img_width > img_height or img_width == img_height:
+                    width = resize[0]
+                    height = int(img_height * (resize[0] / img_width))
+                else:
+                    height = resize[1]
+                    width = int(img_width * (resize[1] / img_height))
+                img_pil = img_pil.resize((width, height), Image.ANTIALIAS)
+                img_pil.save(path)
         dict = {}
         llista = []
         i = 0
