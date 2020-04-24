@@ -20,6 +20,8 @@ from ast import literal_eval
 from django.core.files.storage import FileSystemStorage
 from PIL import Image
 from django.conf import settings
+import io
+import base64
 import json
 import re
 import random
@@ -983,10 +985,15 @@ def mostrarPuntEspecific(request, nomLocal,latitud, longitud):
     print(localitat)
     localEspecific = local.objects.all().filter(nomLocal=nomLocal)
     categoria = localEspecific[0].categoria
+    '''
+    PER RECUPERARLA
+    simplement recupero i ho envio a la template :) i en principi esta tot ok
+    '''
+
     l=local.objects.all().filter(nomLocal=nomLocal)[0]
-    imatge_local=imageLocal.objects.all().filter(local=l.id)
+    imatge_local=imatges_locals.objects.all().filter(local=l.id)
     if imatge_local:
-        imatge_local=imatge_local[0]
+        imatge_local=imatge_local[0].imatge.decode('utf-8')
     else:
         imatge_local=''
     print(categoria)
@@ -1521,36 +1528,37 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
         categoria = categoriaLocal.objects.all().filter(categoria=tipus)[0]
         localNou = local(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio), categoria=categoria, anyConstruccio=int(any), descripcio=descripcioLocal)
         localNou.save()
-        localGuardat=local.objects.all().filter(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio), categoria=categoria, anyConstruccio=int(any), descripcio=descripcioLocal)[0]
-        form = ImageUploadForm(request.POST, request.FILES)
-        if form.is_valid():
-            l = local.objects.all().filter(id=localGuardat.id)
-            img_local = imageLocal()
-            img_local.local = l[0]
-            img_local.imatge = form.cleaned_data['image']
-            img_local.save()
-            imatge_local_emmagatzemat=imageLocal.objects.all().filter(local=localGuardat.id)[0]
-            path_img_saved=imatge_local_emmagatzemat.imatge.url #/media/photo/<nom_foto>
-            media_root = settings.MEDIA_ROOT.split('/')[0].replace('\\', '/')
-            path = media_root+path_img_saved
-            path=path.replace('/', '\\')
-            #aplicar PIL
-            img_pil = Image.open(path)
-            resize = (800, 600)
-            img_width, img_height = float(img_pil.size[0]), float(img_pil.size[1])
-            if img_width <= resize[0] and img_height <= resize[1]:
-                img_pil.save(path)
-            else:
+        image = request.FILES['image'].file.read()  # bytes de la imatge
+        img_pil = Image.open(io.BytesIO(image))  # obrir imatge amb pil
+        in_mem_file = io.BytesIO()               # Preparem zona de memòria virtual
+        # algorisme de redimensionar imatge. En cas que la foto sigui més petita, la deix igual per mantenir
+        # la proporció de la foto
+        resize = (800, 600)
+        img_width, img_height = float(img_pil.size[0]), float(img_pil.size[1])
+        if img_width <= resize[0] and img_height <= resize[1]:
+            img_pil.save(in_mem_file, format="PNG")  # guardem la imatge en png
+        else:
+            width = resize[0]
+            height = resize[1]
+            if img_width > img_height or img_width == img_height:
                 width = resize[0]
+                height = int(img_height * (resize[0] / img_width))
+            else:
                 height = resize[1]
-                if img_width > img_height or img_width == img_height:
-                    width = resize[0]
-                    height = int(img_height * (resize[0] / img_width))
-                else:
-                    height = resize[1]
-                    width = int(img_width * (resize[1] / img_height))
-                img_pil = img_pil.resize((width, height), Image.ANTIALIAS)
-                img_pil.save(path)
+                width = int(img_width * (resize[1] / img_height))
+            img_pil = img_pil.resize((width, height), Image.ANTIALIAS)
+            img_pil.save(in_mem_file, format="PNG")  # guardem la imatge en png
+
+        in_mem_file.seek(0) # reset file pointer to start
+        img_bytes = in_mem_file.read()  # tinc els bytes despres de redimensionar
+        b64_imatge_bytes = base64.encodebytes(img_bytes)  #codifico b64
+        localGuardat = local.objects.all().filter(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio),
+                                                  categoria=categoria, anyConstruccio=int(any),
+                                                  descripcio=descripcioLocal)[0]
+        t_bd_imatges=imatges_locals()       #guardo a la bd
+        t_bd_imatges.imatge=b64_imatge_bytes
+        t_bd_imatges.local=localGuardat
+        t_bd_imatges.save()
         dict = {}
         llista = []
         i = 0

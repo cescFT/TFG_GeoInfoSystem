@@ -156,11 +156,7 @@
             </div>
             <div class="col-md-5 offset-md-1">
                 <div class="text-center" style="margin:0px auto;">
-                    {%if not imatge%}
-                        <img style="border-width: 2px; border-style: solid; margin:0px auto;" src="{% static 'Noimatge.png' %}"/>
-                    {%else%}
-                        <img src="{{imatge.imatge.url}}" style="border-width: 2px; border-style: solid; margin:0px auto;">
-                    {%endif%}
+                    <img id="img_local" style="border-width: 2px; border-style: solid; margin:0px auto;">
                 </div>
             </div>
         </div>
@@ -236,6 +232,12 @@
         superficie.innerHTML = pointToDo[0]['Superficie'];
         coordenades.innerHTML= "("+pointToDo[0]['latitudS']+","+pointToDo[0]['longitudS']+")";
         descripcio.innerHTML = localToDo[0]['descripcio'];
+        var img_b64=`{{imatge | safe}}`;
+        if (img_b64 === ''){
+            document.getElementById("img_local").src="{% static 'Noimatge.png' %}";
+        }else {
+            document.getElementById("img_local").src = 'data:image/png;base64,' + img_b64;
+        }
     }
     function posarCiutat(){
         var localitat = `{{localitat|safe}}`;

@@ -47,6 +47,6 @@ class local(models.Model):
     def __str__(self):
         return "{"+"nomLocal:\"" + str(self.nomLocal) + "\", puntuacio:\"" + str(self.estat_conservacio) + "\", categoria:\"" + str(self.categoria) + "\", anyConstruccio:\"" + str(self.anyConstruccio) + "\", descripcio:\"" + str(self.descripcio)+ "\", superficie:\""+"}";
 
-class imageLocal(models.Model):
-    imatge = models.ImageField(upload_to='photo')
+class imatges_locals(models.Model):
+    imatge = models.BinaryField(blank=True)
     local=models.ForeignKey(local, on_delete=models.CASCADE)
