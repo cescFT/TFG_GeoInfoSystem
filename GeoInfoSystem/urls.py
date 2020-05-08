@@ -63,5 +63,9 @@ urlpatterns = [
     path('comprovarValorsBuitsNouPunt/', views.check_values_new_point_empty, name='checkEmptyNewPoint'),
     path('comprovarDadesNouPunt/', views.check_values_new_point, name='checkDataNewPoint'),
     path('error/', views.errorpage, name='errorpage'),
-    path('ordenacio/', views.ordenament, name='ordenamentSortida')
+    path('ordenacio/', views.ordenament, name='ordenamentSortida'),
+    path('motorImportacio/', views.importacio_dades_per_csv, name='importarDadesPerCSV'),
+    path('comprovar_dades_entrada_importacio/', views.comprovar_dades_entrada_importacio, name='provarSiHiHaFitxer'),
+    path('guardar_nou_local_motor_importacio/', views.guardar_local_per_importacioCSV, name='POSTDadesLocalImportat'),
+    path('comprovar_siImatge_local_importat_perCSV/', views.comprovar_si_te_imatge_local_importacioCSV, name='AJAXComprovacio')
 ]

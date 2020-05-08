@@ -17,9 +17,11 @@ from GeoInfoSystem.forms import *
 from Exceptions import *
 from django.core import serializers
 from ast import literal_eval
-from django.core.files.storage import FileSystemStorage
+#from MySQLdb._exceptions import OperationalError
+from django.db.utils import OperationalError
 from PIL import Image
 from django.conf import settings
+from detect_delimiter import detect
 import io
 import base64
 import json
@@ -985,17 +987,22 @@ def mostrarPuntEspecific(request, nomLocal,latitud, longitud):
     print(localitat)
     localEspecific = local.objects.all().filter(nomLocal=nomLocal)
     categoria = localEspecific[0].categoria
-    '''
-    PER RECUPERARLA
-    simplement recupero i ho envio a la template :) i en principi esta tot ok
-    '''
-
     l=local.objects.all().filter(nomLocal=nomLocal)[0]
-    imatge_local=imatges_locals.objects.all().filter(local=l.id)
+    imatge_local=imageLocal.objects.all().filter(local=l.id)[0]
+    '''
+    img_guardada_fs='base64'
+    img_no_trobada='trobada'
     if imatge_local:
         imatge_local=imatge_local[0].imatge.decode('utf-8')
     else:
-        imatge_local=''
+        img_local=imageLocal.objects.all().filter(local=l.id)
+        if img_local:
+            img_guardada_fs = 'sist_fitxers'
+            imatge_local=img_local.imatge.url
+        else:
+            imatge_local=''
+            img_no_trobada='no_trobada'
+    '''
     print(categoria)
     altresPuntsInteres = list(puntInteres.objects.all().filter(localitat=p.localitat).exclude(latitud=latitud, longitud=longitud))
     """punts=[]
@@ -1132,10 +1139,7 @@ A més, envia informació addicional sobre un punt random cada vegada que es rec
 """
 @login_required(login_url='/v1/geoInfoSystem/inicia_sessio/')
 def profilePage(request):
-    fk_rand_punt_interes=random.choices(list(local.objects.all().values_list('localitzacio_id', flat=True)))[0]
-    local_rand=local.objects.all().filter(localitzacio_id=fk_rand_punt_interes)[0]
-    p_interes=puntInteres.objects.all().filter(id=fk_rand_punt_interes)[0]
-    return render(request, "usuaris/profilePage.html", {'latitud':str(p_interes.latitud), 'longitud':str(p_interes.longitud), 'nomLocal':local_rand.nomLocal})
+    return render(request, "usuaris/profilePage.html", {})
 
 """
 Mètode que permet updatejar els camps de l'usuari sempre i quan s'hagi fet login.
@@ -1528,8 +1532,41 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
         categoria = categoriaLocal.objects.all().filter(categoria=tipus)[0]
         localNou = local(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio), categoria=categoria, anyConstruccio=int(any), descripcio=descripcioLocal)
         localNou.save()
-        image = request.FILES['image'].file.read()  # bytes de la imatge
-        img_pil = Image.open(io.BytesIO(image))  # obrir imatge amb pil
+        localGuardat = local.objects.all().filter(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio),
+                                                  categoria=categoria, anyConstruccio=int(any),
+                                                  descripcio=descripcioLocal)[0]
+        form = ImageUploadForm(request.POST, request.FILES)
+        if form.is_valid():
+            l = local.objects.all().filter(id=localGuardat.id)
+            img_local = imageLocal()
+            img_local.local = l[0]
+            img_local.imatge = form.cleaned_data['image']
+            img_local.save()
+            imatge_local_emmagatzemat = imageLocal.objects.all().filter(local=localGuardat.id)[0]
+            path_img_saved = imatge_local_emmagatzemat.imatge.url  # /media/photo/<nom_foto>
+            media_root = settings.MEDIA_ROOT.split('/')[0].replace('\\', '/')
+            path = media_root + path_img_saved
+            path = path.replace('/', '\\')
+            img_pil = Image.open(path)
+            resize = (800, 600)
+            img_width, img_height = float(img_pil.size[0]), float(img_pil.size[1])
+            if img_width <= resize[0] and img_height <= resize[1]:
+                img_pil.save(path, format="PNG")  # guardem la imatge en png
+            else:
+                width = resize[0]
+                height = resize[1]
+                if img_width > img_height or img_width == img_height:
+                    width = resize[0]
+                    height = int(img_height * (resize[0] / img_width))
+                else:
+                    height = resize[1]
+                    width = int(img_width * (resize[1] / img_height))
+                img_pil = img_pil.resize((width, height), Image.ANTIALIAS)
+                img_pil.save(path, format="PNG")  # guardem la imatge en png
+        '''
+        quan la imatge té molta qualitat, el processament triga molt i llavors peta la comunicacio amb la db
+        imatge_pujada = request.FILES['image'].file.read()  # bytes de la imatge
+        img_pil = Image.open(io.BytesIO(imatge_pujada))  # obrir imatge amb pil
         in_mem_file = io.BytesIO()               # Preparem zona de memòria virtual
         # algorisme de redimensionar imatge. En cas que la foto sigui més petita, la deix igual per mantenir
         # la proporció de la foto
@@ -1552,13 +1589,12 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
         in_mem_file.seek(0) # reset file pointer to start
         img_bytes = in_mem_file.read()  # tinc els bytes despres de redimensionar
         b64_imatge_bytes = base64.encodebytes(img_bytes)  #codifico b64
-        localGuardat = local.objects.all().filter(localitzacio=p, nomLocal=nomLocal, estat_conservacio=int(puntuacio),
-                                                  categoria=categoria, anyConstruccio=int(any),
-                                                  descripcio=descripcioLocal)[0]
+
         t_bd_imatges=imatges_locals()       #guardo a la bd
         t_bd_imatges.imatge=b64_imatge_bytes
         t_bd_imatges.local=localGuardat
         t_bd_imatges.save()
+        '''
         dict = {}
         llista = []
         i = 0
@@ -1745,6 +1781,257 @@ def trobarLocal(nomLocal, llistatDiccionaris):
         if dict['nomLocal'] == nomLocal:
             return dict
 
+def importacio_dades_per_csv(request):
+    errors = []
+    if request.method == 'POST':
+        fitxer=request.FILES['fitxer'].file.read()
+        str_file_value=fitxer.decode('latin1')
+        file = str_file_value.splitlines()
+        delimiter=detect(file[0])       #recupero el delimitador del string
+        camps={0:'Nom del local', 1:'Latitud', 2:'Longitud', 3:'Descripció', 4:'Tipus', 5:'Superficie', 6:'Província',
+               7:'Localitat', 8: 'Estat de conservació', 9:'Any de construcció', 10:'Actiu'}
+        data={}
+        list_of_dicts=[]
+        cmpt_lines = 0
+        for line in file[1:]:
+            cmpt_lines = cmpt_lines + 1
+            if '' in line.split(delimiter):
+                errors.append("La línia {} al camp {}, no està ple. Es requereix que estiguin tots els camps plens.".format(cmpt_lines + 1, camps[line.split(delimiter).index('')]))
+            else:
+                i = 0
+                list_data_new_local=line.split(delimiter)
+                nom_local=list_data_new_local[0]
+                try:
+                    latitud=float(list_data_new_local[1].replace(',', '.'))
+                except:
+                    errors.append(
+                        "La línia {} al camp {}, no té un format numèric vàlid o no és un valor. Revisi el camp.".format(
+                            cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[1])]))
+                    continue
+                try:
+                    longitud=float(list_data_new_local[2].replace(',', '.'))
+                except:
+                    errors.append(
+                        "La línia {} al camp {}, no té un format numèric vàlid o no és un valor. Revisi el camp.".format(
+                            cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[2])]))
+                    continue
+                descripcio=list_data_new_local[3].replace("\"", "'")
+                try:
+                    tipus=list_data_new_local[4].title()
+                    categoria_local=categoriaLocal.objects.all().filter(categoria=tipus)
+                    if not categoria_local:
+                        raise Exception
+                except:
+                    cat_bones=[]
+                    categories_valides = categoriaLocal.objects.all()
+                    for elem in categories_valides:
+                        cat_bones.append(elem.categoria)
+                    errors.append(
+                        "La línia {} al camp {}, no té una categoria vàlida. Revisi el camp. Les vàlides són: {}".format(
+                            cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[2])], cat_bones))
+                    continue
+                try:
+                    superficie=float(list_data_new_local[5].replace(',', '.'))
+                except:
+                    errors.append(
+                        "La línia {} al camp {}, no té un format numèric vàlid o no és un valor. Revisi el camp.".format(
+                            cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[5])]))
+                    continue
+                try:
+                    provincia=list_data_new_local[6].title()
+                    localitat=list_data_new_local[7].title()
+                    ciutat=localitzacio.objects.all().filter(provincia=provincia, ciutat=localitat)
+                    if not ciutat:
+                        raise Exception
+                except:
+                    errors.append(
+                        "La línia {} al camp {}, no existeix. Revisi el camp.".format(
+                            cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[8])]))
+                    continue
+                try:
+                    estat_conservacio=int(list_data_new_local[8])
+                    if estat_conservacio<0 or estat_conservacio>5:
+                        raise Exception
+                except:
+                    errors.append(
+                        "La línia {} al camp {}, no és un valor o no està entre 0 i 5. Revisi el camp.".format(
+                            cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[8])]))
+                    continue
+                try:
+                    any_construccio=int(list_data_new_local[9])
+                    if any_construccio < 0:
+                        raise Exception
+                except:
+                    errors.append(
+                        "La línia {} al camp {}, no és un valor o és negatiu. Revisi el camp.".format(
+                            cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[9])]))
+                    continue
+                try:
+                    actiu=list_data_new_local[10]
+                    if actiu != "Sí" and actiu != "No":
+                        raise Exception
+                except:
+                    errors.append(
+                        "La línia {} al camp {}, ha de ser 'Sí' o 'No'. Revisi el camp.".format(
+                            cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[10])]))
+                    continue
+                try:
+                    localitat_poblacio = localitzacio.objects.all().filter(provincia=provincia, ciutat=localitat)[0]
+                    actiuBool=False
+                    if actiu == 'Sí':
+                        actiuBool=True
+                    punts_interes_iguals=puntInteres.objects.all().filter(latitud=latitud, longitud=longitud, actiu=actiuBool,superficie=superficie,localitat=localitat_poblacio)
+                    if punts_interes_iguals:
+                        cat_local_csv=categoriaLocal.objects.all().filter(categoria=tipus)[0]
+                        locals_iguals=local.objects.all().filter(localitzacio=punts_interes_iguals, nomLocal=nom_local, estat_conservacio=estat_conservacio, anyConstruccio=any_construccio,descripcio=descripcio, categoria=cat_local_csv)
+                        if locals_iguals:
+                            raise Exception
+                except:
+                    errors.append("La línia {}, ja forma part del sistema GIS.".format(cmpt_lines+1))
+                    continue
+                for elem in line.split(delimiter):
+                    if i == 4 or i == 6 or i == 7:
+                        data['camp'+str(i)]=elem.title()
+                    else:
+                        data['camp' + str(i)] = elem
+                    i = i + 1
+                data['descartat']='false'
+            list_of_dicts.append(data)
+            data={}
+        if errors:
+            list_of_errors=[]
+            dict_of_error={}
+            ind=0
+            for error in errors:
+                dict_of_error['error'+str(ind)]=error
+                ind=ind+1
+                list_of_errors.append(dict_of_error)
+                dict_of_error={}
+            errors=json.dumps(list_of_errors)
+            return render(request, "motorImportacio/motorImportacio.html", {'errorsImportacio': errors})
+        else:
+            res_json = json.dumps(list_of_dicts)
+            return render(request, "motorImportacio/dadesImportades.html", {'infoJSON':res_json})
+    return render(request, "motorImportacio/motorImportacio.html", {'errorsImportacio': errors})
+
+
+def guardar_local_per_importacioCSV(request):
+    if request.method == 'POST':
+        id_local_importat=request.POST['id-local-csv']
+        num_elems=int(request.POST['num-elems-'+id_local_importat])
+        foto = request.FILES['image' + id_local_importat]
+        nomLocal=request.POST['input-nomLlocal-'+id_local_importat]
+        latitud=request.POST['input-latitud-'+id_local_importat]
+        longitud=request.POST['input-longitud-'+id_local_importat]
+        descripcio=request.POST['input-descripcio-'+id_local_importat]
+        categoria_local=request.POST['input-tipus-'+id_local_importat]
+        provincia=request.POST['input-provincia-'+id_local_importat]
+        poble=request.POST['input-localitat-'+id_local_importat]
+        estat_conservacio=request.POST['input-estatConservacio-'+id_local_importat]
+        any_construccio=request.POST['input-anyConstruccio-'+id_local_importat]
+        actiu=request.POST['input-actiu-'+id_local_importat]
+        superficie=request.POST['input-superficie-'+id_local_importat]
+        # guardar el nou local al sistema GIS
+        localitat=localitzacio.objects.all().filter(provincia=provincia, ciutat=poble)[0]
+        actiuBool=False
+        if actiu=="Sí":
+            actiuBool=True
+        pInteres_new=puntInteres(latitud=float(latitud), longitud=float(longitud), actiu=actiuBool, superficie=float(superficie), localitat=localitat)
+        pInteres_new.save()
+        pInteres_c=puntInteres.objects.all().filter(latitud=float(latitud), longitud=float(longitud), actiu=actiuBool, superficie=float(superficie), localitat=localitat)[0]
+        cat_nouLocal=categoriaLocal.objects.all().filter(categoria=categoria_local)[0]
+        local_new=local(localitzacio=pInteres_c, nomLocal=nomLocal, estat_conservacio=int(estat_conservacio), categoria=cat_nouLocal, anyConstruccio=int(any_construccio), descripcio=descripcio)
+        local_new.save()
+        # guardar la foto
+        localGuardat=local.objects.all().filter(localitzacio=pInteres_c, nomLocal=nomLocal, estat_conservacio=int(estat_conservacio), categoria=cat_nouLocal, anyConstruccio=int(any_construccio), descripcio=descripcio)[0]
+        l = local.objects.all().filter(id=localGuardat.id)
+        img_local = imageLocal()
+        img_local.local = l[0]
+        img_local.imatge = foto
+        img_local.save()
+        imatge_local_emmagatzemat = imageLocal.objects.all().filter(local=localGuardat.id)[0]
+        path_img_saved = imatge_local_emmagatzemat.imatge.url  # /media/photo/<nom_foto>
+        media_root = settings.MEDIA_ROOT.split('/')[0].replace('\\', '/')
+        path = media_root + path_img_saved
+        path = path.replace('/', '\\')
+        img_pil = Image.open(path)
+        resize = (800, 600)
+        img_width, img_height = float(img_pil.size[0]), float(img_pil.size[1])
+        if img_width <= resize[0] and img_height <= resize[1]:
+            img_pil.save(path, format="PNG")  # guardem la imatge en png
+        else:
+            width = resize[0]
+            height = resize[1]
+            if img_width > img_height or img_width == img_height:
+                width = resize[0]
+                height = int(img_height * (resize[0] / img_width))
+            else:
+                height = resize[1]
+                width = int(img_width * (resize[1] / img_height))
+            img_pil = img_pil.resize((width, height), Image.ANTIALIAS)
+            img_pil.save(path, format="PNG")  # guardem la imatge en png
+        # tractar els altres locals que queden jeje
+        altresLocalsPerPujar=request.POST['input-altresLocalsImportats-'+id_local_importat]
+        print(altresLocalsPerPujar)
+        if altresLocalsPerPujar != '' and num_elems>=1:
+            list_dicts=[]
+            data={}
+            altresLocalsPerPujar=altresLocalsPerPujar.split('||')
+            for newlocal in altresLocalsPerPujar:
+                if newlocal:
+                    info_nou_local=newlocal.split('<>')
+                    nom_local_nou=info_nou_local[0]
+                    latitud_nou_local=info_nou_local[1]
+                    longitud_nou_local=info_nou_local[2]
+                    superficie_nou_local=info_nou_local[3]
+                    descripcio_nou_local=info_nou_local[4]
+                    categoria_nou_local=info_nou_local[5]
+                    provincia_nou_local=info_nou_local[6]
+                    localitat_nou_local=info_nou_local[7]
+                    estat_conservacio_nou_local=info_nou_local[8]
+                    any_construccio_nou_local=info_nou_local[9]
+                    actiu_nou_local=info_nou_local[10]
+                    descartat=info_nou_local[11]
+                    data['camp0']=nom_local_nou
+                    data['camp1']=latitud_nou_local
+                    data['camp2']=longitud_nou_local
+                    data['camp3']=descripcio_nou_local
+                    data['camp4']=categoria_nou_local
+                    data['camp5']=superficie_nou_local
+                    data['camp6']=provincia_nou_local
+                    data['camp7']=localitat_nou_local
+                    data['camp8']=estat_conservacio_nou_local
+                    data['camp9']=any_construccio_nou_local
+                    data['camp10']=actiu_nou_local
+                    data['camp11']=descartat
+                    list_dicts.append(data)
+                    data={}
+            res_json=json.dumps(list_dicts)
+            return render(request, "motorImportacio/dadesImportades.html", {'infoJSON':res_json})
+        else:
+            return redirect('/v1/geoInfoSystem/map/')
+
+
+def comprovar_si_te_imatge_local_importacioCSV(request):
+    if request.method == 'GET':
+        imatge=urllib.parse.unquote(request.GET['imatge'])
+        data={}
+        data['tot_ok']='false'
+        if imatge:
+            data['tot_ok']='true'
+        res_json=json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
+
+
+def comprovar_dades_entrada_importacio(request):
+    if request.method=='GET':
+        fitxer=urllib.parse.unquote(request.GET['fitxer'])
+        data={}
+        data['tot_ok']='true'
+        if fitxer == '':
+            data['tot_ok'] = 'false'
+        res_json=json.dumps(data)
+        return HttpResponse(res_json, content_type='json')
 """
 AIXO ES PERQ AIXI ES COMPROVA SI ÉS SUPERUSUARI, EN ALTRE CAS NO ENTRARA
 from django.contrib.auth.decorators import user_passes_test

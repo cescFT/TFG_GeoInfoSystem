@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Dades importades{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+    <style>
+        /* Style the header with a grey background and some padding */
+    .header {
+      overflow: hidden;
+      background-color: #f1f1f1;
+      padding: 20px 10px;
+    }
+
+    /* Style the header links */
+    .header a {
+      float: left;
+      color: black;
+      text-align: center;
+      padding: 12px;
+      text-decoration: none;
+      font-size: 18px;
+      line-height: 25px;
+      border-radius: 4px;
+    }
+
+    /* Style the logo link (notice that we set the same value of line-height and font-size to prevent the header to increase when the font gets bigger */
+    .header a.logo {
+      font-size: 25px;
+      font-weight: bold;
+    }
+
+    /* Change the background color on mouse-over */
+    .header a:hover {
+      background-color: #ddd;
+      color: black;
+    }
+
+    /* Style the active/current link*/
+    .header a.active {
+      background-color: dodgerblue;
+      color: white;
+    }
+
+    /* Float the link section to the right */
+    .header-right {
+      float: right;
+    }
+
+    /* Add media queries for responsiveness - when the screen is 500px wide or less, stack the links on top of each other */
+    @media screen and (max-width: 500px) {
+      .header a {
+        float: none;
+        display: block;
+        text-align: left;
+      }
+      .header-right {
+        float: none;
+      }
+    }
+
+.checked{
+    color:gold;
+}
+.unchecked{
+    color: black;
+}
+    </style>
+</head>
+<body onload="crearEstructura()">
+    <div class="header">
+        <a href="/" class="logo active"><i class="fa fa-home" aria-hidden="true"></i> Sistema d'Informació Geogràfica</a>
+        <div class="header-right">
+            <a href="/v1/geoInfoSystem/map/"><i class="fa fa-globe" aria-hidden="true"></i> Visualitza el mapa</a>
+            {% if user.is_staff and user.is_superuser %}
+                <a href="/v1/geoInfoSystem/nouPunt/"><i class="fa fa-magic"></i> Afegir nous punts</a>
+            {% endif %}
+            {% if user.is_authenticated %}
+                <a href="/v1/geoInfoSystem/el_meu_espai/"><i class="fa fa-user"></i> {{ user.username }}</a>
+                <a href="/v1/geoInfoSystem/tancar_sessio/"><i class="fa fa-sign-out"></i> Tanca la sessió</a>
+            {% else %}
+                <a href="/v1/geoInfoSystem/registrar_nou_usuari/"><i class="fa fa-sign-in"></i> Registra't</a>
+                <a href="/v1/geoInfoSystem/inicia_sessio/"><i class="fa fa-check"></i> Inicia sessió</a>
+            {% endif %}
+        </div>
+    </div>
+    <br>
+    <h1 class="text-center">DADES IMPORTADES</h1>
+    <hr>
+    <div class="container">
+        <div>
+            <div class="row">
+                <div class="col-sm" id="filesCSV">
+                    Nous locals a pujar:
+                </div>
+        </div>
+    </div>
+    </div>
+    <div id="contingutImportat" class="container">
+    </div>
+    <br><br>
+<script>
+    var num_dades_importades;
+    function crearEstructura(){
+        var data=JSON.parse(`{{infoJSON|safe}}`);
+        var divSortida=document.getElementById("contingutImportat");
+        var divNumElems=document.getElementById("filesCSV");
+        divNumElems.innerHTML+="<b>"+ data.length+"</b>";
+        num_dades_importades=data.length;
+        for(var i=0; i<data.length; i++){
+            var info= Object.values(data[i]);
+            let nomLocal=info[0];
+            let latitud=info[1].replace(",", ".");
+            let longitud=info[2].replace(",", ".");
+            let descripcio=info[3];
+            let tipus=info[4];
+            let superficie=info[5].replace(",", ".");
+            let provincia=info[6];
+            let localitat=info[7];
+            let estat_conservacio=info[8];
+            let any_construccio=info[9];
+            let esActiu=info[10];
+            let descartat=info[11];
+            let div_sortida_fila_csv = document.createElement("DIV");
+            div_sortida_fila_csv.setAttribute("class","card card-body");
+            div_sortida_fila_csv.setAttribute("style", "margin:0px auto; display: block;");
+            div_sortida_fila_csv.setAttribute("id", "div-contingut-fila-"+(i+1));
+            let form_fila_csv = document.createElement("FORM");
+            form_fila_csv.setAttribute("action", "/v1/geoInfoSystem/guardar_nou_local_motor_importacio/");
+            form_fila_csv.setAttribute("enctype", "multipart/form-data");
+            form_fila_csv.setAttribute("method", "POST");
+            form_fila_csv.setAttribute("id", "form-contingut-fila-"+(i+1));
+            let csrf_token=document.createElement("INPUT");
+            csrf_token.setAttribute("type", "hidden");
+            csrf_token.setAttribute("name", "csrfmiddlewaretoken");
+            csrf_token.setAttribute("value", "{{csrf_token}}");
+            form_fila_csv.appendChild(csrf_token);
+            let div_form_row_nom_local = document.createElement("DIV");
+            div_form_row_nom_local.setAttribute("class", "form-group");
+            let div_form_col_label_nom_local = document.createElement("DIV");
+            div_form_col_label_nom_local.style.fontSize="20px";
+            let div_form_col_nom_local=document.createElement("DIV");
+            div_form_col_nom_local.setAttribute("class", "offset-md-1");
+            let label_info_nomLocal=document.createElement("LABEL");
+            label_info_nomLocal.setAttribute("class", "font-weight-bold");
+            let t_label_info_nomLocal=document.createTextNode("Nom del local");
+            label_info_nomLocal.appendChild(t_label_info_nomLocal);
+            div_form_col_label_nom_local.appendChild(label_info_nomLocal);
+            div_form_col_nom_local.innerHTML=nomLocal;
+            let input_hidden_nom_local=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_nom_local.setAttribute("type", "hidden");
+            input_hidden_nom_local.setAttribute("id", "input-nomLocal-"+(i+1));
+            input_hidden_nom_local.setAttribute("name", "input-nomLlocal-"+(i+1));
+            input_hidden_nom_local.value=nomLocal;
+            div_form_row_nom_local.appendChild(div_form_col_label_nom_local);
+            div_form_row_nom_local.appendChild(div_form_col_nom_local);
+            form_fila_csv.appendChild(input_hidden_nom_local);
+            form_fila_csv.appendChild(div_form_row_nom_local);
+
+
+            let div_form_row_coordenades=document.createElement("DIV");
+            div_form_row_coordenades.setAttribute("class", "form-group");
+            let div_form_col_label_coordenades=document.createElement("DIV");
+            div_form_col_label_coordenades.style.fontSize="20px";
+            let div_form_col_coordenades=document.createElement("DIV");
+            div_form_col_coordenades.setAttribute("class", "offset-md-1");
+            let label_info_coordenades=document.createElement("LABEL");
+            label_info_coordenades.setAttribute("class", "font-weight-bold");
+            let t_label_info_coordenades=document.createTextNode("Coordenades");
+            label_info_coordenades.appendChild(t_label_info_coordenades);
+            div_form_col_label_coordenades.appendChild(label_info_coordenades);
+            div_form_col_coordenades.innerHTML='('+latitud+' , '+longitud+')';
+            let input_hidden_latitud=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_latitud.setAttribute("type", "hidden");
+            input_hidden_latitud.setAttribute("id", "input-latitud-"+(i+1));
+            input_hidden_latitud.setAttribute("name", "input-latitud-"+(i+1));
+            input_hidden_latitud.value=latitud;
+            let input_hidden_longitud=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_longitud.setAttribute("type", "hidden");
+            input_hidden_longitud.setAttribute("id", "input-longitud-"+(i+1));
+            input_hidden_longitud.setAttribute("name", "input-longitud-"+(i+1));
+            input_hidden_longitud.value=longitud;
+            div_form_row_coordenades.appendChild(div_form_col_label_coordenades);
+            div_form_row_coordenades.appendChild(div_form_col_coordenades);
+            form_fila_csv.appendChild(input_hidden_latitud);
+            form_fila_csv.appendChild(input_hidden_longitud);
+            form_fila_csv.appendChild(div_form_row_coordenades);
+
+            let div_form_row_superficie=document.createElement("DIV");
+            div_form_row_superficie.setAttribute("class", "form-group");
+            let div_form_col_label_superficie=document.createElement("DIV");
+            div_form_col_label_superficie.style.fontSize="20px";
+            let div_form_col_superficie=document.createElement("DIV");
+            div_form_col_superficie.setAttribute("class", "offset-md-1");
+            let label_info_superficie=document.createElement("LABEL");
+            label_info_superficie.setAttribute("class", "font-weight-bold");
+            let t_label_info_superficie=document.createTextNode("Superfície");
+            label_info_superficie.appendChild(t_label_info_superficie);
+            div_form_col_label_superficie.appendChild(label_info_superficie);
+            div_form_col_superficie.innerHTML=superficie;
+            let input_hidden_superficie=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_superficie.setAttribute("type", "hidden");
+            input_hidden_superficie.setAttribute("id", "input-superficie-"+(i+1));
+            input_hidden_superficie.setAttribute("name", "input-superficie-"+(i+1));
+            input_hidden_superficie.value=superficie;
+            div_form_row_superficie.appendChild(div_form_col_label_superficie);
+            div_form_row_superficie.appendChild(div_form_col_superficie);
+            form_fila_csv.appendChild(input_hidden_superficie);
+            form_fila_csv.appendChild(div_form_row_superficie);
+
+
+
+            let div_form_row_descripcio=document.createElement("DIV");
+            div_form_row_descripcio.setAttribute("class", "form-group");
+            let div_form_col_label_descripcio = document.createElement("DIV");
+            div_form_col_label_descripcio.style.fontSize="20px";
+            let div_form_col_descripcio = document.createElement("DIV");
+            div_form_col_descripcio.setAttribute("class", "offset-md-1");
+            let label_info_descripcio=document.createElement("LABEL");
+            label_info_descripcio.setAttribute("class", "font-weight-bold");
+            let t_label_info_descripcio=document.createTextNode("Descripció");
+            label_info_descripcio.appendChild(t_label_info_descripcio);
+            div_form_col_label_descripcio.appendChild(label_info_descripcio);
+            div_form_col_descripcio.innerHTML=descripcio;
+            let input_hidden_descripcio=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_descripcio.setAttribute("type", "hidden");
+            input_hidden_descripcio.setAttribute("id", "input-descripcio-"+(i+1));
+            input_hidden_descripcio.setAttribute("name", "input-descripcio-"+(i+1));
+            input_hidden_descripcio.value=descripcio;
+            div_form_row_descripcio.appendChild(div_form_col_label_descripcio);
+            div_form_row_descripcio.appendChild(div_form_col_descripcio);
+            form_fila_csv.appendChild(input_hidden_descripcio);
+            form_fila_csv.appendChild(div_form_row_descripcio);
+
+
+
+            let div_form_row_tipus=document.createElement("DIV");
+            div_form_row_tipus.setAttribute("class", "form-group");
+            let div_form_col_label_tipus = document.createElement("DIV");
+            div_form_col_label_tipus.style.fontSize="20px";
+            let div_form_col_tipus = document.createElement("DIV");
+            div_form_col_tipus.setAttribute("class", "offset-md-1");
+            let label_info_tipus=document.createElement("LABEL");
+            label_info_tipus.setAttribute("class", "font-weight-bold");
+            let t_label_info_tipus=document.createTextNode("Categoria");
+            label_info_tipus.appendChild(t_label_info_tipus);
+            div_form_col_label_tipus.appendChild(label_info_tipus);
+            div_form_col_tipus.innerHTML=tipus;
+            let input_hidden_tipus=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_tipus.setAttribute("type", "hidden");
+            input_hidden_tipus.setAttribute("id", "input-tipus-"+(i+1));
+            input_hidden_tipus.setAttribute("name", "input-tipus-"+(i+1));
+            input_hidden_tipus.value=tipus;
+            div_form_row_tipus.appendChild(div_form_col_label_tipus);
+            div_form_row_tipus.appendChild(div_form_col_tipus);
+            form_fila_csv.appendChild(input_hidden_tipus);
+            form_fila_csv.appendChild(div_form_row_tipus);
+
+
+
+
+            let div_form_row_localitzacio=document.createElement("DIV");
+            div_form_row_localitzacio.setAttribute("class", "form-group");
+            let div_form_col_label_localitzacio=document.createElement("DIV");
+            div_form_col_label_localitzacio.style.fontSize="20px";
+            let div_form_col_localitzacio=document.createElement("DIV");
+            div_form_col_localitzacio.setAttribute("class", "offset-md-1");
+            let label_info_localitzacio=document.createElement("LABEL");
+            label_info_localitzacio.setAttribute("class", "font-weight-bold");
+            let t_label_info_localitzacio=document.createTextNode("Localització");
+            label_info_localitzacio.appendChild(t_label_info_localitzacio);
+            div_form_col_label_localitzacio.appendChild(label_info_localitzacio);
+            div_form_col_localitzacio.innerHTML=localitat+' ('+provincia+')';
+            let input_hidden_provincia=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_provincia.setAttribute("type", "hidden");
+            input_hidden_provincia.setAttribute("id", "input-provincia-"+(i+1));
+            input_hidden_provincia.setAttribute("name", "input-provincia-"+(i+1));
+            input_hidden_provincia.value=provincia;
+            let input_hidden_localitat=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_localitat.setAttribute("type", "hidden");
+            input_hidden_localitat.setAttribute("id", "input-localitat-"+(i+1));
+            input_hidden_localitat.setAttribute("name", "input-localitat-"+(i+1));
+            input_hidden_localitat.value=localitat;
+            div_form_row_localitzacio.appendChild(div_form_col_label_localitzacio);
+            div_form_row_localitzacio.appendChild(div_form_col_localitzacio);
+            form_fila_csv.appendChild(input_hidden_provincia);
+            form_fila_csv.appendChild(input_hidden_localitat);
+            form_fila_csv.appendChild(div_form_row_localitzacio);
+
+
+
+
+            let div_form_row_estat_conservacio=document.createElement("DIV");
+            div_form_row_estat_conservacio.setAttribute("class", "form-group");
+            let div_form_col_label_estat_conservacio=document.createElement("DIV");
+            div_form_col_label_estat_conservacio.style.fontSize="20px";
+            let div_form_col_estat_conservacio=document.createElement("DIV");
+            div_form_col_estat_conservacio.setAttribute("class", "offset-md-1");
+            let label_info_estat_conservacio = document.createElement("LABEL");
+            label_info_estat_conservacio.setAttribute("class", "font-weight-bold");
+            let t_label_info_estat_conservacio = document.createTextNode("Estat de conservació");
+            label_info_estat_conservacio.appendChild(t_label_info_estat_conservacio);
+            div_form_col_label_estat_conservacio.appendChild(label_info_estat_conservacio);
+            div_form_col_estat_conservacio.innerHTML=estrellesEstatConservacio(estat_conservacio);
+            let input_hidden_estatConservacio=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_estatConservacio.setAttribute("type", "hidden");
+            input_hidden_estatConservacio.setAttribute("id", "input-estatConservacio-"+(i+1));
+            input_hidden_estatConservacio.setAttribute("name", "input-estatConservacio-"+(i+1));
+            input_hidden_estatConservacio.value=estat_conservacio;
+            div_form_row_estat_conservacio.appendChild(div_form_col_label_estat_conservacio);
+            div_form_row_estat_conservacio.appendChild(div_form_col_estat_conservacio);
+            form_fila_csv.appendChild(input_hidden_estatConservacio);
+            form_fila_csv.appendChild(div_form_row_estat_conservacio);
+
+
+
+
+
+
+            let div_form_row_any_construccio=document.createElement("DIV");
+            div_form_row_any_construccio.setAttribute("class", "form-group");
+            let div_form_col_label_any_construccio=document.createElement("DIV");
+            div_form_col_label_any_construccio.style.fontSize="20px";
+            let div_form_col_any_construccio=document.createElement("DIV");
+            div_form_col_any_construccio.setAttribute("class", "offset-md-1");
+            let label_info_any_construccio=document.createElement("LABEL");
+            label_info_any_construccio.setAttribute("class", "font-weight-bold");
+            let t_label_info_any_construccio=document.createTextNode("Any de construcció");
+            label_info_any_construccio.appendChild(t_label_info_any_construccio);
+            div_form_col_label_any_construccio.appendChild(label_info_any_construccio);
+            div_form_col_any_construccio.innerHTML=any_construccio;
+            let input_hidden_anyConstruccio=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_anyConstruccio.setAttribute("type", "hidden");
+            input_hidden_anyConstruccio.setAttribute("id", "input-anyConstruccio-"+(i+1));
+            input_hidden_anyConstruccio.setAttribute("name", "input-anyConstruccio-"+(i+1));
+            input_hidden_anyConstruccio.value=any_construccio;
+            div_form_row_any_construccio.appendChild(div_form_col_label_any_construccio);
+            div_form_row_any_construccio.appendChild(div_form_col_any_construccio);
+            form_fila_csv.appendChild(input_hidden_anyConstruccio);
+            form_fila_csv.appendChild(div_form_row_any_construccio);
+
+
+
+
+
+            let div_form_row_esActiu=document.createElement("DIV");
+            div_form_row_esActiu.setAttribute("class", "form-group");
+            let div_form_col_label_esActiu=document.createElement("DIV");
+            div_form_col_label_esActiu.style.fontSize="20px";
+            let div_form_col_esActiu=document.createElement("DIV");
+            div_form_col_esActiu.setAttribute("class", "offset-md-1");
+            let label_info_esActiu=document.createElement("LABEL");
+            label_info_esActiu.setAttribute("class", "font-weight-bold");
+            let t_label_info_esActiu=document.createTextNode("Actiu");
+            label_info_esActiu.appendChild(t_label_info_esActiu);
+            div_form_col_label_esActiu.appendChild(label_info_esActiu);
+            div_form_col_esActiu.innerHTML=esActiu;
+            let input_hidden_actiu=document.createElement("INPUT"); //<input type="hidden" id="" name="">
+            input_hidden_actiu.setAttribute("type", "hidden");
+            input_hidden_actiu.setAttribute("id", "input-actiu-"+(i+1));
+            input_hidden_actiu.setAttribute("name", "input-actiu-"+(i+1));
+            input_hidden_actiu.value=esActiu;
+            div_form_row_esActiu.appendChild(div_form_col_label_esActiu);
+            div_form_row_esActiu.appendChild(div_form_col_esActiu);
+            form_fila_csv.appendChild(input_hidden_actiu);
+            form_fila_csv.appendChild(div_form_row_esActiu);
+
+
+            let div_form_row_inserir_foto=document.createElement("DIV");
+            div_form_row_inserir_foto.setAttribute("class", "form-group");
+            let div_form_col_label_inserir_foto=document.createElement("DIV");
+            div_form_col_label_inserir_foto.style.fontSize="20px";
+            let div_form_col_inserir_foto=document.createElement("DIV");
+            div_form_col_inserir_foto.setAttribute("class", "offset-md-1");
+            let label_info_inserir_foto=document.createElement("LABEL");
+            label_info_inserir_foto.setAttribute("class", "font-weight-bold");
+            let t_label_info_inserir_foto=document.createTextNode("Insereix foto del local");
+            label_info_inserir_foto.appendChild(t_label_info_inserir_foto);
+            div_form_col_label_inserir_foto.appendChild(label_info_inserir_foto);
+            let input_foto=document.createElement("INPUT"); //<input type="file" accept="image/*" name="image" id="image"/>
+            input_foto.setAttribute("type", "file");
+            input_foto.setAttribute("accept","image/*");
+            input_foto.setAttribute("name", "image"+(i+1));
+            input_foto.setAttribute("id", "image"+(i+1));
+            div_form_col_inserir_foto.appendChild(input_foto);
+            div_form_row_inserir_foto.appendChild(div_form_col_label_inserir_foto);
+            div_form_row_inserir_foto.appendChild(div_form_col_inserir_foto);
+            form_fila_csv.appendChild(div_form_row_inserir_foto);
+
+            let input_hidden_boto_confirmar_apretat=document.createElement("INPUT");
+            input_hidden_boto_confirmar_apretat.setAttribute("type", "hidden");
+            input_hidden_boto_confirmar_apretat.setAttribute("id", "input-botoApretat-"+(i+1));
+            input_hidden_boto_confirmar_apretat.setAttribute("name", "input-botoApretat-"+(i+1));
+            input_hidden_boto_confirmar_apretat.value="No";
+            let input_hidden_altres_locals=document.createElement("INPUT");
+            input_hidden_altres_locals.setAttribute("type", "hidden");
+            input_hidden_altres_locals.setAttribute("id", "input-altresLocalsImportats-"+(i+1));
+            input_hidden_altres_locals.setAttribute("name", "input-altresLocalsImportats-"+(i+1));
+            input_hidden_altres_locals.value='';
+            let input_hidden_id_local_importat=document.createElement("INPUT");
+            input_hidden_id_local_importat.setAttribute("type", "hidden");
+            input_hidden_id_local_importat.setAttribute("name", "id-local-csv");
+            input_hidden_id_local_importat.setAttribute("id", "id-local-csv");
+            input_hidden_id_local_importat.value=(i+1).toString();
+
+            let input_hidden_num_elems=document.createElement("INPUT");
+            input_hidden_num_elems.setAttribute("type", "hidden");
+            input_hidden_num_elems.setAttribute("name", "num-elems-"+(i+1));
+            input_hidden_num_elems.setAttribute("id", "num-elems-"+(i+1));
+            input_hidden_num_elems.value=data.length;
+
+            let input_hidden_es_descartat=document.createElement("INPUT");
+            input_hidden_es_descartat.setAttribute("type", "hidden");
+            input_hidden_es_descartat.setAttribute("name", "es-descartat-"+(i+1));
+            input_hidden_es_descartat.setAttribute("id", "es-descartat-"+(i+1));
+            input_hidden_es_descartat.value=descartat;
+            form_fila_csv.appendChild(input_hidden_num_elems);
+            form_fila_csv.appendChild(input_hidden_altres_locals);
+            form_fila_csv.appendChild(input_hidden_id_local_importat);
+            form_fila_csv.appendChild(input_hidden_boto_confirmar_apretat);
+            form_fila_csv.appendChild(input_hidden_es_descartat);
+
+            div_sortida_fila_csv.appendChild(form_fila_csv);
+            //<div class="text-center"><button style="margin:0px auto;" onclick="checkInputs()" class="btn btn-success"><i class="fa fa-plus" aria-hidden="true"></i> Desar</button></div> <!--onclick="guardarSeleccionat()"-->
+            let div_errors_al_pujar=document.createElement("DIV");
+            div_errors_al_pujar.setAttribute("id", "div-ajax-"+(i+1));
+            div_errors_al_pujar.setAttribute("hidden", "true");
+            div_errors_al_pujar.setAttribute("style", "color:red;");
+            div_errors_al_pujar.setAttribute("class", "text-center");
+            div_errors_al_pujar.innerHTML='<b><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Recorda a pujar la foto!</b><br>';
+            div_sortida_fila_csv.appendChild(div_errors_al_pujar);
+            let div_centrar_botons_check_or_not = document.createElement("DIV");
+            div_centrar_botons_check_or_not.setAttribute("class", "text-center");
+            let boto_confirmar_nou_local=document.createElement("BUTTON");
+            boto_confirmar_nou_local.setAttribute("class", "btn btn-outline-success");
+            boto_confirmar_nou_local.setAttribute("style", "margin:0px auto;");
+            boto_confirmar_nou_local.setAttribute("id", "boto-confirmar-local-"+(i+1));
+            boto_confirmar_nou_local.setAttribute("onclick", "afegirNouLocalAlGIS(this.id,"+data.length+")");
+            boto_confirmar_nou_local.innerHTML='<i class="fa fa-check" aria-hidden="true"></i> Confirmar';
+            /*let boto_descartar_local=document.createElement("BUTTON");
+            boto_descartar_local.setAttribute("class", "btn btn-outline-danger");
+            boto_descartar_local.setAttribute("style", "margin:0px auto;");
+            boto_descartar_local.setAttribute("id", "boto-descartar-local-"+(i+1));
+            boto_descartar_local.setAttribute("onclick", "descartarNouLocal(this.id)");
+            boto_descartar_local.innerHTML='<i class="fa fa-times" aria-hidden="true"></i> Descartar';*/
+
+            div_centrar_botons_check_or_not.appendChild(boto_confirmar_nou_local);
+            //div_centrar_botons_check_or_not.appendChild(boto_descartar_local);
+            div_sortida_fila_csv.appendChild(div_centrar_botons_check_or_not);
+            divSortida.appendChild(div_sortida_fila_csv);
+            /*let div_hidden_per_tornar_a_mostrar=document.createElement("DIV");
+            div_hidden_per_tornar_a_mostrar.setAttribute("hidden", "true");
+            div_hidden_per_tornar_a_mostrar.setAttribute("id", "tornar-veure-contingut-"+(i+1));
+            div_hidden_per_tornar_a_mostrar.setAttribute("class", "text-centre card card-body");
+            let bttn_tornar_endarrere=document.createElement("BUTTON");
+            bttn_tornar_endarrere.setAttribute("id", "boto-tornar-enrrere-"+(i+1));
+            bttn_tornar_endarrere.setAttribute("style", "margin:0px auto;");
+            bttn_tornar_endarrere.setAttribute("class", "btn btn-outline-secondary");
+            bttn_tornar_endarrere.setAttribute("onclick", "mostrarElContingut(this.id)");
+            bttn_tornar_endarrere.innerHTML='<img height="22px" src="https://image.flaticon.com/icons/svg/13/13964.svg"> Recupera el contingut';
+            div_hidden_per_tornar_a_mostrar.appendChild(bttn_tornar_endarrere);
+            divSortida.appendChild(div_hidden_per_tornar_a_mostrar);*/
+            divSortida.innerHTML+='<br>';
+            //console.log(info);
+        }
+
+    }
+    function afegirNouLocalAlGIS(id_boto, numElems) {
+        var id=id_boto.split("-")[3];
+        //TODO AJAX X MIRAR SI HA PUJAT LA FOTO ABANS DE CONFIRMAR, SI LA TE, POSAR UN SI A BOTO APRETAT, AGAFAR TOTA LA INFORMACIO RESTANT (ELS QUE TENEN UN no A BOTO APRETAT I FER SUBMIT).
+        //TODO AL SERVIDOR, GUARDAR EL PUNT QUE TE UN SI, I ELS ALTRES TORNAR-LOS A PUJAR CAP AQUESTA PANTALLA. fer un render()
+        $.ajax({
+            type: 'GET',
+            url : '/v1/geoInfoSystem/comprovar_siImatge_local_importat_perCSV/',
+            data:{
+                'imatge' : document.getElementById("image"+id).value
+            },
+            dataType:'json',
+            success:
+                function (data){
+                    if(data.tot_ok === 'true'){
+                        document.getElementById("input-botoApretat-"+id).value="Si";
+                        let dades_altres_locals='';
+                        for(var i=0; i<numElems; i++){
+                            if(document.getElementById("input-botoApretat-"+(i+1)).value ==='No'){
+                                console.log(i+1);
+                                let nomLocal=document.getElementById("input-nomLocal-"+(i+1)).value;
+                                let latitud=document.getElementById("input-latitud-"+(i+1)).value;
+                                let longitud=document.getElementById("input-longitud-"+(i+1)).value;
+                                let descripcio=document.getElementById("input-descripcio-"+(i+1)).value;
+                                let categoria=document.getElementById("input-tipus-"+(i+1)).value;
+                                let provincia=document.getElementById("input-provincia-"+(i+1)).value;
+                                let poblacio=document.getElementById("input-localitat-"+(i+1)).value;
+                                let estatConservacio=document.getElementById("input-estatConservacio-"+(i+1)).value;
+                                let anyConstruccio=document.getElementById("input-anyConstruccio-"+(i+1)).value;
+                                let actiu=document.getElementById("input-actiu-"+(i+1)).value;
+                                let superficie=document.getElementById("input-superficie-"+(i+1)).value;
+                                let esdescartat=document.getElementById("es-descartat-"+(i+1)).value;
+                                if(i == numElems-1){
+                                    dades_altres_locals+=nomLocal+"<>"+latitud+"<>"+longitud+"<>"+superficie+"<>"+descripcio+"<>"+categoria+"<>"+provincia+"<>"+poblacio+"<>"+estatConservacio+"<>"+anyConstruccio+"<>"+actiu+"<>"+esdescartat;
+                                }else{
+                                    dades_altres_locals+=nomLocal+"<>"+latitud+"<>"+longitud+"<>"+superficie+"<>"+descripcio+"<>"+categoria+"<>"+provincia+"<>"+poblacio+"<>"+estatConservacio+"<>"+anyConstruccio+"<>"+actiu+"<>"+esdescartat+"||";
+                                }
+                            }
+                        }
+                        //agafo els valors i mels guardo al hidden per mantenir els altres valors
+                        document.getElementById("input-altresLocalsImportats-"+id).value=dades_altres_locals;
+                        document.getElementById("form-contingut-fila-"+id).submit();
+                    }else{
+                        document.getElementById("div-ajax-"+id).hidden=false;
+                    }
+                }
+        });
+    }
+    function descartarNouLocal(id_boto){
+        var div_num=id_boto.split("-")[3];
+        document.getElementById("div-contingut-fila-"+div_num).hidden=true;
+        document.getElementById("tornar-veure-contingut-"+div_num).hidden=false;
+        var numElems=parseInt(document.getElementById("filesCSV").innerHTML.split(":")[1].replace("<b>", "").replace("</b>", ""));
+        numElems=numElems-1;
+        document.getElementById("filesCSV").innerHTML="Nous locals a pujar: <b>"+numElems+"</b>";
+        for (var i=0; i<num_dades_importades; i++){
+            document.getElementById("num-elems-"+(i+1)).value=numElems;
+        }
+        document.getElementById("es-descartat-"+div_num).value='true';
+    }
+    function mostrarElContingut(id_boto){
+        var div_num=id_boto.split("-")[3];
+        document.getElementById("div-contingut-fila-"+div_num).hidden=false;
+        document.getElementById("tornar-veure-contingut-"+div_num).hidden=true;
+        var numElems=parseInt(document.getElementById("filesCSV").innerHTML.split(":")[1].replace("<b>", "").replace("</b>", ""));
+        numElems=numElems+1;
+        document.getElementById("filesCSV").innerHTML="Nous locals a pujar: <b>"+numElems+"</b>";
+        for (var i=0; i<num_dades_importades; i++){
+            document.getElementById("num-elems-"+(i+1)).value=numElems;
+        }
+        document.getElementById("es-descartat-"+div_num).value='false';
+    }
+    function estrellesEstatConservacio(num_estrelles) {
+        switch(num_estrelles){
+            case "0":
+                return '<i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked" ></i><i class="fa fa-star unchecked"></i>';
+                break;
+            case "1":
+                return '<i class="fa fa-star checked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i>';
+                break;
+            case "2":
+                return '<i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i>';
+                break;
+            case "3":
+                return '<i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i>';
+                break;
+            case "4":
+                return '<i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star unchecked"></i>';
+                break;
+            case "5":
+                return '<i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i>';
+                break;
+            }
+    }
+</script>
+</body>
+</html>

@@ -1,7 +1,7 @@
 {% extends 'home/base.html' %}
 {% block title %} El meu espai - {{ user.username }}{% endblock %}
 {% block content %}
-<body onload="randInfo()">
+<body>
     <br>
     <div style="text-align: center">
         {%if user.first_name and user.last_name %}
@@ -126,10 +126,10 @@
                  <div class="col-sm-6">
                     <div class="card" style="width: 18rem;">
                       <div class="card-body">
-                        <h5 class="card-title" style="text-align: center"><img style="height: 25px;" src="https://img.icons8.com/ios-filled/48/000000/shuffle.png"/></h5>
-                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Informació aleatòria</h6>
-                        <p class="card-text" class="justify">Consulta informació aleatòria d'un punt d'interès del sistema GIS.</p>
-                        <div class="text-center"><a id="localRand" target="_blank" rel="noopener noreferrer" type="button">Local aleatori</a></div>
+                        <h5 class="card-title" style="text-align: center"><img style="height: 25px" src="https://img.icons8.com/ios-filled/50/000000/database-import.png"/></h5>
+                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Motor importació</h6>
+                        <p class="card-text" class="justify">Importa els locals nous a partir d'un fitxer CSV.</p>
+                        <div class="text-center"><a href="/v1/geoInfoSystem/motorImportacio/" target="_blank" rel="noopener noreferrer">Ves-hi</a></div>
                       </div>
                     </div>
                 </div>
@@ -170,16 +170,5 @@
   </div>
 </div>
 
-<script>
-    function randInfo(){
-        var nomLocal=`{{nomLocal | safe}}`;
-        var latitud=`{{latitud | safe}}`;
-        var longitud=`{{longitud | safe}}`;
-        var a = document.getElementById("localRand");
-        var uri = 'http://localhost:8000/v1/geoInfoSystem/info_especifica/'+nomLocal+'/'+latitud+'/'+longitud+'/';
-        uri=encodeURI(uri);
-        a.setAttribute("href", uri);
-    }
-</script>
 </body>
 {% endblock %}

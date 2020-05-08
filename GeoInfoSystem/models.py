@@ -47,6 +47,14 @@ class local(models.Model):
     def __str__(self):
         return "{"+"nomLocal:\"" + str(self.nomLocal) + "\", puntuacio:\"" + str(self.estat_conservacio) + "\", categoria:\"" + str(self.categoria) + "\", anyConstruccio:\"" + str(self.anyConstruccio) + "\", descripcio:\"" + str(self.descripcio)+ "\", superficie:\""+"}";
 
+'''
+quan les imatges tenen molta qualitat, els bytes son tant grans que triga massa el servidor i peta la comunicacio amb la db
 class imatges_locals(models.Model):
     imatge = models.BinaryField(blank=True)
+    local=models.ForeignKey(local, on_delete=models.CASCADE)
+    
+'''
+
+class imageLocal(models.Model):
+    imatge=models.ImageField(upload_to='photo')
     local=models.ForeignKey(local, on_delete=models.CASCADE)

@@ -70,6 +70,12 @@
     #nomLloc{
         text-align: center;
     }
+    .checked{
+        color:gold;
+    }
+    .unchecked{
+        color: black;
+    }
     </style>
 </head>
 <body onload="prettySite()">
@@ -127,7 +133,7 @@
                     <div class="row">
                         <div class="form-group col-sm-10 offset-md-1">
                             <label class="font-weight-bold">Estat de Conservació</label>
-                            <p id="estatconservacio"> </p>
+                            <p id="estatconservacio"></p>
                         </div>
                     </div>
                     <div class="w-100"></div>
@@ -156,7 +162,7 @@
             </div>
             <div class="col-md-5 offset-md-1">
                 <div class="text-center" style="margin:0px auto;">
-                    <img id="img_local" style="border-width: 2px; border-style: solid; margin:0px auto;">
+                    <img id="img_local" style="border-width: 2px; border-style: solid; margin:0px auto;" src="{{imatge.imatge.url}}">
                 </div>
             </div>
         </div>
@@ -226,18 +232,44 @@
         console.log(pointToDo);
         h1.innerHTML = localToDo[0]['nomLocal'];
         city.innerHTML =localitat;
-        estatconservacio.innerHTML = localToDo[0]['puntuacioS'];
+        estatconservacio.innerHTML = estrelletes_estat_conservacio(localToDo[0]['puntuacioS']);
         categoria.innerHTML = categoriaa;
         anyconstruccio.innerHTML=localToDo[0]['anyConstruccioS'];
         superficie.innerHTML = pointToDo[0]['Superficie'];
         coordenades.innerHTML= "("+pointToDo[0]['latitudS']+","+pointToDo[0]['longitudS']+")";
         descripcio.innerHTML = localToDo[0]['descripcio'];
-        var img_b64=`{{imatge | safe}}`;
-        if (img_b64 === ''){
+        /*var img_b64=`{{imatge | safe}}`;
+        var img_trobada=`{{imatge_trobada|safe}}`;
+        var img_base64=`{{imatge_fs_o_b64 | safe}}`;
+        if (img_b64 === '' && img_trobada ==='no_trobada'){
             document.getElementById("img_local").src="{% static 'Noimatge.png' %}";
-        }else {
+        }else if(img_base64 === 'base64'){
             document.getElementById("img_local").src = 'data:image/png;base64,' + img_b64;
-        }
+        }else if(img_base64 === 'sist_fitxers'){
+            document.getElementById("img_local").scr=img_b64;
+        }*/
+    }
+    function estrelletes_estat_conservacio(num_estrelles){
+        switch(num_estrelles){
+            case "0":
+                return '<i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked" ></i><i class="fa fa-star unchecked"></i>';
+                break;
+            case "1":
+                return '<i class="fa fa-star checked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i>';
+                break;
+            case "2":
+                return '<i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i>';
+                break;
+            case "3":
+                return '<i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star unchecked"></i><i class="fa fa-star unchecked"></i>';
+                break;
+            case "4":
+                return '<i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star unchecked"></i>';
+                break;
+            case "5":
+                return '<i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i>';
+                break;
+            }
     }
     function posarCiutat(){
         var localitat = `{{localitat|safe}}`;
