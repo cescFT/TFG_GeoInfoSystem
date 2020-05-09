@@ -2,30 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/GeoInfoSystem/migrations/0017_imagelocal.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/motorImportacio/dadesImportades.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/motorImportacio/motorImportacio.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/Ajuntament-HZ.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/CASA-FELIX.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/Montferrisantuari.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/ajuntament-de-vallmoll-29-01-20161.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/baixa.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/baixa_ntcrKLF.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/castell-de-rocamora.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/ermita-santuari-del-roser.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/vallmoll1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/detect_delimiter-0.1.1.dist-info/INSTALLER" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/detect_delimiter-0.1.1.dist-info/METADATA" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/detect_delimiter-0.1.1.dist-info/RECORD" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/detect_delimiter-0.1.1.dist-info/WHEEL" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/detect_delimiter-0.1.1.dist-info/top_level.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/venv/Lib/site-packages/detect_delimiter.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/profilePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/profilePage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -371,7 +349,8 @@
       <workItem from="1588699742957" duration="2929000" />
       <workItem from="1588795619516" duration="1826000" />
       <workItem from="1588840670660" duration="21083000" />
-      <workItem from="1588925729038" duration="29154000" />
+      <workItem from="1588925729038" duration="29364000" />
+      <workItem from="1589016037162" duration="2108000" />
     </task>
     <servers />
   </component>
@@ -439,11 +418,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="463" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1587400824790" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1588925765261">
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1589016047830">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1588840686023" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1588925765261" />
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1589016047830" />
     <state x="615" y="138" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588959434155">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>

@@ -162,7 +162,7 @@
             </div>
             <div class="col-md-5 offset-md-1">
                 <div class="text-center" style="margin:0px auto;">
-                    <img id="img_local" style="border-width: 2px; border-style: solid; margin:0px auto;" src="{{imatge.imatge.url}}">
+                    <img id="img_local" style="border-width: 2px; border-style: solid; margin:0px auto;">
                 </div>
             </div>
         </div>
@@ -248,6 +248,12 @@
         }else if(img_base64 === 'sist_fitxers'){
             document.getElementById("img_local").scr=img_b64;
         }*/
+        var img=`{{imatge | safe}}`;
+        if (img ===''){
+            document.getElementById("img_local").src="{% static 'Noimatge.png' %}";
+        }else{
+            document.getElementById("img_local").src=img;
+        }
     }
     function estrelletes_estat_conservacio(num_estrelles){
         switch(num_estrelles){

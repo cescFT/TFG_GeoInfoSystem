@@ -988,7 +988,11 @@ def mostrarPuntEspecific(request, nomLocal,latitud, longitud):
     localEspecific = local.objects.all().filter(nomLocal=nomLocal)
     categoria = localEspecific[0].categoria
     l=local.objects.all().filter(nomLocal=nomLocal)[0]
-    imatge_local=imageLocal.objects.all().filter(local=l.id)[0]
+    imatge_local=imageLocal.objects.all().filter(local=l.id)
+    if imatge_local:
+        imatge_local=imatge_local[0].imatge.url
+    else:
+        imatge_local=''
     '''
     img_guardada_fs='base64'
     img_no_trobada='trobada'
