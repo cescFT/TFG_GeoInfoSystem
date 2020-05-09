@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/fornas.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/vallmoll-escola-FOTO-Marc-Llado-Quadrat-2-5-19.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/motorImportacio/motorImportacio.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/motorImportacio/motorImportacio.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -350,7 +351,7 @@
       <workItem from="1588795619516" duration="1826000" />
       <workItem from="1588840670660" duration="21083000" />
       <workItem from="1588925729038" duration="29364000" />
-      <workItem from="1589016037162" duration="2108000" />
+      <workItem from="1589016037162" duration="3342000" />
     </task>
     <servers />
   </component>

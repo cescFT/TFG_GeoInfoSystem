@@ -105,7 +105,8 @@ tr:nth-child(even) {
     <h1 class="text-center">Motor importació</h1>
     <hr>
     <div class="container">
-        <div class="card card-body" style="margin: 0px auto; display: block;">
+        <button type="button" onclick="mostrarInfo()" class="btn btn-secondary"><img style="height: 22px" src="https://img.icons8.com/dotty/80/000000/user-manual.png"/> Mostrar informació</button>
+        <div class="card card-body" style="margin: 0px auto; display: block;" id="instruccions" hidden>
             <h3>Funcionament del motor d'importació</h3>
             Per tal de utilitzar aquest motor d'importació de dades d'aquest sistema GIS, es necessita que siguis superusuari de la pàgina. No et preucupis, si estas aquí és perquè tens aquests privilegis.<br>
             Simplement puja el fitxer en format CSV, aquest ha de tenir el següent format:
@@ -223,6 +224,13 @@ tr:nth-child(even) {
             }
             document.getElementById("errorsCSV").appendChild(ul);
             document.getElementById("errors").hidden=false;
+        }
+    }
+    function mostrarInfo(){
+        if(document.getElementById("instruccions").hidden === true){
+            document.getElementById("instruccions").hidden = false;
+        }else{
+            document.getElementById("instruccions").hidden = true;
         }
     }
     function checkIfExistsCSV(){
