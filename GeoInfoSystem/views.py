@@ -833,8 +833,9 @@ def mostrarMapa(request):
     pIntRand_latitud = str(puntInteres.objects.all().filter(id=rand_id_puntInteres)[0].latitud)
     pIntRand_longitud = str(puntInteres.objects.all().filter(id=rand_id_puntInteres)[0].longitud)
     nom_local_rand = local.objects.all().filter(localitzacio=rand_id_puntInteres)[0].nomLocal
-
-    return render(request, "puntsGeografics/map.html", {'latitudRand': pIntRand_latitud, 'longitudRand': pIntRand_longitud, 'nomLocalRand':nom_local_rand, 'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions})
+    categoriesDB = categoriaLocal.objects.all()
+    categoriesDB=serializers.serialize('json', categoriesDB)
+    return render(request, "puntsGeografics/map.html", {'latitudRand': pIntRand_latitud, 'longitudRand': pIntRand_longitud, 'nomLocalRand':nom_local_rand, 'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions, 'categoriesDB':categoriesDB})
 
 def estadistiques(request):
     provincies = localitzacio.objects.all().values_list('provincia', flat=True).distinct()

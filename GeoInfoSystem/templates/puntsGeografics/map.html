@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css' rel='stylesheet' />
     <style>
         /* Style the header with a grey background and some padding */
     .header {
@@ -81,6 +83,15 @@
     .parent:hover #popup{
         display: block;
     }
+    .legend{
+        background:white;
+    }
+    .circle{
+        height: 10px;
+      width: 10px;
+      border-radius: 20%;
+    }
+
     </style>
 
 
@@ -117,9 +128,16 @@
     <br><br>
 <script>
 var mymap;
+var categoriesDB=JSON.parse(`{{categoriesDB | safe}}`);
+var categoriesDBToDo=[];
+    for(categoria of categoriesDB){
+        categoriesDBToDo.push({
+            "categoria" : categoria.fields.categoria
+        });
+    }
 function iniPagina() {
 
-    mymap = L.map('mapid').setView([41.8204600, 1.8676800], 7);
+    mymap = L.map('mapid', {fullscreenControl: true}).setView([41.8204600, 1.8676800], 7);
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiY2VzY2Z0IiwiYSI6ImNrOTA0OWlxYTAxd2czdHFkMWt2eDVjN20ifQ.ORNTQ7oImBoHmaGJ_jGYvg', {
         attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
         maxZoom: 18,
@@ -128,7 +146,19 @@ function iniPagina() {
         zoomOffset: -1,
         accessToken: 'pk.eyJ1IjoiY2VzY2Z0IiwiYSI6ImNrOTA0OWlxYTAxd2czdHFkMWt2eDVjN20ifQ.ORNTQ7oImBoHmaGJ_jGYvg'
     }).addTo(mymap);
+   var legend = L.control({position: 'bottomright'});
+    legend.onAdd = function (mymap) {
+        var div = L.DomUtil.create('div', 'info legend');
+        var labels = ['<strong>Categories</strong>'];
 
+        for (var i = 0; i < categoriesDBToDo.length; i++) {
+                labels.push('<div class="circle" style="background:'+getcolorCategoria(categoriesDBToDo[i]['categoria'])+'; display: inline-block;"></div><div style="display: inline-block;"><b><i>'+categoriesDBToDo[i]["categoria"]+'</i></b></div>');
+        }
+
+        div.innerHTML = labels.join('<br>');
+        return div;
+    };
+    legend.addTo(mymap);
     var nomLocalRand = `{{ nomLocalRand | safe }}`;
     var latitudRand = `{{ latitudRand | safe }}`;
     var longitudRand = `{{ longitudRand | safe }}`;
@@ -225,9 +255,70 @@ function iniPagina() {
                     '</div>' +
                     '</div>';
 
-                let marker = L.marker([pointsToDo[i]['latitud'], pointsToDo[i]['longitud']]).addTo(mymap).bindPopup(contentString);
+                let icona=seleccionarIconaPerCategoria(categoria);
+
+                let marker = L.marker([pointsToDo[i]['latitud'], pointsToDo[i]['longitud']], {icon:icona}).addTo(mymap).bindPopup(contentString);
             }
         }
+    }
+}
+function seleccionarIconaPerCategoria(categoria_local){
+    switch (categoria_local) {
+        case categoriesDBToDo[0]['categoria']:
+            return new L.Icon({
+                  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                  iconSize: [25, 41],
+                  iconAnchor: [12, 41],
+                  popupAnchor: [1, -34],
+                  shadowSize: [41, 41]});
+        case categoriesDBToDo[1]['categoria']:
+            return new L.Icon({
+                  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-blue.png',
+                  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                  iconSize: [25, 41],
+                  iconAnchor: [12, 41],
+                  popupAnchor: [1, -34],
+                  shadowSize: [41, 41]});
+        case categoriesDBToDo[2]['categoria']:
+            return new L.Icon({
+                  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-red.png',
+                  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                  iconSize: [25, 41],
+                  iconAnchor: [12, 41],
+                  popupAnchor: [1, -34],
+                  shadowSize: [41, 41]});
+        case categoriesDBToDo[3]['categoria']:
+            return new L.Icon({
+                  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-orange.png',
+                  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                  iconSize: [25, 41],
+                  iconAnchor: [12, 41],
+                  popupAnchor: [1, -34],
+                  shadowSize: [41, 41]});
+        case categoriesDBToDo[4]['categoria']:
+            return new L.Icon({
+                  iconUrl: 'https://cdn.rawgit.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-gold.png',
+                  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                  iconSize: [25, 41],
+                  iconAnchor: [12, 41],
+                  popupAnchor: [1, -34],
+                  shadowSize: [41, 41]});
+    }
+}
+function getcolorCategoria(categoria_passada){
+    switch (categoria_passada) {
+         case categoriesDBToDo[0]['categoria']:
+            return "#2AAD27";
+        case categoriesDBToDo[1]['categoria']:
+            return "#2A81CB";
+        case categoriesDBToDo[2]['categoria']:
+            return "#CB2B3E";
+        case categoriesDBToDo[3]['categoria']:
+            return "#CB8427";
+        case categoriesDBToDo[4]['categoria']:
+            return "#FFD326";
+
     }
 }
 </script>
