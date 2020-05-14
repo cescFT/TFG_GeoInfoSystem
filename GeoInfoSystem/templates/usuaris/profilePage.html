@@ -1,7 +1,7 @@
 {% extends 'home/base.html' %}
 {% block title %} El meu espai - {{ user.username }}{% endblock %}
 {% block content %}
-<body>
+<body onload="randLocal()">
     <br>
     <div style="text-align: center">
         {%if user.first_name and user.last_name %}
@@ -82,7 +82,7 @@
                         <h5 class="card-title" style="text-align: center"><img src="https://img.icons8.com/ios-glyphs/30/000000/admin-settings-male.png"/></h5>
                         <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Administració</h6>
                         <p class="card-text" class="justify">En aquesta pàgina podràs administrar usuaris i punts d'interès del sistema GIS.</p>
-                        <div class="text-center"><a href="/admin/" type="button">Administrar web</a></div>
+                        <div class="text-center"><a href="/admin/" type="button" target="_blank" rel="noopener noreferrer">Administrar web</a></div>
                       </div>
                     </div>
                 </div>
@@ -92,12 +92,11 @@
                         <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/material-sharp/64/000000/map-editing.png"/></h5>
                         <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Afegir nous punts</h6>
                         <p class="card-text" class="justify">En aquesta pàgina podràs afegir els nous punts que vulguis en el sistema GIS.</p>
-                        <div class="text-center"><a href="/v1/geoInfoSystem/nouPunt/">Afegeix punts</a></div>
+                        <div class="text-center"><a href="/v1/geoInfoSystem/nouPunt/" target="_blank" rel="noopener noreferrer">Afegeix punts</a></div>
                       </div>
                     </div>
                 </div>
             </div>
-            {% endif %}
             <br>
             <div class="row">
                 <div class="col-sm-6">
@@ -106,7 +105,7 @@
                         <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/material/80/000000/map-marker--v1.png"/></h5>
                         <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consulta el mapa</h6>
                         <p class="card-text" class="justify">En aquesta pàgina podràs visualitzar els punts d'interès i fer consultes sobre el sistema GIS.</p>
-                        <div class="text-center"><a href="/v1/geoInfoSystem/map/" type="button">Visualitza el mapa</a></div>
+                        <div class="text-center"><a href="/v1/geoInfoSystem/map/" type="button" target="_blank" rel="noopener noreferrer">Visualitza el mapa</a></div>
                       </div>
                     </div>
                 </div>
@@ -116,7 +115,7 @@
                         <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/ios-filled/50/000000/statistics.png"/></h5>
                         <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consultes al sistema GIS</h6>
                         <p class="card-text" class="justify">En la pàgina on es visualitza el mapa, també pots fer consultes al sistema GIS. Ves-hi directe!</p>
-                        <div class="text-center"><a href="/v1/geoInfoSystem/estadistiquesGIS/" type="button">Fer consultes</a></div>
+                        <div class="text-center"><a href="/v1/geoInfoSystem/estadistiquesGIS/" type="button" target="_blank" rel="noopener noreferrer">Fer consultes</a></div>
                       </div>
                     </div>
                 </div>
@@ -144,7 +143,53 @@
                     </div>
                 </div>
             </div>
-
+        {% else %}
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/material/80/000000/map-marker--v1.png"/></h5>
+                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consulta el mapa</h6>
+                        <p class="card-text" class="justify">En aquesta pàgina podràs visualitzar els punts d'interès i fer consultes sobre el sistema GIS.</p>
+                        <div class="text-center"><a href="/v1/geoInfoSystem/map/" type="button" target="_blank" rel="noopener noreferrer">Visualitza el mapa</a></div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/ios-filled/50/000000/statistics.png"/></h5>
+                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consultes al sistema GIS</h6>
+                        <p class="card-text" class="justify">En la pàgina on es visualitza el mapa, també pots fer consultes al sistema GIS. Ves-hi directe!</p>
+                        <div class="text-center"><a href="/v1/geoInfoSystem/estadistiquesGIS/" type="button" target="_blank" rel="noopener noreferrer">Fer consultes</a></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                 <div class="col-sm-6">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/ios-filled/26/000000/shuffle.png"/></h5>
+                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Local aleatori</h6>
+                        <p class="card-text" class="justify">Visualitza la informació d'un local de forma aleatòria.</p>
+                        <div class="text-center"><a id="randLocal" target="_blank" rel="noopener noreferrer">Ves-hi</a></div>
+                      </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card" style="width: 18rem;">
+                      <div class="card-body">
+                        <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/ios-filled/64/000000/no-entry.png"/></h5>
+                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Donar-me de baixa</h6>
+                        <p class="card-text" class="justify">Vols donar-te de baixa del lloc web?</p>
+                        <div class="text-center"><button style="margin:0px auto;" type="button" class="btn btn-outline-danger" data-toggle="modal" data-target="#modalBaixa">Donar-me de baixa</button></div>
+                      </div>
+                    </div>
+                </div>
+            </div>
+        {%endif%}
         </div>
     </div>
 </div>
@@ -169,6 +214,12 @@
     </div>
   </div>
 </div>
+
+<script>
+    function randLocal(){
+        document.getElementById("randLocal").href=encodeURI('/v1/geoInfoSystem/info_especifica/'+`{{nomLocalRand|safe}}`+'/'+`{{latitudRand|safe}}`+'/'+`{{longitudRand|safe}}`+'/');
+    }
+</script>
 
 </body>
 {% endblock %}

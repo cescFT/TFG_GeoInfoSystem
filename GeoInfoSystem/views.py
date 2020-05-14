@@ -1189,7 +1189,12 @@ A més, envia informació addicional sobre un punt random cada vegada que es rec
 """
 @login_required(login_url='/v1/geoInfoSystem/inicia_sessio/')
 def profilePage(request):
-    return render(request, "usuaris/profilePage.html", {})
+    # LOCAL RANDOM
+    rand_id_puntInteres = random.choice(list(puntInteres.objects.all().values_list('id', flat=True)))
+    pIntRand_latitud = str(puntInteres.objects.all().filter(id=rand_id_puntInteres)[0].latitud)
+    pIntRand_longitud = str(puntInteres.objects.all().filter(id=rand_id_puntInteres)[0].longitud)
+    nom_local_rand = local.objects.all().filter(localitzacio=rand_id_puntInteres)[0].nomLocal
+    return render(request, "usuaris/profilePage.html", {'nomLocalRand':nom_local_rand, 'latitudRand':pIntRand_latitud, 'longitudRand':pIntRand_longitud})
 
 """
 Mètode que permet updatejar els camps de l'usuari sempre i quan s'hagi fet login.
@@ -1831,6 +1836,7 @@ def trobarLocal(nomLocal, llistatDiccionaris):
         if dict['nomLocal'] == nomLocal:
             return dict
 
+@user_passes_test(lambda u: u.is_superuser)
 def importacio_dades_per_csv(request):
     errors = []
     if request.method == 'POST':

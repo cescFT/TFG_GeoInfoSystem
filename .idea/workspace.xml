@@ -2,11 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/Anotació_2020-05-14_155530.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/jca-cinemes-16-10-2017.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/exemple_click_leaflet_premut_cat_cultura.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/exemple_leaflet_cat_restauracio_gis.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/exemple_leaflet_gis.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/static/nou_punt_mapa_leaflet.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/motorImportacio/dadesImportades.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/motorImportacio/dadesImportades.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/motorImportacio/motorImportacio.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/motorImportacio/motorImportacio.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/home/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/home/home.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/profilePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/profilePage.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -355,7 +357,7 @@
       <workItem from="1588925729038" duration="29364000" />
       <workItem from="1589016037162" duration="3577000" />
       <workItem from="1589369003080" duration="12799000" />
-      <workItem from="1589448460239" duration="11993000" />
+      <workItem from="1589448460239" duration="23525000" />
     </task>
     <servers />
   </component>
