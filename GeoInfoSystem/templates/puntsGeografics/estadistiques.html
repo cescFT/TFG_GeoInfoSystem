@@ -136,10 +136,10 @@ tr:nth-child(even) {
             <ol>
                 <li><b>Aplicar els filtres:</b>
                     <ul>
-                        <li><b><i>Provincia:</i></b> En aquest desplegable es selecciona la província per a que els pobles apareixin els que hi ha en aquesta província específicament.</li>
-                        <li><b><i>Ciutat:</i></b> Un cop s'ha escollit la província desitjanda, en aquest desplegable es selecciona la població desitjada.</li>
+                        <li><b><i>Província:</i></b> En aquest desplegable se selecciona la província perquè els pobles apareguin els que hi ha en aquesta província específicament.</li>
+                        <li><b><i>Ciutat:</i></b> Un cop s'ha escollit la província desitjada, en aquest desplegable se selecciona la població desitjada.</li>
                         <li><b><i>Tipus:</i></b> S'escull la categoria o tipus de local que es vol.</li>
-                        <li><b><i>Actiu:</i></b> Apretant el botó permetem que el servidor interpreti que el/s locals que es cerquen són actius. En cas que no s'apreti, s'interpretarà que són no actius.</li>
+                        <li><b><i>Actiu:</i></b> Prement el botó permetem que el servidor interpreti que el/s locals que se cerquen són actius. En cas que no es premi, s'interpretarà que són no actius.</li>
                     </ul>
                 </li>
                 <li><b>Visualització dels resultats:</b>
@@ -164,19 +164,19 @@ tr:nth-child(even) {
         <div class="row">
             <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;" class="card card-body">
                 <h2><img src="https://img.icons8.com/ios/50/000000/statistics.png"/> Estadístiques</h2>
-                <p>En aquest espai pots filtrar la informació que apareix en el mapa. Fes click damunt de cadascun dels botons per anar veient els resultats obtinguts al aplicar cada filtre.</p>
+                <p>En aquest espai pots filtrar la informació que apareix en el mapa. Fes clic damunt de cadascun dels botons per anar veient els resultats obtinguts a l'aplicar cada filtre.</p>
                 <div id="filtres">
                     <div class="col-sm">
                         <h3 style="text-align: center"><img style="height: 26px" src="https://img.icons8.com/ios/80/000000/empty-filter.png"/> Filtres</h3>
                     </div>
                     <div class="col-sm">
-                        <p class="same-line-block-elem1"><b>Provincia</b><div class="same-line-block-elem2" id="provincies"></div></p>
+                        <p class="same-line-block-elem1"><b>Província</b><div class="same-line-block-elem2" id="provincies"></div></p>
                     </div>
                     <div class="col-sm">
                         <p class="same-line-block-elem1"><b>Ciutat</b><div style="margin-left: 25px" class="same-line-block-elem2" id="ubicacio"></div></p>
                     </div>
                     <div class="col-sm">
-                        <p class="same-line-block-elem1"><b>Tipus</b><div style="margin-left: 29px" class="same-line-block-elem2" id="tipus"></div></p>
+                        <p class="same-line-block-elem1"><b>Categoria</b><div class="same-line-block-elem2" id="tipus"></div></p>
                     </div>
                     <div class="col-sm">
                         <p class="same-line-block-elem1"><input class="same-line-block-elem2" type="checkbox" onclick="canviEstat()" name="actiu" id="esActiu"> <b>Actiu</b></p>
@@ -197,12 +197,12 @@ tr:nth-child(even) {
     <br>
     <div id="containerInformatiu" class="container">
         <div class="card card-body">
-            <p>Apreta els botons de la botonera per anar veient els resultats.</p>
+            <p>Prem els botons de la botonera per anar veient els resultats que el sistema GIS et dóna.</p>
         </div>
     </div>
     <div id="containerInformatiu-NoCiutats" class="container" hidden>
         <div class="card card-body">
-            <p>Tot deshabilitat perquè no hi ha localitzacions possibles.</p>
+            <p>Tot deshabilitat perquè no hi ha cap població d'aquesta província en representació en el sistema GIS.</p>
         </div>
     </div>
     <div class="container">
