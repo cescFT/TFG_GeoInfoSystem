@@ -2000,7 +2000,7 @@ def guardar_local_per_importacioCSV(request):
         img_local.imatge = foto
         img_local.save()
         imatge_local_emmagatzemat = imageLocal.objects.all().filter(local=localGuardat.id)[0]
-        path_img_saved = imatge_local_emmagatzemat.imatge.url  # /media/photo/<nom_foto>
+        path_img_saved = urllib.parse.unquote(imatge_local_emmagatzemat.imatge.url)  # /media/photo/<nom_foto>
         media_root = settings.MEDIA_ROOT.split('/')[0].replace('\\', '/')
         path = media_root + path_img_saved
         path = path.replace('/', '\\')

@@ -97,14 +97,16 @@
     <h1 class="text-center">Dades importades</h1>
     <hr>
     <div class="container">
-        <div>
             <div class="row">
-                <div class="col-sm" id="filesCSV">
+                <div class="col-sm" style="margin-top:10px" id="filesCSV">
                     Nous locals a pujar:
                 </div>
-        </div>
+                <div class="col-sm offset-md-1 btn-group" role="group">
+                    <button type="button" class="btn btn-danger" onclick="cancelarTotsLocals()"><i class="fa fa-times" aria-hidden="true"></i> Cancel·la operació</button>
+                </div>
+            </div>
     </div>
-    </div>
+    <br>
     <div id="contingutImportat" class="container">
     </div>
     <br><br>
@@ -566,6 +568,9 @@
                 return '<i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i><i class="fa fa-star checked"></i>';
                 break;
             }
+    }
+    function cancelarTotsLocals(){
+        window.location.replace("/v1/geoInfoSystem/map/");
     }
 </script>
 </body>
