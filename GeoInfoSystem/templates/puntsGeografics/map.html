@@ -125,11 +125,54 @@
         </div>
     </div>
     <br>
+    {%if hi_ha_grafic%}
+        <div class="container card card-body">
+            <div class="text-centre">
+                Per a fer més consultes i veure el resultat en forma de graella, visiteu el <a href="/v1/geoInfoSystem/estadistiquesGIS/">Mòdul estadístic</a>.
+            </div>
+            <div style="display: inline-block">
+                <div style="display: inline-block">
+                {%ifnotequal grafic_usos_categories|stringformat:"s" 'buit' %}
+                    <img src="data:image/png;base64,{{grafic_usos_categories|safe}}" width=500 height=auto>
+                {%endifnotequal%}
+                </div>
+                <div class="offset-md-1" style="display: inline-block">
+                    {%ifnotequal grafic_actius_noactius|stringformat:"s" 'buit'%}
+                    <img src="data:image/png;base64,{{grafic_actius_noactius|safe}}" width="500" height="auto">
+                    {%endifnotequal%}
+                </div>
+            </div>
+        </div>
+    {%else%}
+        {%if user.is_authenticated and user.is_staff and user.is_superuser%}
+            <div class="container card card-body">
+                <div class="text-centre">
+                    Afegeix punts d'interès al sistema GIS i els veuràs en aquesta pantalla. Tens dues formes:
+                    <ul>
+                        <li>Afegeix-los manualment a través de la pantalla d'<a href="/v1/geoInfoSystem/nouPunt/">Afegeix nou punt</a>. També tens accés a través de la barra superior.</li>
+                        <li>Afegeix-los manualment important un fitxer CSV a través del <a href="/v1/geoInfoSystem/motorImportacio/">Motor d'Importació</a>.</li>
+                    </ul>
+                </div>
+            </div>
+        {%else%}
+            <div class="container card card-body">
+                <div class="text-center">
+                    Encara no hi ha informació en el sistema GIS. Espera a que els administradors de la pàgina afegeixin informació.
+                </div>
+            </div>
+        {%endif%}
+    {%endif%}
     <br><br>
 <script>
 var mymap;
 var categoriesDB=JSON.parse(`{{categoriesDB | safe}}`);
 var categoriesDBToDo=[];
+var categoriaRestauracio=[];
+var categoriaCultura=[];
+var categoriaHabitatge=[];
+var categoriaCongres=[];
+var categoriaUniversitat=[];
+var totsMarkers=[];
     for(categoria of categoriesDB){
         categoriesDBToDo.push({
             "categoria" : categoria.fields.categoria
@@ -256,10 +299,46 @@ function iniPagina() {
                     '</div>';
 
                 let icona=seleccionarIconaPerCategoria(categoria);
-
-                let marker = L.marker([pointsToDo[i]['latitud'], pointsToDo[i]['longitud']], {icon:icona}).addTo(mymap).bindPopup(contentString);
+                let marker = L.marker([pointsToDo[i]['latitud'], pointsToDo[i]['longitud']], {icon:icona}).bindPopup(contentString);
+                classificarMarker(marker,categoria);
+                totsMarkers.push(marker);
             }
         }
+    }
+    var cat_restauracio=L.layerGroup(categoriaRestauracio);
+    var cat_cultura=L.layerGroup(categoriaCultura);
+    var cat_habitatge=L.layerGroup(categoriaHabitatge);
+    var cat_congres=L.layerGroup(categoriaCongres);
+    var cat_universitat=L.layerGroup(categoriaUniversitat);
+    var tots=L.layerGroup(totsMarkers);
+    var overlayMaps={
+        "Restauració": cat_restauracio,
+        "Cultura":cat_cultura,
+        "Habitatge":cat_habitatge,
+        "Congrés": cat_congres,
+        "Universitat":cat_universitat,
+        "Tots els punts": tots
+    };
+    L.control.layers(overlayMaps).addTo(mymap);
+    tots.addTo(mymap);
+}
+function classificarMarker(marker, categoria){
+    switch(categoria){
+        case categoriesDBToDo[0]['categoria']:
+            categoriaRestauracio.push(marker);
+            break;
+        case categoriesDBToDo[1]['categoria']:
+            categoriaCultura.push(marker);
+            break;
+        case categoriesDBToDo[2]['categoria']:
+            categoriaHabitatge.push(marker);
+            break;
+        case categoriesDBToDo[3]['categoria']:
+            categoriaCongres.push(marker);
+            break;
+        case categoriesDBToDo[4]['categoria']:
+            categoriaUniversitat.push(marker);
+            break;
     }
 }
 function seleccionarIconaPerCategoria(categoria_local){

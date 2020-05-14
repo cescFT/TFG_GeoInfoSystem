@@ -22,8 +22,12 @@ from django.db.utils import OperationalError
 from PIL import Image
 from django.conf import settings
 from detect_delimiter import detect
+from random import sample
 import io
 import base64
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
 import json
 import re
 import random
@@ -825,7 +829,7 @@ def mostrarMapa(request):
 
     locals = serializers.serialize("json", localsimp)
     punts = serializers.serialize("json", puntsInteresCercats)
-    categories = serializers.serialize("json", categoriesCercades)
+    categoriesMapa = serializers.serialize("json", categoriesCercades)
     localitzacions = serializers.serialize("json", localitzacionsC)
 
     rand_id_puntInteres = random.choice(list(puntInteres.objects.all().values_list('id',flat=True)))
@@ -835,8 +839,49 @@ def mostrarMapa(request):
     nom_local_rand = local.objects.all().filter(localitzacio=rand_id_puntInteres)[0].nomLocal
     categoriesDB = categoriaLocal.objects.all()
     categoriesDB=serializers.serialize('json', categoriesDB)
-    return render(request, "puntsGeografics/map.html", {'latitudRand': pIntRand_latitud, 'longitudRand': pIntRand_longitud, 'nomLocalRand':nom_local_rand, 'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categories, 'localitzacionsMapa':localitzacions, 'categoriesDB':categoriesDB})
 
+    grafic=False
+    num_locals = local.objects.all().count()
+    categories = categoriaLocal.objects.all()
+    data = {}
+    for categoria in categories:
+        data[categoria] = local.objects.all().filter(categoria=categoria).count()
+    num_locals_actius = puntInteres.objects.all().filter(actiu=True).count()
+    num_locals_no_actius = puntInteres.objects.all().filter(actiu=False).count()
+    poblacions_catalunya=localitzacio.objects.all()
+    grafic_b64_usos_categories = 'buit'
+    grafic_actius_noactius = 'buit'
+    if num_locals != 0 and num_locals_actius != 0 and num_locals_no_actius != 0:
+        grafic=True
+        cat=data.keys()
+        slices=data.values()
+        colors=['#2AAD27','#2A81CB','#CB2B3E','#CB8427','#FFD326']
+        plt.pie(slices, labels=cat, colors=colors,startangle=90, autopct = '%1.1f%%')
+        plt.title('Usos de locals presents en el sistema GIS per categories.')
+        plt.legend()
+        buf = io.BytesIO()
+        plt.savefig(buf, format='png', dpi=300)
+        grafic_b64_usos_categories=base64.b64encode(buf.getvalue()).decode('utf-8').replace('\n', '')
+        buf.close()
+        plt.close()
+        cat=['Actius', 'No actius']
+        slices=[num_locals_actius, num_locals_no_actius]
+        colors=['#5D6D7E', '#EC7063']
+        plt.pie(slices, labels=cat, colors=colors,startangle=90, autopct='%1.1f%%')
+        plt.title('Percentatge de locals actius i no actius presents en el sistema GIS.')
+        plt.legend(loc="center right")
+        buf=io.BytesIO()
+        plt.savefig(buf,format='png', dpi=300)
+        grafic_actius_noactius=base64.b64encode(buf.getvalue()).decode('utf-8').replace('\n', '')
+        buf.close()
+        plt.close()
+
+    return render(request, "puntsGeografics/map.html", {'latitudRand': pIntRand_latitud, 'longitudRand': pIntRand_longitud, 'nomLocalRand':nom_local_rand,
+                                                        'puntsInteres': punts, 'locals': locals, 'categoriesMapa': categoriesMapa,
+                                                        'localitzacionsMapa':localitzacions, 'categoriesDB':categoriesDB,
+                                                        'grafic_usos_categories':grafic_b64_usos_categories,
+                                                        'grafic_actius_noactius':grafic_actius_noactius,
+                                                        'hi_ha_grafic':grafic})
 def estadistiques(request):
     provincies = localitzacio.objects.all().values_list('provincia', flat=True).distinct()
     dict = {}
