@@ -128,10 +128,10 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm">
-                                            <label class="font-weight-bold">Contrassenya</label>
+                                            <label class="font-weight-bold">Contrasenya</label>
                                         </div>
                                         <div class="col-sm">
-                                            <input type="password" name="password" id="password" onkeyup="comprovarInputs()" placeholder="Contrassenya" required>
+                                            <input type="password" name="password" id="password" onkeyup="comprovarInputs()" placeholder="Contrasenya" required>
                                         </div>
                                     </div>
                                 </div>
@@ -163,7 +163,7 @@
                             function (data){
                                 var data_res = Object.values(data);
                                 if(data_res[0] === "false") {
-                                    document.getElementById("errorsLogIn").innerHTML = "<b>Nom usuari o contrassenya incorrecta.</b>";
+                                    document.getElementById("errorsLogIn").innerHTML = "<b>Nom usuari o contrasenya incorrecta.</b>";
                                     document.getElementById("errorsLogIn").style.color = "red";
                                 }else{
                                     document.getElementById("formLogIn").submit();

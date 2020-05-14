@@ -2,8 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/estadistiques.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/estadistiques.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/map.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/map.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/profilePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/profilePage.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/registrar1.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/registrar1.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -351,7 +354,7 @@
       <workItem from="1588925729038" duration="29364000" />
       <workItem from="1589016037162" duration="3577000" />
       <workItem from="1589369003080" duration="12799000" />
-      <workItem from="1589448460239" duration="25348000" />
+      <workItem from="1589448460239" duration="25843000" />
     </task>
     <servers />
   </component>
