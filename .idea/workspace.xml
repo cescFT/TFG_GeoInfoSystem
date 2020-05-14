@@ -2,14 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/static/exemple_click_leaflet_premut_cat_cultura.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/exemple_leaflet_cat_restauracio_gis.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/exemple_leaflet_gis.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/static/nou_punt_mapa_leaflet.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/home/home.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/home/home.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/profilePage.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/usuaris/profilePage.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/motorImportacio/motorImportacio.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/motorImportacio/motorImportacio.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -357,7 +351,7 @@
       <workItem from="1588925729038" duration="29364000" />
       <workItem from="1589016037162" duration="3577000" />
       <workItem from="1589369003080" duration="12799000" />
-      <workItem from="1589448460239" duration="23525000" />
+      <workItem from="1589448460239" duration="24054000" />
     </task>
     <servers />
   </component>

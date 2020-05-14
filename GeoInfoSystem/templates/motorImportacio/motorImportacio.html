@@ -108,7 +108,7 @@ tr:nth-child(even) {
         <button type="button" onclick="mostrarInfo()" class="btn btn-secondary"><img style="height: 22px" src="https://img.icons8.com/dotty/80/000000/user-manual.png"/> Mostrar informació</button>
         <div class="card card-body" style="margin: 0px auto; display: block;" id="instruccions" hidden>
             <h3>Funcionament del motor d'importació</h3>
-            Per tal de utilitzar aquest motor d'importació de dades d'aquest sistema GIS, es necessita que siguis superusuari de la pàgina. No et preucupis, si estas aquí és perquè tens aquests privilegis.<br>
+            Per tal d'utilitzar aquest motor d'importació de dades d'aquest sistema GIS, es necessita que siguis superusuari de la pàgina. No et preocupis, si estàs aquí és perquè tens aquests privilegis.<br>
             Simplement puja el fitxer en format CSV, aquest ha de tenir el següent format:
             <table>
                 <tr>
@@ -117,7 +117,7 @@ tr:nth-child(even) {
                     <th>Longitud</th>
                     <th>Descripció</th>
                     <th>Categoria</th>
-                    <th>Superficie</th>
+                    <th>Superfície</th>
                     <th>Província</th>
                     <th>Localitat</th>
                     <th>Estat de Conservació</th>
@@ -130,7 +130,7 @@ tr:nth-child(even) {
                     <td>Longitud1</td>
                     <th>Descripció1</th>
                     <th>Categoria1</th>
-                    <th>Superficie1</th>
+                    <th>Superfície1</th>
                     <th>Província1</th>
                     <th>Localitat1</th>
                     <th>Estat de Conservació1</th>
@@ -143,7 +143,7 @@ tr:nth-child(even) {
                     <td>Longitud2</td>
                     <th>Descripció2</th>
                     <th>Tipus2</th>
-                    <th>Superficie2</th>
+                    <th>Superfície2</th>
                     <th>Província2</th>
                     <th>Localitat2</th>
                     <th>Estat de Conservació2</th>
@@ -169,7 +169,7 @@ tr:nth-child(even) {
                     <th>Longitud N</th>
                     <th>Descripció N</th>
                     <th>Categoria N</th>
-                    <th>Superficie N</th>
+                    <th>Superfície N</th>
                     <th>Província N</th>
                     <th>Localitat N</th>
                     <th>Estat de Conservació N</th>
@@ -178,8 +178,8 @@ tr:nth-child(even) {
                 </tr>
             </table>
             <br>
-            Pots trobar un fitxer d'exemple, fent click <a href=" https://drive.google.com/uc?export=download&id=18w-70HjYs0VjBKj_qezkp5owXx-MoM7U" target="_blank">aqui</a>.<br>
-            En cas que hi hagi algun problema t'informarà, el soluciones i ja es pot anar confirmant cada un dels nous locals, pujant la foto.
+            Pots trobar un fitxer d'exemple, fent clic <a href=" https://drive.google.com/uc?export=download&id=18w-70HjYs0VjBKj_qezkp5owXx-MoM7U" target="_blank">aquí</a>.<br>
+            En cas que hi hagi algun problema t'informarà de l'error trobat en el fitxer, es soluciona i ja es pot anar confirmant cada un dels nous locals afegint la fotografia que estarà adjunta a aquest.
         </div>
     </div>
     <br>
@@ -203,7 +203,7 @@ tr:nth-child(even) {
            <div class="text-center"><button style="margin:0px auto; display: block;" type="submit" class="btn btn-success" onclick="checkIfExistsCSV()"><i class="fa fa-file" aria-hidden="true"></i> Importar fitxer</button></div>
            <div id="errors" hidden>
                <hr>
-                <div class="text-center" style="color:red"><h5><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Errors trobats al processar el document</h5></div>
+                <div class="text-center" style="color:red"><h5><i class="fa fa-exclamation-triangle" aria-hidden="true"></i> Errors trobats en processar el document</h5></div>
                 <div id="errorsCSV"></div>
            </div>
         </div>
