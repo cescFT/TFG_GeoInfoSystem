@@ -80,7 +80,7 @@
     <div class="header">
         <a href="/" class="logo active"><i class="fa fa-home" aria-hidden="true"></i> Sistema d'Informació Geogràfica</a>
         <div class="header-right">
-            <a href="/v1/geoInfoSystem/map/"><i class="fa fa-globe" aria-hidden="true"></i> Visualitza el mapa</a>
+            <a href="/v1/geoInfoSystem/map/"><i class="fa fa-globe" aria-hidden="true"></i> Visualitza el {{label_mapa|safe}}</a>
             {% if user.is_staff and user.is_superuser %}
                 <a href="/v1/geoInfoSystem/motorImportacio/"><i class="fa fa-file" aria-hidden="true"></i> Importa els nous punts a partir d'un CSV</a>
             {% endif %}
@@ -114,16 +114,16 @@
                         <h2><img height="70px" src="https://img.icons8.com/dotty/80/000000/user-manual.png"/> Instruccions</h2>
                             <div class="row">
                                 <ol>
-                                    <li><b>Mapa</b>: El mapa et serveix per a prémer els punts d'interès que vulguis afegir en el sistema GIS.
+                                    <li><b>{{label_mapa_majus|safe}}</b>: El {{label_mapa|safe}} et serveix per a prémer els punts d'interès que vulguis afegir en el {{label_sistemaGIS|safe}}.
                                     </li>
                                     <li><b>Botonera</b>:
                                         <ul>
-                                            <li><b><i>Centrar mapa</i></b>: Amb aquesta funció podràs centrar el mapa aproximant la posició en la qual et trobes. Has de donar permís al navegador per a poder fer ús d'aquesta tecnologia.</li>
-                                            <li><b><i>Esborrar els punts marcats</i></b>: Amb aquesta funció, quan hi hagi els punts marcats en el mapa, podràs eliminar-los tots de cop.</li>
-                                            <li><b><i>Mostrar punts</i></b>: Un cop hagis marcat punts en el mapa i premis el botó, passaràs a la <i>següent fase</i>:
+                                            <li><b><i>Centrar {{label_mapa|safe}}</i></b>: Amb aquesta funció podràs centrar el {{label_mapa|safe}} aproximant la posició en la qual et trobes. Has de donar permís al navegador per a poder fer ús d'aquesta tecnologia.</li>
+                                            <li><b><i>Esborrar els punts marcats</i></b>: Amb aquesta funció, quan hi hagi els punts marcats en el {{label_mapa|safe}}, podràs eliminar-los tots de cop.</li>
+                                            <li><b><i>Mostrar punts</i></b>: Un cop hagis marcat punts en el {{label_mapa|safe}} i premis el botó, passaràs a la <i>següent fase</i>:
                                                 <ul>
                                                     <li>
-                                                        Es mostrarà un desplegable amb tots els punts nous. Els noms dels punts en el desplegable tenen la forma: <b>Punt <i>X</i></b>, on X=1 és el primer punt premut en el mapa i X=N, l'últim punt d'interès marcat.
+                                                        Es mostrarà un desplegable amb tots els punts nous. Els noms dels punts en el desplegable tenen la forma: <b>{{label_punts_majus|safe}} <i>X</i></b>, on X=1 és el primer punt premut en el {{label_mapa|safe}} i X=N, l'últim punt d'interès marcat.
                                                     </li>
                                                     <li>
                                                         Se selecciona un dels punts que hi ha en el desplegable i es prem el botó "Següent". Quan premem aquest, el sistema mostrarà un formulari per tal de completar tota la informació necessària per a documentar el local.
@@ -148,16 +148,16 @@
                             <ol>
                                 <li id="errorcomu">
                                     <b>He rebut l'avís "<i class="fa fa-exclamation-triangle"></i> Error en processar. Revisa les preguntes freqüents". Què ha passat?</b>
-                                    <p style="margin-left: 10px;" align="justify">Tranquil, no et preocupis. El més comú el que passa és que s'intenti posar un punt d'interès nou amb una categoria i ciutat existents. El sistema GIS, abans de processar els punts, comprova que no es posi un nou punt ja existent, és a dir, un punt en una ciutat i amb una categoria iguals.
-                                    Per tant, només es poden posar punts nous que no existeixin prèviament en el sistema GIS.
+                                    <p style="margin-left: 10px;" align="justify">Tranquil, no et preocupis. El més comú el que passa és que s'intenti posar un punt d'interès nou amb una categoria i ciutat existents. El {{label_sistemaGIS|safe}}, abans de processar els punts, comprova que no es posi un nou punt ja existent, és a dir, un punt en una ciutat i amb una categoria iguals.
+                                    Per tant, només es poden posar punts nous que no existeixin prèviament en el {{label_sistemaGIS|safe}}.
                                     </p>
                                     <b>Ho he posat bé i m'ha aparegut aquest error, que faig?</b>
                                     <p style="margin-left: 10px" align="justify">En cas de fer bé això, comprova sempre que els camps "<i>Superfície</i>" i "<i>any de construcció</i>" siguin numèrics i coherents. En altre cas, no et permetrà.</p>
                                 </li>
-                                <li><b>Puc centrar el mapa si no permeto la geolocalització del navegador en aquest lloc web?</b>
+                                <li><b>Puc centrar el {{label_mapa|safe}} si no permeto la geolocalització del navegador en aquest lloc web?</b>
                                     <p style="margin-left: 10px" align="justify">Malauradament no. Aquesta opció funciona gràcies a un mecanisme que hi ha incorporat en la versió 5 del llenguatge HTML, de l'Anglès <i>HyperText Markup Language</i>.</p>
-                                    <b>I si no centro el mapa, no puc afegir nou/s punt/s d'interès nou/s?</b>
-                                    <p style="margin-left: 10px" align="justify">El fet de no acceptar la geolocalització no impedirà en cap cas que el sistema GIS pugui afegir el nou o nous punts. Simplement és una ajuda per tu, per centrar el mapa en la localitat on estàs.</p>
+                                    <b>I si no centro el {{label_mapa|safe}}, no puc afegir nou/s punt/s d'interès nou/s?</b>
+                                    <p style="margin-left: 10px" align="justify">El fet de no acceptar la geolocalització no impedirà en cap cas que el {{label_sistemaGIS|safe}} pugui afegir el nou o nous punts. Simplement és una ajuda per tu, per centrar el mapa en la localitat on estàs.</p>
                                 </li>
                                 <li><b>He marcat un punt i vull marcar un altre quan ja tinc el desplegable de punts d'interès nous obert. Què haig de fer per a actualitzar el llistat de punts per a processar?</b>
                                     <br>
@@ -167,12 +167,12 @@
                                     <p style="margin-left: 10px;" align="justify">El desplegable el podràs tancar perquè apareix un nou botó que té aquesta opció.</p>
                                 </li>
                                 <li>
-                                    <b>Què passa si intento mostrar punts marcats quan no hi ha cap punt en el mapa?</b>
+                                    <b>Què passa si intento mostrar punts marcats quan no hi ha cap punt en el {{label_mapa|safe}}?</b>
                                     <p style="margin-left: 10px" align="justify">Tranquil, no passa res. Simplement la web t'avisa de què no tens cap punt marcat i et convida a fer que posis els punts nous en el mapa.</p>
                                 </li>
                                 <li>
                                     <b>Puc afegir un nou punt si no omplo el formulari de la informació referent al local?</b>
-                                    <p style="margin-left: 10px;" align="justify">No. El sistema et retornarà de nou a la pàgina aquesta, guardant tots els punts que hagis posat en el mapa i hauràs de repetir
+                                    <p style="margin-left: 10px;" align="justify">No. El sistema et retornarà de nou a la pàgina aquesta, guardant tots els punts que hagis posat en el {{label_mapa|safe}} i hauràs de repetir
                                         totes les accions que s'expliquen en l'apartat de les <a href="#instruccionscard">instruccions</a>.</p>
                                     <b>Això vol dir que en cas d'error al processar la informació, retornaré aquí amb totes les dades guardades?</b>
                                     <p style="margin-left: 10px" align="justify">Exacte. Sempre que hi hagi algun error referent amb el formulari final, on es demana la informació del local.</p>
@@ -185,12 +185,12 @@
       </div>
     </div>
     <div class="container">
-            <h2><img src="https://img.icons8.com/ios-glyphs/100/000000/map-marker.png"/>Afegeix punts al sistema GIS</h2>
+            <h2><img src="https://img.icons8.com/ios-glyphs/100/000000/map-marker.png"/>Afegeix punts al {{label_sistemaGIS|safe}}</h2>
             <div class="col-xs-12" style="float:none; margin:auto;"> <!--col-xs-12 col-md-8-->
                 <div id="mapid" style="height: 400px"></div>
                 <div class="text-center">
                     <div class="btn-group" role="group">
-                        <button class="btn btn-outline-secondary" onclick="mostraLesCoordenadesUsuari()"><img style="height: 20px" src="https://img.icons8.com/ios-glyphs/30/000000/centre-of-gravity.png"/> Centrar mapa</button>
+                        <button class="btn btn-outline-secondary" onclick="mostraLesCoordenadesUsuari()"><img style="height: 20px" src="https://img.icons8.com/ios-glyphs/30/000000/centre-of-gravity.png"/> Centrar {{label_mapa|safe}}</button>
                         <button class="btn btn-outline-secondary" onclick="eliminarTotsPuntsInteresNous()" id="boto_eliminarPunts"><i class="fa fa-eraser"></i> Esborrar els punts marcats</button>
                         <button class="btn btn-outline-secondary" onclick="mostrarCoordenades()" id="boto_mostrarDades"><i class="fa fa-eye"></i> Mostra els punts</button>
                     </div>

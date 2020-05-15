@@ -1106,9 +1106,39 @@ def mostrarPuntEspecific(request, nomLocal,latitud, longitud):
     #altresLocals = serializers.serialize("json", altresLocals)
     #punts = serializers.serialize("json", punts)
     if len(altresPuntsInteres)>0:
-        return render(request, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat,'puntInteres':punt, 'local': localE, 'altres': True, 'imatge':imatge_local})
+        t_coordenades=trobarParaula('Coordenades')
+        t_descripcio=trobarParaula('Descripció')
+        t_localitzacio=trobarParaula('Localització')
+        t_categoria=trobarParaula('Categoria')
+        t_estatConservacio=trobarParaula('Estat de Conservació')
+        t_anyConstruccio=trobarParaula('Any de Construcció')
+        t_superficie=trobarParaula('Superfície')
+        t_titol_pagina=trobarParaula("Informació Específica del Local")
+        return render(request, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,
+                                                                            'localitat':localitat,'puntInteres':punt,
+                                                                            'local': localE, 'altres': True,
+                                                                            'imatge':imatge_local,'label_coordenades':t_coordenades,
+                                                                            'label_descripcio':t_descripcio, 'label_localitzacio':t_localitzacio,
+                                                                            'label_categoria':t_categoria, 'label_estatConservacio':t_estatConservacio,
+                                                                            'label_anyConstruccio':t_anyConstruccio, 'label_superficie':t_superficie,
+                                                                            'label_titol_pagina':t_titol_pagina})
     else:
-        return render(request, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,'localitat':localitat, 'puntInteres': punt, 'local': localE, 'altres': False, 'imatge':imatge_local})
+        t_coordenades = trobarParaula('Coordenades')
+        t_descripcio = trobarParaula('Descripció')
+        t_localitzacio = trobarParaula('Localització')
+        t_categoria = trobarParaula('Categoria')
+        t_estatConservacio = trobarParaula('Estat de Conservació')
+        t_anyConstruccio = trobarParaula('Any de Construcció')
+        t_superficie = trobarParaula('Superfície')
+        t_titol_pagina = trobarParaula("Informació Específica del Local")
+        return render(request, "puntsGeografics/informacioDetallada.html", {'categoria':categoria,
+                                                                            'localitat':localitat, 'puntInteres': punt,
+                                                                            'local': localE, 'altres': False,
+                                                                            'imatge':imatge_local,'label_coordenades':t_coordenades,
+                                                                            'label_descripcio':t_descripcio, 'label_localitzacio':t_localitzacio,
+                                                                            'label_categoria':t_categoria, 'label_estatConservacio':t_estatConservacio,
+                                                                            'label_anyConstruccio':t_anyConstruccio, 'label_superficie':t_superficie,
+                                                                            'label_titol_pagina':t_titol_pagina})
 
 """
 Mètode AJAX auxiliar del mètode anterior que permet que quan en un punt d'una ciutat hi ha més punts, permet la obtenció dels altres punts específics i l'usuari hi pot accedir, sense cap problema.
@@ -1731,8 +1761,28 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
         else:
             midaLlista = int(midaLlistaString)
             punts = json.dumps(llista)
-            return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'provincies':provinciesMostrar ,'categories': categoriesMostrar, 'poblacions':poblacionsMostrar, 'punts': punts, 'lenLlista':midaLlista})
-    return render(request, "puntsGeografics/afegirNouPunt.html", {'provincies':provinciesMostrar,'categories':categoriesMostrar, 'poblacions':poblacionsMostrar,'punts':[], 'lenLlista':0})
+            t_sistemaGIS=trobarParaula("sistema GIS")
+            t_mapa = trobarParaula('mapa')
+            t_mapa_majus = paraulesClauGIS.objects.all().filter(paraula='mapa')[1].paraula
+            t_punt_majus=paraulesClauGIS.objects.all().filter(paraula='punt')[1].paraula
+            return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'provincies':provinciesMostrar ,
+                                                                          'categories': categoriesMostrar,
+                                                                          'poblacions':poblacionsMostrar,
+                                                                          'punts': punts,'lenLlista':midaLlista,
+                                                                          'label_sistemaGIS':t_sistemaGIS,
+                                                                          'label_mapa':t_mapa, 'label_mapa_majus':t_mapa_majus,
+                                                                          'label_punt_majus':t_punt_majus})
+    t_sistemaGIS=trobarParaula("sistema GIS")
+    t_mapa=trobarParaula('mapa')
+    t_mapa_majus=paraulesClauGIS.objects.all().filter(paraula='mapa')[1].paraula
+    t_punt_majus = paraulesClauGIS.objects.all().filter(paraula='punt')[1].paraula
+    return render(request, "puntsGeografics/afegirNouPunt.html", {'provincies':provinciesMostrar,
+                                                                  'categories':categoriesMostrar,
+                                                                  'poblacions':poblacionsMostrar,
+                                                                  'punts':[], 'lenLlista':0,
+                                                                  'label_sistemaGIS':t_sistemaGIS,
+                                                                  'label_mapa':t_mapa, 'label_mapa_majus':t_mapa_majus,
+                                                                  'label_punts_majus':t_punt_majus})
 
 """
 Mètode AJAX auxiliar del anterior mètode, que permet comprovar que els camps estiguin informats
