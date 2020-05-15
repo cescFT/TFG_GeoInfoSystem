@@ -127,7 +127,7 @@ tr:nth-child(even) {
     <h1 class="text-center">Estadístiques</h1>
     <hr>
     <div class="container">
-        <button type="button" class="btn btn-secondary" onclick="showInstructions()" ><img height="22px" src="https://img.icons8.com/dotty/80/000000/user-manual.png"/> Mostrar informació</button>
+        <button type="button" class="btn btn-secondary" onclick="showInstructions()" ><img height="22px" src="https://img.icons8.com/dotty/80/000000/user-manual.png"/> Instruccions</button>
     </div>
     <div class="container" id="instruccions" hidden>
         <div class="card card-body">
@@ -345,10 +345,10 @@ function unfade(element) {
 function showInstructions(){
     if (document.getElementById("instruccions").hidden === false){
         document.getElementById("instruccions").hidden = true;
-        fade(document.getElementById("instruccions"));
+        //fade(document.getElementById("instruccions"));
     }else{
         document.getElementById("instruccions").hidden = false;
-        unfade(document.getElementById("instruccions"));
+        //unfade(document.getElementById("instruccions"));
     }
 }
 function inicialitzacioEstadistiques(){
