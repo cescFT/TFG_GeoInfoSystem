@@ -55,6 +55,18 @@ class imatges_locals(models.Model):
     
 '''
 
+"""
+Classe que representa la taula on s'emmagatzema la relació entre la fotografia i el local
+"""
 class imageLocal(models.Model):
     imatge=models.ImageField(upload_to='photo')
     local=models.ForeignKey(local, on_delete=models.CASCADE)
+
+"""
+Classe que representen les paraules més freqüents dints del sistema GIS
+"""
+class paraulesClauGIS(models.Model):
+    paraula=models.CharField(max_length=600)
+    idioma=models.CharField(max_length=30)
+    def __str__(self):
+        return self.paraula

@@ -1,5 +1,5 @@
 {% extends 'home/base.html' %}
-{% block title %} Sistema de Geolocalització {% endblock %}
+{% block title %} {{sig|safe}} {% endblock %}
 {% load static %}
 {% block content %}
 <head>
@@ -14,16 +14,16 @@
 </head>
 <br>
 <div class="centrar">
-    <h1>Treball Fi de Grau</h1>
+    <h1>{{titol|safe}}</h1>
     <div class="centrar">
-        <h2>Sistema d'informació Geogràfica per a l'estudi d'usos de les ciutats</h2>
+        <h2>{{sig|safe}} per a l'estudi d'usos de les ciutats</h2>
     </div>
 </div>
 <hr>
 <div class="container info-cesc">
     <p align="justify">
-        Aquest sistema GIS, de l'Anglès <i>Geographical Information System</i>, ha estat dissenyat i programat per en Francesc Ferré Tarrés.<br>
-        La finalitat principal d'aquest treball és mostrar la usabilitat de les ciutats a partir dels punts d'interès (la seva categoria, l'estat de conservació, si actualment és actiu o no) que els usuaris amb privilegis afegeixen al sistema GIS.
+        Aquest {{sistemaGIS|safe}}, de l'Anglès <i>Geographical Information System</i>, ha estat dissenyat i programat per en Francesc Ferré Tarrés.<br>
+        La finalitat principal d'aquest treball és mostrar la usabilitat de les ciutats a partir dels {{puntsInteres|safe}} (la seva categoria, l'estat de conservació, si actualment és actiu o no) que els usuaris amb privilegis afegeixen al {{sistemaGIS|safe}}.
         <br>
         A més, aquest treball, en un futur, està destinat a ajudar al professor Roger Miralles Jori (professor de l'Escola Tècnica Superior d'Arquitectura, a la Universitat Rovira i Virigli) a realitzar un projecte. Tot i això,
         l'Antoni Martínez Ballesté (professor de l'Escola Tècnica Superior d'Enginyeria, a la Universitat Rovira i Virgili) ha estat el meu tutor en aquest treball.
@@ -38,25 +38,25 @@
                     <li>
                         En la part dreta de la capçalera les opcions que apareixen depenen de la pàgina en la qual ens trobem i si s'ha iniciat sessió o no, inclús si la persona que ha iniciat sessió és superusuari o no. Les funcionalitats que s'hi poden trobar són les següents:
                         <ul>
-                            <li><b><a href="/v1/geoInfoSystem/map/">Visualitza el mapa</a>:</b> En aquesta opció, qualsevol persona que es connecti, pot veure el mapa amb els punts d'interès que la persona amb privilegis d'administrador ha afegit al sistema GIS.</li>
+                            <li><b><a href="/v1/geoInfoSystem/map/">Visualitza el {{mapa|safe}}</a>:</b> En aquesta opció, qualsevol persona que es connecti, pot veure el {{mapa|safe}} amb els {{puntsInteres|safe}} que la persona amb privilegis d'administrador ha afegit al {{sistemaGIS|safe}}.</li>
                             <li><b><a href="/v1/geoInfoSystem/registrar_nou_usuari/">Registrar-se</a>:</b> La pàgina permet que qualsevol persona que vulgui, pot omple el formulari i registrar-se a la web.</li>
                             <li><b><a href="/v1/geoInfoSystem/inicia_sessio/">Iniciar sessió</a>:</b> Un cop registrat, pot iniciar la sessió en aquesta pàgina.</li>
                             <li><b><a href="/v1/geoInfoSystem/el_meu_espai/">El meu espai</a>:</b> En aquesta opció hi ha la pàgina de perfil de l'usuari on es troba la informació personal, la qual es pot actualitzar. Es mostren també les accions possibles que es poden realitzar en la web i en funció de quin rol és l'usuari en veurà unes o unes altres.
                                 Ull! Si s'intenta entrar sense haver iniciat sessió no permetrà entrar. El flux d'execució redirigeix a la pàgina d'inici de sessió.</li>
-                            <li><b><a href="/v1/geoInfoSystem/estadistiquesGIS/">Mòdul estadístic</a>:</b> Aquesta pàgina permet el filtratge dels locals amb representació al sistema GIS i retorna una taula amb les respostes. Es permet l'opció d'ordenar la resposta.</li>
-                            <li><b><a href="/v1/geoInfoSystem/nouPunt/">Afegir nous punts manualment</a>:</b> Aquesta opció es mostra en el mapa si la persona que ha iniciat sessió és personal administratiu de la pàgina. En aquest cas,
-                                aquest podrà afegir nous punts d'interès al sistema GIS. En altre cas, el sistema informarà que s'està intentant emprendre una acció en la qual no s'està autoritzat i et permetrà redirigir a la pàgina d'inici.</li>
+                            <li><b><a href="/v1/geoInfoSystem/estadistiquesGIS/">Mòdul estadístic</a>:</b> Aquesta pàgina permet el filtratge dels locals amb representació al {{sistemaGIS|safe}} i retorna una taula amb les respostes. Es permet l'opció d'ordenar la resposta.</li>
+                            <li><b><a href="/v1/geoInfoSystem/nouPunt/">Afegir nous punts manualment</a>:</b> Aquesta opció es mostra en el {{mapa|safe}} si la persona que ha iniciat sessió és personal administratiu de la pàgina. En aquest cas,
+                                aquest podrà afegir nous {{puntsInteres|safe}} al {{sistemaGIS|safe}}. En altre cas, el sistema informarà que s'està intentant emprendre una acció en la qual no s'està autoritzat i et permetrà redirigir a la pàgina d'inici.</li>
                             <li><b><a href="/v1/geoInfoSystem/motorImportacio/">Motor d'importació de dades</a>:</b> Aquesta opció, present en les mateixes condicions que en el cas anterior, permet a la persona autoritzada importar un fitxer CSV (<i>Comma Separated Value</i>) amb les dades
-                            referent als nous punts d'interès i pot pujar-los a través d'aquesta opció. Novament, si no ets usuari autoritzat, el sistema no et permetrà entrar i et permetrà redirigir-te a la pàgina d'inici.</li>
-                            <li><b>Informació aleatòria d'un local:</b> Apareix en la pàgina del mapa. Permet entrar a veure la informació completa d'un local, escollit totalment aleatori.</li>
+                            referent als nous {{puntsInteres|safe}} i pot pujar-los a través d'aquesta opció. Novament, si no ets usuari autoritzat, el sistema no et permetrà entrar i et permetrà redirigir-te a la pàgina d'inici.</li>
+                            <li><b>Informació aleatòria d'un local:</b> Apareix en la pàgina del {{mapa|safe}}. Permet entrar a veure la informació completa d'un local, escollit totalment aleatori.</li>
                         </ul>
                     </li>
                 </ul>
             </li>
-            <li>Mapa:
+            <li>{{Mapa|safe}}:
                 <ul>
-                    <li>En aquesta pantalla es mostra el mapa, realitzat amb <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> i amb el <i>Development kit</i> <a href="https://leafletjs.com/" target="_blank" rel="noopener noreferrer">Leaflet</a>.
-                        A continuació es pot veure un exemple extret del mateix sistema GIS implementat:
+                    <li>En aquesta pantalla es mostra el {{mapa|safe}}, realitzat amb <a href="https://www.openstreetmap.org/" target="_blank" rel="noopener noreferrer">OpenStreetMap</a> i amb el <i>Development kit</i> <a href="https://leafletjs.com/" target="_blank" rel="noopener noreferrer">Leaflet</a>.
+                        A continuació es pot veure un exemple extret del mateix {{sistemaGIS|safe}} implementat:
                     <div class="text-center">
                         <figure>
                             <br>
@@ -64,13 +64,13 @@
                             <figcaption><b>Exemple GIS</b></figcaption>
                         </figure>
                     </div>
-                    <br>El que es pot veure en aquesta imatge és un exemple real sobre el qual es pot representar en aquest mapa. Es poden veure els diferents marcadors, de diferent color, aquests són els punts d'interès que l'usuari autoritzat ha afegit. Cada color representa una categoria, i per tal de no perdre's apareix una llegenda i
+                    <br>El que es pot veure en aquesta imatge és un exemple real sobre el qual es pot representar en aquest {{mapa|safe}}. Es poden veure els diferents marcadors, de diferent color, aquests són els {{puntsInteres|safe}} que l'usuari autoritzat ha afegit. Cada color representa una categoria, i per tal de no perdre's apareix una llegenda i
                         el fet que estigui fet per capes, es pot anar veient per categories els punts que hi ha. Per exemple, si només volem veure els de la categoria "Restauració":
                         <div class="text-center">
                             <figure>
                                 <br>
                                 <img style="border-width: 2px; border-style: solid;" src="{%static 'exemple_leaflet_cat_restauracio_gis.jpg'%}">
-                                <figcaption><b>Punts d'interès de la categoria "Restauració"</b></figcaption>
+                                <figcaption><b>{{PuntsInteres|safe}} de la categoria "Restauració"</b></figcaption>
                             </figure>
                         </div>
                         Si es prem en algun dels punts, es pot veure informació dins d'un quadre de text (inclou un enllaç per a veure la informació en una finestra més gran), aquí hi ha un exemple:
@@ -87,33 +87,33 @@
             <li>Mòdul estadístic:
                 <ul>
                     En el mòdul estadístic es permet filtrar i extreure dades, aquests filtres són els següents:
-                    <li><b>Localitat:</b> Aquest filtratge permet que se cerquin els punts d'interès en una ciutat o població de Catalunya. S'ordenen per mitjà de les províncies. Per tant, la persona que vulgui fer
+                    <li><b>Localitat:</b> Aquest filtratge permet que se cerquin els {{puntsInteres|safe}} en una ciutat o població de Catalunya. S'ordenen per mitjà de les províncies. Per tant, la persona que vulgui fer
                         un filtre, ha d'establir primer la província del poble o ciutat a la qual vol filtrar els punts.
                     </li>
-                    <li><b>Categoria:</b> En aquest filtratge podem aplicar quina categoria de punts d'interès vol la persona per a filtrar de la població que ha establert anteriorment.</li>
-                    <li><b>Actiu:</b> Botó que si està activat, cerca els punts d'interès actius, altrament, cerca els punts d'interès no actius.</li>
+                    <li><b>Categoria:</b> En aquest filtratge podem aplicar quina categoria de {{puntsInteres|safe}} vol la persona per a filtrar de la població que ha establert anteriorment.</li>
+                    <li><b>Actiu:</b> Botó que si està activat, cerca els {{puntsInteres|safe}} actius, altrament, cerca els {{puntsInteres|safe}} no actius.</li>
                 </ul>
                 Els resultats que dóna aquest mòdul està dividit en les següents sortides:
                 <ul>
                     <li><b>Resultat de la consulta actual:</b> El servidor retorna el resultat d'aplicar els filtres establerts per la persona interessada a saber el resultat.</li>
-                    <li><b>Locals de la mateixa localitat:</b> El servidor retorna tots els punts d'interès que es troben en la mateixa localitat, tant els que són actius o no.</li>
-                    <li><b>Locals de la mateixa categoria:</b> El servidor retorna tots els punts d'interès que es troben en la localitat donada però amb l'actiu contrari al donat i la mateixa categoria.</li>
-                    <li><b>Locals d'altres categories:</b> El servidor retorna tots els punts d'interès que es troben en la mateixa localitat donada però amb una categoria diferent de la que s'ha donat.</li>
-                    <li><b>Locals d'altres pobles amb la mateixa categoria:</b> El servidor manté l'actiu donat i la categoria però cerca punts d'interès a altres localitats.</li>
+                    <li><b>Locals de la mateixa localitat:</b> El servidor retorna tots els {{puntsInteres|safe}} que es troben en la mateixa localitat, tant els que són actius o no.</li>
+                    <li><b>Locals de la mateixa categoria:</b> El servidor retorna tots els {{puntsInteres|safe}} que es troben en la localitat donada però amb l'actiu contrari al donat i la mateixa categoria.</li>
+                    <li><b>Locals d'altres categories:</b> El servidor retorna tots els {{puntsInteres|safe}} que es troben en la mateixa localitat donada però amb una categoria diferent de la que s'ha donat.</li>
+                    <li><b>Locals d'altres pobles amb la mateixa categoria:</b> El servidor manté l'actiu donat i la categoria però cerca {{puntsInteres|safe}} a altres localitats.</li>
                     <li><b>Locals resultat d'aplicar el resultat contrari de la consulta actual:</b> El servidor retorna el resultat contrari als paràmetres donats. Per exemple:
                     <ul>
                         <li><b>Localitat:</b> Valls (Alt Camp), Tarragona</li>
                         <li><b>Tipus:</b> Restauració</li>
                         <li><b>Actiu:</b> Botó premut</li>
                     </ul>
-                        El que el servidor retornarà seran tots aquells punts d'interès que no són de <i><b>Valls</b></i>, que no estan dins de l'àmbit de la <i><b>Restauració</b></i> i <i><b>no actius</b></i>.
+                        El que el servidor retornarà seran tots aquells {{puntsInteres|safe}} que no són de <i><b>Valls</b></i>, que no estan dins de l'àmbit de la <i><b>Restauració</b></i> i <i><b>no actius</b></i>.
                     </li>
-                    <li><b>Locals presents en tot el sistema GIS:</b> El servidor retorna tots els punts d'interès que hi ha en la base de dades.</li>
+                    <li><b>Locals presents en tot el {{sistemaGIS|safe}}:</b> El servidor retorna tots els {{puntsInteres|safe}} que hi ha en la base de dades.</li>
                 </ul>
             </li>
             <li>Informació d'un local en específic:
-                Aquesta opció, tal com s'ha comentat amb anterioritat, apareix quan s'accedeix a la pàgina de visualització del <a href="/v1/geoInfoSystem/map/">mapa</a>, descrita en l'apartat anterior. En aquesta opció, el que es fa és que cada vegada que una persona accedeix
-                en la pàgina, aquesta mostrarà una pàgina específica d'informació d'un local (punt d'interès) aleatori present en el sistema GIS.
+                Aquesta opció, tal com s'ha comentat amb anterioritat, apareix quan s'accedeix a la pàgina de visualització del <a href="/v1/geoInfoSystem/map/">{{mapa|safe}}</a>, descrita en l'apartat anterior. En aquesta opció, el que es fa és que cada vegada que una persona accedeix
+                en la pàgina, aquesta mostrarà una pàgina específica d'informació d'un local ({{puntInteres|safe}}) aleatori present en el {{sistemaGIS|safe}}.
             </li>
             <li>Registrar-se a la web:
                 <ul>
@@ -124,34 +124,34 @@
                     <li>Ambdues contrasenyes coincideixin</li>
                     <li>Format mail: <i>exemple@mail.com</i></li>
                 </ul>
-                Un cop algú s'ha registrat a la web, l'administrador de la pàgina té la capacitat de donar privilegis d'administrador. En aquest cas, aquest passaria a formar part del staff tècnic de la pàgina, amb la qual cosa implicarà la capacitat d'afegir nous punts en el sistema GIS.
+                Un cop algú s'ha registrat a la web, l'administrador de la pàgina té la capacitat de donar privilegis d'administrador. En aquest cas, aquest passaria a formar part del staff tècnic de la pàgina, amb la qual cosa implicarà la capacitat d'afegir nous punts en el {{sistemaGIS|safe}}.
             </li>
             <li>Iniciar sessió a la web:
                 <ul>
-                Aquesta opció permet a qualsevol persona que s'hagi registrat prèviament, iniciar sessió en la web. Iniciant sessió i sent administrador de la pàgina, la capacitat d'afegir nous punts en el sistema GIS és permès.
+                Aquesta opció permet a qualsevol persona que s'hagi registrat prèviament, iniciar sessió en la web. Iniciant sessió i sent administrador de la pàgina, la capacitat d'afegir nous punts en el {{sistemaGIS|safe}} és permès.
                 En cas que l'usuari no sigui administrador de la pàgina, tindrà accés a qualsevol opció, igual com si accedissis sense iniciar sessió.
                 L'usuari que hagi iniciat sessió podrà accedir a la pantalla del seu perfil, en la qual pot veure les seves dades personals i modificar-les o afegir, en cas que no les hagi afegit anteriorment i a més veurà les accions permeses que aquest té en la pàgina.
                     <li><b>Pàgina de perfil de l'usuari:</b> En aquesta pantalla, tal com s'ha comentat amb anterioritat, l'usuari pot completar les dades que no hagi afegit amb anterioritat, però també té la capacitat de realitzar diverses accions a part de les que s'han descrit en punts anteriors:
                         <ul>
                             <li>
                                 <b><i>Accés a la pàgina administrativa:</i></b> En cas que l'usuari formi part de l'staff tècnic de la pàgina (i havent-se registrat prèviament), pot accedir a una sèrie d'enllaços especials, que només són accessibles en aquella pàgina,
-                                i li permet gestionar usuaris de la web (posar com a administrador de la pàgina un usuari en concret, eliminar-lo del sistema o fins i tot treure-li privilegis), els punts d'interès, els locals, les categories i fins i tot les localitats.<br>
-                                Dit d'una forma més tècnica, aquest usuari interactua directament amb la base de dades del sistema GIS. D'aquesta forma, tot el que es faci en aquesta part administrativa, presenta persistència i no és reversible.
+                                i li permet gestionar usuaris de la web (posar com a administrador de la pàgina un usuari en concret, eliminar-lo del sistema o fins i tot treure-li privilegis), els {{puntsInteres|safe}}, els locals, les categories i fins i tot les localitats.<br>
+                                Dit d'una forma més tècnica, aquest usuari interactua directament amb la base de dades del {{sistemaGIS|safe}}. D'aquesta forma, tot el que es faci en aquesta part administrativa, presenta persistència i no és reversible.
                                 Per tant, qualsevol persona, que formi part del staff tècnic de la pàgina, ha de ser conscient de les accions que dugui a terme en la part administrativa de la pàgina.
                             </li>
-                            <li><b><i>Donar-se de baixa del web i del sistema GIS:</i></b> Aquesta opció, també està present en la pàgina del perfil de l'usuari. Aquesta hi té accés qualsevol persona registrada en el sistema GIS. Tal com el seu nom indica, el que fa és
+                            <li><b><i>Donar-se de baixa del web i del {{sistemaGIS|safe}}:</i></b> Aquesta opció, també està present en la pàgina del perfil de l'usuari. Aquesta hi té accés qualsevol persona registrada en el {{sistemaGIS|safe}}. Tal com el seu nom indica, el que fa és
                                 donar de baixa i eliminar el registre de la informació que aquell usuari havia introduït en el moment de donar-se d'alta.
                             </li>
                         </ul>
                     </li>
                 </ul>
             </li>
-            <li>Creació d'un nou punt en el sistema GIS:
+            <li>Creació d'un nou punt en el {{sistemaGIS|safe}}:
                 <ul>
                     Aquesta opció està restringida a tots els usuaris excepte aquells qui siguin administradors de la pàgina, tal com s'ha comentat amb anterioritat en punts anteriors. En aquesta pantalla els usuaris es troben tres blocs:
-                    <li><b><i>Mapa per afegir punts nous:</i></b> És en aquesta primera secció en la qual els usuaris amb privilegis d'administrador podran afegir els nous punts al sistema GIS, sempre quan siguin punts nous. Les comprovacions les duu a terme el servidor.</li>
+                    <li><b><i>{{Mapa|safe}} per afegir punts nous:</i></b> És en aquesta primera secció en la qual els usuaris amb privilegis d'administrador podran afegir els nous punts al {{sistemaGIS|safe}}, sempre quan siguin punts nous. Les comprovacions les duu a terme el servidor.</li>
                     <li><b><i>Instruccions:</i></b> S'explica el flux normal de l'execució del sistema d'afegir un nou punt. Es pot consultar sempre quan l'usuari ho requereixi amb un sol clic.</li>
-                    <li><b><i>Preguntes freqüents:</i></b> En aquesta secció l'usuari privilegiat pot veure una col·lecció de preguntes freqüents sobre el funcionament d'afegir nous punts al sistema GIS. De la mateixa forma que en el cas anterior, es pot desplegar sempre quan l'usuari ho requereixi.</li>
+                    <li><b><i>Preguntes freqüents:</i></b> En aquesta secció l'usuari privilegiat pot veure una col·lecció de preguntes freqüents sobre el funcionament d'afegir nous punts al {{sistemaGIS|safe}}. De la mateixa forma que en el cas anterior, es pot desplegar sempre quan l'usuari ho requereixi.</li>
                 </ul>
                 <div class="text-center">
                     <figure>
@@ -160,13 +160,13 @@
                         <figcaption><b>Aquesta és la vista que es trobaran els usuaris amb privilegis quan visitin aquesta pàgina</b></figcaption>
                     </figure>
                 </div>
-                Tal com es pot veure en la imatge anterior, en la part inferior del mapa es mostra una botonera formada per a tres botons:
+                Tal com es pot veure en la imatge anterior, en la part inferior del {{mapa|safe}} es mostra una botonera formada per a tres botons:
                 <ul>
-                    <li><b><i>Centrar mapa:</i></b> Aquesta opció centra el mapa en la zona on es troba l'usuari que vol afegir el punt. <br><b style="color: red">IMPORTANT: L'usuari ha de donar permís al navegador per la geolocalització per a gaudir d'aquesta acció.</b></li>
+                    <li><b><i>Centrar {{mapa|safe}}:</i></b> Aquesta opció centra el {{mapa|safe}} en la zona on es troba l'usuari que vol afegir el punt. <br><b style="color: red">IMPORTANT: L'usuari ha de donar permís al navegador per la geolocalització per a gaudir d'aquesta acció.</b></li>
                     <li><b><i>Esborrar els punts marcats:</i></b> Aquesta opció el que fa és que l'usuari tingui la capacitat d'eliminar els punts que ha marcat, en cas que s'hagi equivocat.</li>
                     <li><b><i>Mostrar els punts:</i></b> Aquest botó és molt important. Aquest botó permet a l'usuari passar a la següent etapa en el procés d'afegir un punt.</li>
                 </ul>
-                Quan l'usuari ha pitjat el botó <b><i>Mostrar els punts</i></b>, el que passa és que apareix un desplegable en el qual apareix un llistat de tots els punts que ha afegit l'usuari, essent el <i>Punt 1</i>, el primer punt d'interès que l'usuari ha pitjat i els <i>Punt N</i>, els següents.
+                Quan l'usuari ha pitjat el botó <b><i>Mostrar els punts</i></b>, el que passa és que apareix un desplegable en el qual apareix un llistat de tots els punts que ha afegit l'usuari, essent el <i>Punt 1</i>, el primer {{puntInteres|safe}} que l'usuari ha pitjat i els <i>Punt N</i>, els següents.
                 D'aquest desplegable, l'usuari ha d'escollir el que vulgui processar i donar-li al botó <i><b>Següent</b></i>, apareix el formulari per a omplir les dades referents al local que es troba en la localització. Aquest formulari demana el següent:
                 <ul>
                     <li>Nom del local.</li>
@@ -180,7 +180,7 @@
                 <div  class="text-center">
                     <figure>
                         <br>
-                        <img style="border-width: 2px; border-style: solid;" src="{% static 'form_nou_punt_bo.jpg' %}"/>
+                        <img style="border-width: 2px; border-style: solid;" src="{% static 'form_nou_punt_bo_leaflet.jpg' %}"/>
                         <figcaption><b>Formulari on es demana totes les dades descrites anteriorment.</b></figcaption>
                     </figure>
                 </div>
@@ -188,8 +188,8 @@
             </li>
             <li>Motor d'importació de dades per mitjà d'un fitxer CSV:
                 Aquest és l'última part present en el treball i permet a qualsevol usuari administrador de la pàgina afegir nous punts per mitjà de pujar un fitxer CSV, de l'anglès <i>Comma Separated Value</i>,
-                en el qual es recull la informació en format graella, amb les dades requerides per a generar un nou punt d'interès i simplement cal anar afegint imatges dels locals adjunts en aquell punt d'interès
-                i fent aquest procés fins a acabar les dades importades, ja tindrem els nous punts generats i guardats en el sistema GIS.
+                en el qual es recull la informació en format graella, amb les dades requerides per a generar un nou {{puntInteres|safe}} i simplement cal anar afegint imatges dels locals adjunts en aquell {{puntInteres|safe}}
+                i fent aquest procés fins a acabar les dades importades, ja tindrem els nous punts generats i guardats en el {{sistemaGIS|safe}}.
             </li>
         </ol>
     </p>

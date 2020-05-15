@@ -744,11 +744,31 @@ def deleteLocalByName(request):
 ################################################################
 ################################################################
 
+"""
+Mètode auxiliar en la que es van passant les paraules que es volen i es cerquen a la base de dades
+"""
+def trobarParaula(paraula):
+    return paraulesClauGIS.objects.all().filter(paraula=paraula)[0].paraula
 """ 
 Mètode que permet visualitzar la pàgina d'inici
 """
 def home(request):
-    return render(request, "home/home.html",{})
+    titol_tfg=trobarParaula('Treball Fi de Grau')
+    sistema=trobarParaula('Sistema')
+    Informacio=trobarParaula('Informació')
+    geografica=trobarParaula('Geogràfica')
+    sistemaGIS=trobarParaula('sistema GIS')
+    puntsminus=paraulesClauGIS.objects.all().filter(paraula='punts')[1].paraula
+    puntsmajus=trobarParaula('Punts')
+    interes=trobarParaula('interès')
+    mapa=trobarParaula('mapa')
+    punt=trobarParaula('punt')
+    Mapa=paraulesClauGIS.objects.all().filter(paraula='mapa')[1].paraula
+    pInteresMinus=puntsminus+' d\''+interes
+    pInteresMajus=puntsmajus+' d\''+interes
+    pInteresSingMinus=punt+' d\''+interes
+    sIG=sistema+' d\''+Informacio+' '+geografica
+    return render(request, "home/home.html",{'titol':titol_tfg, 'sig':sIG, 'sistemaGIS':sistemaGIS, 'puntsInteres':pInteresMinus, 'PuntsInteres':pInteresMajus, 'mapa':mapa, 'Mapa':Mapa, 'puntInteres':pInteresSingMinus})
 
 """
 Mètode que mostra la pàgina per a registrar un nou usuari
@@ -882,6 +902,10 @@ def mostrarMapa(request):
                                                         'grafic_usos_categories':grafic_b64_usos_categories,
                                                         'grafic_actius_noactius':grafic_actius_noactius,
                                                         'hi_ha_grafic':grafic})
+
+"""
+Mètode que renderitza la pàgina que permet fer consultes al sistema GIS
+"""
 def estadistiques(request):
     provincies = localitzacio.objects.all().values_list('provincia', flat=True).distinct()
     dict = {}
@@ -1405,6 +1429,9 @@ def ciutatsPerProvincia(request):
         loc = json.dumps(res)
         return HttpResponse(loc, content_type='json')
 
+"""
+Mètode AJAX que retorna les ciutats d'una província en específic
+"""
 def ciutatsPerProvincia_estadistiques(request):
     if request.method == 'GET':
         provincia = request.GET['provincia']
@@ -1598,7 +1625,7 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
             img_local.imatge = form.cleaned_data['image']
             img_local.save()
             imatge_local_emmagatzemat = imageLocal.objects.all().filter(local=localGuardat.id)[0]
-            path_img_saved = imatge_local_emmagatzemat.imatge.url  # /media/photo/<nom_foto>
+            path_img_saved = urllib.parse.unquote(imatge_local_emmagatzemat.imatge.url)  # /media/photo/<nom_foto>
             media_root = settings.MEDIA_ROOT.split('/')[0].replace('\\', '/')
             path = media_root + path_img_saved
             path = path.replace('/', '\\')
@@ -1721,6 +1748,11 @@ def check_values_new_point(request):
         res_json = json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode AJAX que permet que els botons d'ordenació del mòdul estadísitc ordenin en dos sentits diferents:
+    * De la A - Z o de Z - A, en cas que siguin paraules.
+    * De 0 - N o de N - 0, en cas que siguin nombres.
+"""
 def ordenament(request):
     if request.method=='GET':
         tipusOrdenament=request.GET['tipusOrdenacio']
@@ -1831,11 +1863,18 @@ def ordenament(request):
             res_json=json.dumps(localitats_ordenades)
             return HttpResponse(res_json, content_type='json')
 
+"""
+Mètode auxiliar del anterior que permet cercar el local que es busca.
+"""
 def trobarLocal(nomLocal, llistatDiccionaris):
     for dict in llistatDiccionaris:
         if dict['nomLocal'] == nomLocal:
             return dict
 
+"""
+Mètode que permet el sistema d'importació de dades i que verifica que tot el que hi ha dins del fitxer CSV
+està bé i no hi ha cap error. En aquest cas, entrariem a la següent fase i podrem anar pujant els locals un a un.
+"""
 @user_passes_test(lambda u: u.is_superuser)
 def importacio_dades_per_csv(request):
     errors = []
@@ -1849,6 +1888,18 @@ def importacio_dades_per_csv(request):
         data={}
         list_of_dicts=[]
         cmpt_lines = 0
+        if not file[1:]:
+            errors.append('El fitxer està buit.')
+            list_of_errors = []
+            dict_of_error = {}
+            ind = 0
+            for error in errors:
+                dict_of_error['error' + str(ind)] = error
+                ind = ind + 1
+                list_of_errors.append(dict_of_error)
+                dict_of_error = {}
+            errors = json.dumps(list_of_errors)
+            return render(request, "motorImportacio/motorImportacio.html", {'errorsImportacio': errors})
         for line in file[1:]:
             cmpt_lines = cmpt_lines + 1
             if '' in line.split(delimiter):
@@ -1895,14 +1946,25 @@ def importacio_dades_per_csv(request):
                     continue
                 try:
                     provincia=list_data_new_local[6].title()
-                    localitat=list_data_new_local[7].title()
+                    localitat=list_data_new_local[7]
+                    print(localitat)
                     ciutat=localitzacio.objects.all().filter(provincia=provincia, ciutat=localitat)
+                    print(ciutat)
                     if not ciutat:
                         raise Exception
                 except:
-                    errors.append(
-                        "La línia {} al camp {}, no existeix. Revisi el camp.".format(
-                            cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[8])]))
+                    ciutat_semblant=localitzacio.objects.all().filter(provincia=provincia, ciutat__icontains=localitat)
+                    if ciutat_semblant:
+                        s_ciutats_semblants=' '
+                        text="La línia {} al camp {}, no existeix.".format(cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[8])])
+                        for ciutat in ciutat_semblant:
+                            s_ciutats_semblants+=ciutat.ciutat+' '
+                        text+="Potser volies dir:{}".format(s_ciutats_semblants)
+                        errors.append(text)
+                    else:
+                        errors.append(
+                            "La línia {} al camp {}, no existeix. Revisi el camp.".format(
+                                cmpt_lines + 1, camps[line.split(delimiter).index(list_data_new_local[8])]))
                     continue
                 try:
                     estat_conservacio=int(list_data_new_local[8])
@@ -1970,7 +2032,10 @@ def importacio_dades_per_csv(request):
             return render(request, "motorImportacio/dadesImportades.html", {'infoJSON':res_json})
     return render(request, "motorImportacio/motorImportacio.html", {'errorsImportacio': errors})
 
-
+"""
+Mètode del formulari del motor d'importació que permet emmagatzemar la informació provinent del fitxer CSV.
+En cas que hi hagin encara nous locals, et retorna a la pàgina anterior per a poder seguir pujant els altres.
+"""
 def guardar_local_per_importacioCSV(request):
     if request.method == 'POST':
         id_local_importat=request.POST['id-local-csv']
@@ -2067,7 +2132,10 @@ def guardar_local_per_importacioCSV(request):
         else:
             return redirect('/v1/geoInfoSystem/map/')
 
-
+"""
+Mètode AJAX que el criden cadascun dels botons que hi ha per confirmar en el motor d'importació
+i verifica que l'usuari hagi pujat la imatge.
+"""
 def comprovar_si_te_imatge_local_importacioCSV(request):
     if request.method == 'GET':
         imatge=urllib.parse.unquote(request.GET['imatge'])
@@ -2078,7 +2146,9 @@ def comprovar_si_te_imatge_local_importacioCSV(request):
         res_json=json.dumps(data)
         return HttpResponse(res_json, content_type='json')
 
-
+"""
+Mètode AJAX que comprova que hi ha un document CSV pujat i preparat per a ser importat.
+"""
 def comprovar_dades_entrada_importacio(request):
     if request.method=='GET':
         fitxer=urllib.parse.unquote(request.GET['fitxer'])
