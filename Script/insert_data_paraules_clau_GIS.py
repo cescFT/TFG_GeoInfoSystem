@@ -7,6 +7,10 @@ cursor = conn.cursor()
 cursor.execute("SET NAMES UTF8;")
 
 # Per si mai haig de tornar a executar, aquestes fer-les de forma manual a la db
+cursor.execute("INSERT INTO geoinfosystem_paraulesclaugis (paraula, idioma) VALUES ('Latitud','ca')")
+conn.commit()
+cursor.execute("INSERT INTO geoinfosystem_paraulesclaugis (paraula, idioma) VALUES ('longitud','ca')")
+conn.commit()
 cursor.execute("INSERT INTO geoinfosystem_paraulesclaugis (paraula, idioma) VALUES ('punt','ca')")
 conn.commit()
 cursor.execute("INSERT INTO geoinfosystem_paraulesclaugis (paraula, idioma) VALUES ('Punt','ca')")

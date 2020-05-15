@@ -1765,24 +1765,50 @@ def crearNouPuntInteres(request):       #Només pots entrar si és administrador
             t_mapa = trobarParaula('mapa')
             t_mapa_majus = paraulesClauGIS.objects.all().filter(paraula='mapa')[1].paraula
             t_punt_majus=paraulesClauGIS.objects.all().filter(paraula='punt')[1].paraula
+            t_nomLocal=trobarParaula('Nom del local')
+            t_categoria=trobarParaula('Categoria')
+            t_superficie=trobarParaula('Superfície')
+            t_provincia=trobarParaula('Província')
+            t_localitat=trobarParaula('Localitat')
+            t_estatConservacio=trobarParaula('Estat de Conservació')
+            t_anyConstruccio=trobarParaula('Any de Construcció')
+            t_fotoLocal=trobarParaula('Insereix foto del local')
+            t_actiu=trobarParaula('Actiu')
             return render(request, "puntsGeoGrafics/afegirNouPunt.html", {'provincies':provinciesMostrar ,
                                                                           'categories': categoriesMostrar,
                                                                           'poblacions':poblacionsMostrar,
                                                                           'punts': punts,'lenLlista':midaLlista,
                                                                           'label_sistemaGIS':t_sistemaGIS,
                                                                           'label_mapa':t_mapa, 'label_mapa_majus':t_mapa_majus,
-                                                                          'label_punt_majus':t_punt_majus})
+                                                                          'label_punt_majus':t_punt_majus, 'label_nomLocal':t_nomLocal,
+                                                                          'label_categoria':t_categoria, 'label_superficie':t_superficie,
+                                                                          'label_provincia':t_provincia, 'label_localitat':t_localitat,
+                                                                          'label_estatConservacio':t_estatConservacio, 'label_anyConstruccio':t_anyConstruccio,
+                                                                          'label_foto':t_fotoLocal, 'label_actiu': t_actiu})
     t_sistemaGIS=trobarParaula("sistema GIS")
     t_mapa=trobarParaula('mapa')
     t_mapa_majus=paraulesClauGIS.objects.all().filter(paraula='mapa')[1].paraula
     t_punt_majus = paraulesClauGIS.objects.all().filter(paraula='punt')[1].paraula
+    t_nomLocal = trobarParaula('Nom del local')
+    t_categoria = trobarParaula('Categoria')
+    t_superficie = trobarParaula('Superfície')
+    t_provincia = trobarParaula('Província')
+    t_localitat = trobarParaula('Localitat')
+    t_estatConservacio = trobarParaula('Estat de Conservació')
+    t_anyConstruccio = trobarParaula('Any de Construcció')
+    t_fotoLocal = trobarParaula('Insereix foto del local')
+    t_actiu = trobarParaula('Actiu')
     return render(request, "puntsGeografics/afegirNouPunt.html", {'provincies':provinciesMostrar,
                                                                   'categories':categoriesMostrar,
                                                                   'poblacions':poblacionsMostrar,
                                                                   'punts':[], 'lenLlista':0,
                                                                   'label_sistemaGIS':t_sistemaGIS,
                                                                   'label_mapa':t_mapa, 'label_mapa_majus':t_mapa_majus,
-                                                                  'label_punts_majus':t_punt_majus})
+                                                                  'label_punts_majus':t_punt_majus, 'label_nomLocal':t_nomLocal,
+                                                                  'label_categoria':t_categoria, 'label_superficie':t_superficie,
+                                                                  'label_provincia':t_provincia, 'label_localitat':t_localitat,
+                                                                  'label_estatConservacio':t_estatConservacio, 'label_anyConstruccio':t_anyConstruccio,
+                                                                  'label_foto':t_fotoLocal, 'label_actiu': t_actiu})
 
 """
 Mètode AJAX auxiliar del anterior mètode, que permet comprovar que els camps estiguin informats
@@ -2113,11 +2139,39 @@ def importacio_dades_per_csv(request):
                 list_of_errors.append(dict_of_error)
                 dict_of_error={}
             errors=json.dumps(list_of_errors)
-            return render(request, "motorImportacio/motorImportacio.html", {'errorsImportacio': errors})
+            t_nomLocal=trobarParaula('Nom del Local')
+            t_latitud=trobarParaula('Latitud')
+            t_longitud=trobarParaula('Longitud')
+            t_descripcio=trobarParaula('Descripció')
+            t_categoria=trobarParaula('Categoria')
+            t_provincia=trobarParaula('Província')
+            t_localitzacio=trobarParaula('Localització')
+            t_estatConservacio=trobarParaula('Estat de Conservació')
+            t_anyConservacio=trobarParaula('Any de Construcció')
+            t_actiu=trobarParaula('Actiu')
+            t_superficie=trobarParaula("Superfície")
+            return render(request, "motorImportacio/motorImportacio.html", {'errorsImportacio': errors, 'label_nomLocal':t_nomLocal,'label_latitud':t_latitud,
+                                                                            'label_longitud':t_longitud, 'label_descripcio':t_descripcio, 'label_categoria':t_categoria,
+                                                                            'label_provincia':t_provincia, 'label_localitzacio':t_localitzacio, 'label_estatConservacio':t_estatConservacio,
+                                                                            'label_anyConstruccio':t_anyConservacio, 'label_actiu': t_actiu, 'label_superficie':t_superficie})
         else:
             res_json = json.dumps(list_of_dicts)
             return render(request, "motorImportacio/dadesImportades.html", {'infoJSON':res_json})
-    return render(request, "motorImportacio/motorImportacio.html", {'errorsImportacio': errors})
+    t_nomLocal = trobarParaula('Nom del Local')
+    t_latitud = trobarParaula('Latitud')
+    t_longitud = trobarParaula('Longitud')
+    t_descripcio = trobarParaula('Descripció')
+    t_categoria = trobarParaula('Categoria')
+    t_provincia = trobarParaula('Província')
+    t_localitzacio = trobarParaula('Localització')
+    t_estatConservacio = trobarParaula('Estat de Conservació')
+    t_anyConservacio = trobarParaula('Any de Construcció')
+    t_actiu = trobarParaula('Actiu')
+    t_superficie = trobarParaula("Superfície")
+    return render(request, "motorImportacio/motorImportacio.html", {'errorsImportacio': errors, 'label_nomLocal':t_nomLocal,'label_latitud':t_latitud,
+                                                                    'label_longitud':t_longitud, 'label_descripcio':t_descripcio, 'label_categoria':t_categoria,
+                                                                    'label_provincia':t_provincia, 'label_localitzacio':t_localitzacio, 'label_estatConservacio':t_estatConservacio,
+                                                                    'label_anyConstruccio':t_anyConservacio, 'label_actiu': t_actiu, 'label_superficie':t_superficie})
 
 """
 Mètode del formulari del motor d'importació que permet emmagatzemar la informació provinent del fitxer CSV.
