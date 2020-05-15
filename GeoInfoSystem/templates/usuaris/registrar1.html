@@ -109,7 +109,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm">
-                                <label class="font-weight-bold">Nom d'usuari</label>
+                                <label class="font-weight-bold">{{label_nomUsuari|safe}}</label>
                             </div>
                             <div class="col-sm">
                                 <input type="text" id="nomUsuari" onkeyup="checkValues()" name="username" placeholder="Nom d'usuari" required>
@@ -119,7 +119,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm">
-                                <label class="font-weight-bold">Correu electrònic</label>
+                                <label class="font-weight-bold">{{label_correuElectronic|safe}}</label>
                             </div>
                             <div class="col-sm">
                                 <input type="email" id="correuE" onkeyup="checkValues()" name="email" placeholder="correu@exemple.com" required>
@@ -129,7 +129,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm">
-                                <label class="font-weight-bold">Nom</label>
+                                <label class="font-weight-bold">{{label_nom|safe}}</label>
                             </div>
                             <div class="col-sm">
                                 <input type="text" id="first_name" onkeyup="checkValues()" name="first_name" placeholder="Nom">
@@ -139,7 +139,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm">
-                                <label class="font-weight-bold">Cognom</label>
+                                <label class="font-weight-bold">{{label_cognom|safe}}</label>
                             </div>
                             <div class="col-sm">
                                 <input type="text" id="last_name" onkeyup="checkValues()" name="last_name" placeholder="Cognom">
@@ -149,7 +149,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm">
-                                <label class="font-weight-bold">Contrasenya</label>
+                                <label class="font-weight-bold">{{label_contrasenya|safe}}</label>
                             </div>
                             <div class="col-sm">
                                 <input type="password" id="passwd1" onkeyup="checkValues()" name="password1" placeholder="Contrasenya" required>
@@ -159,7 +159,7 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col-sm">
-                                <label class="font-weight-bold">Repeteix contrasenya</label>
+                                <label class="font-weight-bold">Repeteix {{label_contrasenya|safe}}</label>
                             </div>
                             <div class="col-sm">
                                 <input type="password" id="passwd2" onkeyup="checkValues()" name="password2" placeholder="Repeteix contrasenya" required>
@@ -168,7 +168,7 @@
                     </div>
                 </form>
                 <br>
-                <div class="text-center"><button style="margin:0px auto;" type="submit" onclick="checkInputsToRegister()" id="submit_registre" name="submit_new_user" class="btn btn-success center-block">Registra't</button></div>
+                <div class="text-center"><button style="margin:0px auto;" type="submit" onclick="checkInputsToRegister()" id="submit_registre" name="submit_new_user" class="btn btn-success center-block"><img src="https://image.flaticon.com/icons/svg/2921/2921087.svg" style="height:20px"> Registra't</button></div>
                 <br>
                 <p style="text-align: center">Ja tens un compte? <a href="/v1/geoInfoSystem/inicia_sessio/">Inicia sessió</a></p>
             </div>

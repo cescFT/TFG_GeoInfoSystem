@@ -7,8 +7,8 @@
 <hr>
 <div class="container">
     {%if chMail %}
-    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de correu electrònic</h2>
-    <p style="margin-left: 25px">En el següent formulari tens l'oportunitat de canviar o afegir el correu electrònic del teu perfil</p>
+    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de {{label_correuElectronic|safe}}</h2>
+    <p style="margin-left: 25px">En el següent formulari tens l'oportunitat de canviar o afegir el {{label_correuElectronic|safe}} del teu perfil</p>
     <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
         <div class="form-group border p-3">
             <div id="errorsMail"></div>
@@ -18,7 +18,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Nou correu electrònic</b></label>
+                            <label><b>Nou {{label_correuElectronic|safe}}</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="email" id="mail" name="email"  onkeyup="checkEmptyMails()" placeholder="correu@exemple.com" required>
@@ -27,7 +27,7 @@
                     <br>
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Repeteix el correu electrònic</b></label>
+                            <label><b>Repeteix el {{label_correuElectronic|safe}}</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="email"  id="mail1" name="email1" onkeyup="checkEmptyMails()" placeholder="correu@exemple.com" required>
@@ -42,8 +42,8 @@
         </div>
     </div>
 {%elif chNom %}
-    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de nom</h2>
-    <p style="margin-left: 25px">En el següent formulari tens l'oportunitat d'afegir el nom</p>
+    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de {{label_nom|safe}}</h2>
+    <p style="margin-left: 25px">En el següent formulari tens l'oportunitat d'afegir el {{label_nom|safe}}</p>
     <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
         <div class="form-group border p-3">
             <div id="errorsNom"></div>
@@ -53,7 +53,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Nou nom</b></label>
+                            <label><b>Nou {{label_nom|safe}}</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="text" id="first_name"  onkeyup="checkEmptyNames()" name="first_name" placeholder="Nom" required>
@@ -63,7 +63,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Repeteix el nou nom</b></label>
+                            <label><b>Repeteix el nou {{label_nom|safe}}</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="text" id="first_name1" onkeyup="checkEmptyNames()" name="first_name1" placeholder="Repeteix nom" required>
@@ -78,8 +78,8 @@
         </div>
     </div>
 {%elif chCog %}
-    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de cognom</h2>
-    <p style="margin-left: 25px">En el següent formulari tens l'oportunitat d'afegir els cognoms</p>
+    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de {{label_cognom|safe}}</h2>
+    <p style="margin-left: 25px">En el següent formulari tens l'oportunitat d'afegir els {{label_cognom|safe}}s</p>
     <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
         <div class="form-group border p-3">
             <div id="errorsCognom"></div>
@@ -89,7 +89,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Nous cognoms</b></label>
+                            <label><b>Nous {{label_cognom|safe}}s</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="text"  id="last_name"  onkeyup="checkEmptySurnames()"  name="last_name" placeholder="Cognoms" required>
@@ -99,7 +99,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Repeteix els cognoms</b></label>
+                            <label><b>Repeteix els {{label_cognom|safe}}s</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="text"  id="last_name1" onkeyup="checkEmptySurnames()"  name="last_name1" placeholder="Repeteix cognoms" required>
@@ -114,8 +114,8 @@
         </div>
     </div>
 {%elif chPass %}
-    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de contrasenya</h2>
-    <p style="margin-left: 25px">En el següent formulari tens l'oportunitat de canviar la contrasenya</p>
+    <h2><img src="https://img.icons8.com/ios-filled/50/000000/update-left-rotation.png"/> Canvi de {{label_contrasenya|safe}}</h2>
+    <p style="margin-left: 25px">En el següent formulari tens l'oportunitat de canviar la {{label_contrasenya|safe}}</p>
     <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;">
         <div class="form-group border p-3">
             <div id="errorsContrassenya"></div>
@@ -125,7 +125,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Nova contrasenya</b></label>
+                            <label><b>Nova {{label_contrasenya|safe}}</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="password" id="password" onkeyup="checkEmptyPasswd()" name="password" placeholder="Contrasenya" required>
@@ -135,7 +135,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col-sm">
-                            <label><b>Repeteix la nova contrasenya</b></label>
+                            <label><b>Repeteix la nova {{label_contrasenya|safe}}</b></label>
                         </div>
                         <div class="col-sm">
                             <input type="password" id="password1" onkeyup="checkEmptyPasswd()" name="password1" placeholder="Repeteix contrasenya" required>

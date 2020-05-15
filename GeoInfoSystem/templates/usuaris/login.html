@@ -101,7 +101,7 @@
     </div>
     <br>
     <div style="text-align: center">
-        <h1>Inicia la sessió</h1>
+        <h1>{{titolPagina|safe}}</h1>
     </div>
     <hr>
     <br>
@@ -111,14 +111,14 @@
                 <div class="form-group">
                     <div class="row form-row">
                         <div class="col border p-3 form">
-                            <div id="errorsLogIn"></div>
+                            <div class="text-centre" id="errorsLogIn"></div>
                             <br>
                             <form id="formLogIn" method="POST" action="/v1/geoInfoSystem/inicia_sessio/">
                                 {% csrf_token %}
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm">
-                                            <label class="font-weight-bold">Nom d'usuari</label>
+                                            <label class="font-weight-bold">{{label_nomusuari}}</label>
                                         </div>
                                         <div class="col-sm">
                                             <input type="text" id="username" name="username" onkeyup="comprovarInputs()" placeholder="Nom d'Usuari" required>
@@ -128,7 +128,7 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col-sm">
-                                            <label class="font-weight-bold">Contrasenya</label>
+                                            <label class="font-weight-bold">{{label_contrassenya|safe}}</label>
                                         </div>
                                         <div class="col-sm">
                                             <input type="password" name="password" id="password" onkeyup="comprovarInputs()" placeholder="Contrasenya" required>
@@ -137,7 +137,7 @@
                                 </div>
                             </form>
                             <br>
-                           <div class="text-center"><button style="margin:0px auto;" type="submit" id="iniciSessioBtn"  onclick="comprovarLogIn()" class="btn btn-success" disabled>Inicia sessió</button> </div>
+                           <div class="text-center"><button style="margin:0px auto;" type="submit" id="iniciSessioBtn"  onclick="comprovarLogIn()" class="btn btn-success" disabled><img src="https://image.flaticon.com/icons/svg/1828/1828453.svg" style="height:20px"> Inicia sessió</button> </div>
                             <br>
                             <p style="text-align: center">No tens compte? <a href="/v1/geoInfoSystem/registrar_nou_usuari/">Crea un compte</a></p>
                         </div>
@@ -163,7 +163,7 @@
                             function (data){
                                 var data_res = Object.values(data);
                                 if(data_res[0] === "false") {
-                                    document.getElementById("errorsLogIn").innerHTML = "<b>Nom usuari o contrasenya incorrecta.</b>";
+                                    document.getElementById("errorsLogIn").innerHTML = "<b><i class=\"fa fa-exclamation-triangle\" aria-hidden=\"true\"></i> Nom usuari o contrasenya incorrecta.</b>";
                                     document.getElementById("errorsLogIn").style.color = "red";
                                 }else{
                                     document.getElementById("formLogIn").submit();

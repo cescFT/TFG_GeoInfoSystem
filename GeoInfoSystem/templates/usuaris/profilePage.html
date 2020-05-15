@@ -19,13 +19,13 @@
         <div style="display: block; margin-left: auto; margin-right: auto; width: 40%;" class="card card-body">
             <div class="row">
                 <div class="col-sm">
-                    <label><b>Nom d'usuari</b></label>
+                    <label><b>{{label_nomUsuari|safe}}</b></label>
                 </div>
                 <div class="col-sm" style="margin-right: 750px">{{user.username}}</div>
             </div>
             <div class="row">
                 <div class="col-sm">
-                    <label><b>Correu electrònic</b></label>
+                    <label><b>{{label_correuElectronic|safe}}</b></label>
                 </div>
                 <div class="col-sm" style="margin-right: 750px">
                     {% if user.email %}
@@ -37,7 +37,7 @@
             </div>
             <div class="row">
                 <div class="col-sm">
-                    <label><b>Nom</b></label>
+                    <label><b>{{label_nom|safe}}</b></label>
                 </div>
                 <div class="col-sm" style="margin-right: 750px">
                     {% if user.first_name %}
@@ -49,7 +49,7 @@
             </div>
             <div class="row">
                 <div class="col-sm">
-                    <label><b>Cognom(s)</b></label>
+                    <label><b>{{label_cognom}}(s)</b></label>
                 </div>
                 <div class="col-sm" style="margin-right: 750px">
                     {%if user.last_name%}
@@ -60,10 +60,10 @@
                 </div>
             </div>
             <br>
-            <label><b>Canvi de contrasenya <i class="fa fa-edit"></i></b></label>
+            <label><b>Canvi de {{label_contrasenya|safe}} <i class="fa fa-edit"></i></b></label>
             <p style="margin-left: 15px">En cas d'haver detectat algun problema de seguretat, pots canviar-la en qualsevol moment fent clic <a href="/v1/geoInfoSystem/actualitzar_camps/e%20n%20c%20P/">aquí</a>.</p>
-            <label><b>Canvi de correu electrònic <i class="fa fa-edit"></i></b></label>
-            <p style="margin-left: 15px">En qualsevol moment pots canviar el teu correu electrònic fent clic <a href="/v1/geoInfoSystem/actualitzar_camps/E%20n%20c%20p/">aquí</a>.</p>
+            <label><b>Canvi de {{label_correuElectronic|safe}} <i class="fa fa-edit"></i></b></label>
+            <p style="margin-left: 15px">En qualsevol moment pots canviar el teu {{label_correuElectronic|safe}} fent clic <a href="/v1/geoInfoSystem/actualitzar_camps/E%20n%20c%20p/">aquí</a>.</p>
             <br>
             <div class="text-center"><label><b><i class="fa fa-clock-o" aria-hidden="true"></i></b> {{user.last_login}}</label></div>
         </div>
@@ -81,7 +81,7 @@
                       <div class="card-body">
                         <h5 class="card-title" style="text-align: center"><img src="https://img.icons8.com/ios-glyphs/30/000000/admin-settings-male.png"/></h5>
                         <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Administració</h6>
-                        <p class="card-text" class="justify">En aquesta pàgina podràs administrar usuaris i punts d'interès del sistema GIS.</p>
+                        <p class="card-text" class="justify">En aquesta pàgina podràs administrar usuaris i {{label_punts|safe}} d'interès del {{label_sistemaGIS|safe}}.</p>
                         <div class="text-center"><a href="/admin/" type="button" target="_blank" rel="noopener noreferrer">Administrar web</a></div>
                       </div>
                     </div>
@@ -90,9 +90,9 @@
                     <div class="card" style="width: 18rem;">
                       <div class="card-body">
                         <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/material-sharp/64/000000/map-editing.png"/></h5>
-                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Afegir nous punts</h6>
-                        <p class="card-text" class="justify">En aquesta pàgina podràs afegir els nous punts que vulguis en el sistema GIS.</p>
-                        <div class="text-center"><a href="/v1/geoInfoSystem/nouPunt/" target="_blank" rel="noopener noreferrer">Afegeix punts</a></div>
+                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Afegir nous {{label_punts|safe}}</h6>
+                        <p class="card-text" class="justify">En aquesta pàgina podràs afegir els nous {{label_punts|safe}} que vulguis en el {{label_sistemaGIS|safe}}.</p>
+                        <div class="text-center"><a href="/v1/geoInfoSystem/nouPunt/" target="_blank" rel="noopener noreferrer">Afegeix {{label_punts|safe}}</a></div>
                       </div>
                     </div>
                 </div>
@@ -103,9 +103,9 @@
                     <div class="card" style="width: 18rem;">
                       <div class="card-body">
                         <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/material/80/000000/map-marker--v1.png"/></h5>
-                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consulta el mapa</h6>
-                        <p class="card-text" class="justify">En aquesta pàgina podràs visualitzar els punts d'interès i fer consultes sobre el sistema GIS.</p>
-                        <div class="text-center"><a href="/v1/geoInfoSystem/map/" type="button" target="_blank" rel="noopener noreferrer">Visualitza el mapa</a></div>
+                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consulta el {{label_mapa|safe}}</h6>
+                        <p class="card-text" class="justify">En aquesta pàgina podràs visualitzar els {{label_punts|safe}} d'interès i fer consultes sobre el {{label_sistemaGIS|safe}}.</p>
+                        <div class="text-center"><a href="/v1/geoInfoSystem/map/" type="button" target="_blank" rel="noopener noreferrer">Visualitza el {{label_mapa|safe}}</a></div>
                       </div>
                     </div>
                 </div>
@@ -113,8 +113,8 @@
                     <div class="card" style="width: 18rem;">
                       <div class="card-body">
                         <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/ios-filled/50/000000/statistics.png"/></h5>
-                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consultes al sistema GIS</h6>
-                        <p class="card-text" class="justify">En la pàgina on es visualitza el mapa, també pots fer consultes al sistema GIS. Vés-hi directe!</p>
+                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consultes al {{label_sistemaGIS|safe}}</h6>
+                        <p class="card-text" class="justify">En la pàgina on es visualitza el {{label_mapa|safe}}, també pots fer consultes al {{label_sistemaGIS|safe}}. Vés-hi directe!</p>
                         <div class="text-center"><a href="/v1/geoInfoSystem/estadistiquesGIS/" type="button" target="_blank" rel="noopener noreferrer">Fer consultes</a></div>
                       </div>
                     </div>
@@ -149,9 +149,9 @@
                     <div class="card" style="width: 18rem;">
                       <div class="card-body">
                         <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/material/80/000000/map-marker--v1.png"/></h5>
-                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consulta el mapa</h6>
-                        <p class="card-text" class="justify">En aquesta pàgina podràs visualitzar els punts d'interès i fer consultes sobre el sistema GIS.</p>
-                        <div class="text-center"><a href="/v1/geoInfoSystem/map/" type="button" target="_blank" rel="noopener noreferrer">Visualitza el mapa</a></div>
+                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consulta el {{label_mapa|safe}}</h6>
+                        <p class="card-text" class="justify">En aquesta pàgina podràs visualitzar els {{label_punts|safe}} d'interès i fer consultes sobre el {{label_sistemaGIS|safe}}.</p>
+                        <div class="text-center"><a href="/v1/geoInfoSystem/map/" type="button" target="_blank" rel="noopener noreferrer">Visualitza el {{label_mapa|safe}}</a></div>
                       </div>
                     </div>
                 </div>
@@ -159,8 +159,8 @@
                     <div class="card" style="width: 18rem;">
                       <div class="card-body">
                         <h5 class="card-title" style="text-align: center"><img style="height: 35px" src="https://img.icons8.com/ios-filled/50/000000/statistics.png"/></h5>
-                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consultes al sistema GIS</h6>
-                        <p class="card-text" class="justify">En la pàgina on es visualitza el mapa, també pots fer consultes al sistema GIS. Vés-hi directe!</p>
+                        <h6 class="card-subtitle mb-2 text-muted" style="text-align: center">Consultes al {{label_sistemaGIS|safe}}</h6>
+                        <p class="card-text" class="justify">En la pàgina on es visualitza el {{label_mapa|safe}}, també pots fer consultes al {{label_sistemaGIS|safe}}. Vés-hi directe!</p>
                         <div class="text-center"><a href="/v1/geoInfoSystem/estadistiquesGIS/" type="button" target="_blank" rel="noopener noreferrer">Fer consultes</a></div>
                       </div>
                     </div>

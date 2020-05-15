@@ -768,7 +768,9 @@ def home(request):
     pInteresMajus=puntsmajus+' d\''+interes
     pInteresSingMinus=punt+' d\''+interes
     sIG=sistema+' d\''+Informacio+' '+geografica
-    return render(request, "home/home.html",{'titol':titol_tfg, 'sig':sIG, 'sistemaGIS':sistemaGIS, 'puntsInteres':pInteresMinus, 'PuntsInteres':pInteresMajus, 'mapa':mapa, 'Mapa':Mapa, 'puntInteres':pInteresSingMinus})
+    return render(request, "home/home.html",{'titol':titol_tfg, 'sig':sIG, 'sistemaGIS':sistemaGIS,
+                                             'puntsInteres':pInteresMinus, 'PuntsInteres':pInteresMajus,
+                                             'mapa':mapa, 'Mapa':Mapa, 'puntInteres':pInteresSingMinus})
 
 """
 Mètode que mostra la pàgina per a registrar un nou usuari
@@ -787,7 +789,16 @@ def paginaRegistrarse(request):
         print(nou_usuari)
         nou_usuari.save()
         return redirect("/")
-    return render(request, "usuaris/registrar1.html", {})
+    t_nom=trobarParaula("Nom")
+    t_usuari=trobarParaula("Usuari")
+    t_nomUsuari=t_nom+" d'"+t_usuari
+    t_correuElectronic=trobarParaula("Correu Electrònic")
+    t_cognom=trobarParaula("Cognom")
+    t_contrassenya=trobarParaula("Contrasenya")
+
+    return render(request, "usuaris/registrar1.html", {'label_nom':t_nom, 'label_nomUsuari':t_nomUsuari,
+                                                       'label_correuElectronic':t_correuElectronic,
+                                                       'label_cognom':t_cognom, 'label_contrasenya':t_contrassenya})
 
 """
 Mètode AJAX que comprova les dades d'entrada del formulari del registre d'usuaris en la web.
@@ -1149,7 +1160,12 @@ def loginPage(request):
                 if user.is_active:
                     login(request,user)
                     return redirect("/")
-    return render(request, 'usuaris/login.html',{})
+    titolPagina=trobarParaula('Inicia la sessió')
+    t_contrassenya=trobarParaula('Contrasenya')
+    t_nom=trobarParaula('Nom')
+    t_usuari=trobarParaula('Usuari')
+    t_nomUsuari=t_nom+" d'"+t_usuari
+    return render(request, 'usuaris/login.html',{'titolPagina':titolPagina, 'label_contrassenya':t_contrassenya, 'label_nomusuari':t_nomUsuari})
 
 """
 Mètode AJAX auxiliar del mètode anterior, el qual comprova si els inputs del login estan informats.
@@ -1218,7 +1234,20 @@ def profilePage(request):
     pIntRand_latitud = str(puntInteres.objects.all().filter(id=rand_id_puntInteres)[0].latitud)
     pIntRand_longitud = str(puntInteres.objects.all().filter(id=rand_id_puntInteres)[0].longitud)
     nom_local_rand = local.objects.all().filter(localitzacio=rand_id_puntInteres)[0].nomLocal
-    return render(request, "usuaris/profilePage.html", {'nomLocalRand':nom_local_rand, 'latitudRand':pIntRand_latitud, 'longitudRand':pIntRand_longitud})
+    t_nom=trobarParaula("Nom")
+    t_usuari=trobarParaula("Usuari")
+    t_nomUsuari=t_nom+" d'"+t_usuari
+    t_correuElectronic=trobarParaula("Correu Electrònic")
+    t_cognom=trobarParaula("Cognom")
+    t_contrasenya=trobarParaula("Contrasenya")
+    t_sistemaGIS=trobarParaula("sistema GIS")
+    t_mapa=trobarParaula("mapa")
+    t_punts=paraulesClauGIS.objects.all().filter(paraula='punts')[1].paraula
+    return render(request, "usuaris/profilePage.html", {'nomLocalRand':nom_local_rand,'latitudRand':pIntRand_latitud,
+                                                        'longitudRand':pIntRand_longitud, 'label_nom':t_nom, 'label_cognom':t_cognom,
+                                                        'label_nomUsuari':t_nomUsuari, 'label_correuElectronic':t_correuElectronic,
+                                                        'label_contrasenya':t_contrasenya, 'label_sistemaGIS':t_sistemaGIS,
+                                                        'label_punts':t_punts, 'label_mapa':t_mapa})
 
 """
 Mètode que permet updatejar els camps de l'usuari sempre i quan s'hagi fet login.
@@ -1266,7 +1295,15 @@ def updateUsuari(request, codi):
         chPass = False
         if codiTallat[3].isupper():
             chPass = True
-        return render(request, "usuaris/updateUsuari.html",{'chMail':chMail, 'chNom':chNom, 'chCog':chCog, 'chPass':chPass})
+        t_correuElectronic=trobarParaula('Correu Electrònic')
+        t_nom=trobarParaula('Nom')
+        t_cognom=trobarParaula("Cognom")
+        t_contrasenya=trobarParaula("Contrasenya")
+        return render(request, "usuaris/updateUsuari.html",{'chMail':chMail,
+                                                            'chNom':chNom, 'chCog':chCog, 'chPass':chPass,
+                                                            'label_correuElectronic':t_correuElectronic,
+                                                            'label_nom':t_nom, 'label_cognom':t_cognom,
+                                                            'label_contrasenya':t_contrasenya})
 
 """
 Mètode AJAX auxiliar que verifica que els camps del mail estiguin informats per a poder actualizar-lo.
