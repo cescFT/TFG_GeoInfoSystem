@@ -2,8 +2,33 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/afegirNouPunt.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/estadistiques.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/estadistiques.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_imageLocal.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/CasaMevaRedim.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/firaReusRedim.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/mcdonaldsVallsRedim.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/urvCampusSesceladesRedim.jpg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Script/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Script/insert_data_categories.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_categories.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Script/insert_data_locals.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_locals.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Script/insert_data_municipis_Catalunya.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_municipis_Catalunya.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Script/insert_data_paraules_clau_GIS.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_paraules_clau_GIS.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Script/insert_data_punts_interes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_punts_interes.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/Ajuntament-HZ.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/Anotació_2020-05-14_155530.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/Anotació_2020-05-14_155530_duXcMR2.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/CASA-FELIX.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/Montferrisantuari.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/ajuntament-de-vallmoll-29-01-20161.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/baixa.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/baixa_ntcrKLF.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/castell-de-rocamora.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/ermita-santuari-del-roser.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/fornas.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/jca-cinemes-16-10-2017.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/vallmoll-escola-FOTO-Marc-Llado-Quadrat-2-5-19.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/vallmoll1.jpg" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -51,10 +76,13 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../ArrodonirSortides" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Script" />
     <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\TFG_GeoInfoSystem\Script" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="D:\TFG_GeoInfoSystem\static" />
       <recent name="D:\TFG_GeoInfoSystem" />
@@ -63,8 +91,8 @@
       <recent name="D:\TFG_GeoInfoSystem\GeoInfoSystem\templates\usuaris" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.insert_data_paraules_clau_GIS">
-    <configuration name="insert_data_categories" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.insert_data_imageLocal">
+    <configuration name="insert_data_imageLocal" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="TFG_GeoInfoSystem" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -77,7 +105,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Script/insert_data_categories.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Script/insert_data_imageLocal.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -122,28 +150,6 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Script/insert_data_municipis_Catalunya.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="insert_data_municipis_Catalunya" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="TFG_GeoInfoSystem" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Script" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="D:\TFG_GeoInfoSystem\Script\insert_data_municipis_Catalunya.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -221,11 +227,11 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.insert_data_paraules_clau_GIS" />
+        <item itemvalue="Python.insert_data_imageLocal" />
         <item itemvalue="Python.insert_data_locals" />
         <item itemvalue="Python.insert_data_punts_interes" />
+        <item itemvalue="Python.insert_data_paraules_clau_GIS" />
         <item itemvalue="Python.insert_data_municipis_Catalunya (1)" />
-        <item itemvalue="Python.insert_data_categories" />
       </list>
     </recent_temporary>
   </component>
@@ -353,7 +359,18 @@
       <workItem from="1589369003080" duration="12799000" />
       <workItem from="1589448460239" duration="26254000" />
       <workItem from="1589492005680" duration="42000" />
-      <workItem from="1589536726577" duration="19319000" />
+      <workItem from="1589536726577" duration="20006000" />
+      <workItem from="1589735142612" duration="642000" />
+      <workItem from="1589901714438" duration="485000" />
+      <workItem from="1590162245778" duration="357000" />
+      <workItem from="1590337850917" duration="149000" />
+      <workItem from="1590571068758" duration="613000" />
+      <workItem from="1590600606347" duration="1401000" />
+      <workItem from="1590773221294" duration="1600000" />
+      <workItem from="1591172776847" duration="696000" />
+      <workItem from="1591355192972" duration="1129000" />
+      <workItem from="1591431533033" duration="4696000" />
+      <workItem from="1591518921674" duration="5201000" />
     </task>
     <servers />
   </component>
@@ -364,38 +381,30 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="765" y="239" key="#com.intellij.ide.util.MemberChooser" timestamp="1581684768753">
+    <state x="739" y="265" key="FileChooserDialogImpl" timestamp="1591530172252">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="765" y="239" key="#com.intellij.ide.util.MemberChooser/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1581684768753" />
-    <state width="242" height="189" key="DatabaseViewActions_Filter" timestamp="1580910235326">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="242" height="189" key="DatabaseViewActions_Filter/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910235326" />
-    <state x="739" y="265" key="FileChooserDialogImpl" timestamp="1587651637350">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1582754460179" />
+    <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591530172252" />
     <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1587651637350" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1589573238575">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1591531799673">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1589573238575" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591531799673" />
     <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1584830362702" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1589573238575">
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1591531799673">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1589573238575" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591531799673" />
     <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1584830362702" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1589573238574">
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1591531799672">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1589573238574" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591531799672" />
     <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1584830362702" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1589573238575">
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1591531799673">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1589573238575" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591531799673" />
     <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1584830362702" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1584745008747">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -413,18 +422,15 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1877" height="348" key="GridCell.Tab.1.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1584745008747" />
-    <state width="196" height="457" key="HiddenNamespacesPopup" timestamp="1580910215140">
-      <screen x="0" y="0" width="1920" height="1040" />
-    </state>
-    <state width="196" height="457" key="HiddenNamespacesPopup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1580910215140" />
     <state x="463" y="165" key="SettingsEditor" timestamp="1587400824790">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="463" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1587400824790" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1589536751753">
-      <screen x="0" y="0" width="1920" height="1040" />
+    <state x="2588" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1591518929128">
+      <screen x="1920" y="0" width="1920" height="1040" />
     </state>
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1589492023792" />
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591431683305" />
+    <state x="2588" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1591518929128" />
     <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1589536751753" />
     <state x="615" y="138" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588959434155">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -434,6 +440,10 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="771" y="439" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/0.0.1920.1040@0.0.1920.1040" timestamp="1586337689600" />
+    <state x="667" y="276" width="586" height="488" key="find.popup" timestamp="1591528768512">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state x="667" y="276" width="586" height="488" key="find.popup/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591528768512" />
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup" timestamp="1588842231769">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -441,13 +451,14 @@
     <state x="623" y="225" width="672" height="678" key="search.everywhere.popup/0.0.1920.1040@0.0.1920.1040" timestamp="1587138008557" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_categories.coverage" NAME="insert_data_categories Coverage Results" MODIFIED="1584811249791" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
-    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_punts_interes.coverage" NAME="insert_data_punts_interes Coverage Results" MODIFIED="1584811352975" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
-    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_paraules_clau_GIS.coverage" NAME="insert_data_paraules_clau_GIS Coverage Results" MODIFIED="1589573176622" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
+    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_categories.coverage" NAME="insert_data_categories Coverage Results" MODIFIED="1591529439819" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
+    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_imageLocal.coverage" NAME="insert_data_imageLocal Coverage Results" MODIFIED="1591531685506" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
+    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_paraules_clau_GIS.coverage" NAME="insert_data_paraules_clau_GIS Coverage Results" MODIFIED="1591529528263" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
+    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_punts_interes.coverage" NAME="insert_data_punts_interes Coverage Results" MODIFIED="1591529543110" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
     <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$settings.coverage" NAME="settings Coverage Results" MODIFIED="1580836754937" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/TFG_GeoInfoSystem" />
     <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insertData.coverage" NAME="insertData Coverage Results" MODIFIED="1584716093951" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
-    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_municipis_Catalunya__1_.coverage" NAME="insert_data_municipis_Catalunya (1) Coverage Results" MODIFIED="1584811254535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
+    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_municipis_Catalunya__1_.coverage" NAME="insert_data_municipis_Catalunya (1) Coverage Results" MODIFIED="1591529468728" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
     <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insertData__1_.coverage" NAME="insertData (1) Coverage Results" MODIFIED="1584732751935" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
-    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_locals.coverage" NAME="insert_data_locals Coverage Results" MODIFIED="1584811393976" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
+    <SUITE FILE_PATH="coverage/TFG_GeoInfoSystem$insert_data_locals.coverage" NAME="insert_data_locals Coverage Results" MODIFIED="1591529549011" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Script" />
   </component>
 </project>

@@ -882,7 +882,7 @@ def mostrarMapa(request):
     poblacions_catalunya=localitzacio.objects.all()
     grafic_b64_usos_categories = 'buit'
     grafic_actius_noactius = 'buit'
-    if num_locals != 0 and num_locals_actius != 0 and num_locals_no_actius != 0:
+    if num_locals != 0 and num_locals_actius + num_locals_no_actius!= 0:
         grafic=True
         cat=data.keys()
         slices=data.values()
@@ -1072,6 +1072,9 @@ def mostrarPuntEspecific(request, nomLocal,latitud, longitud):
     imatge_local=imageLocal.objects.all().filter(local=l.id)
     if imatge_local:
         imatge_local=imatge_local[0].imatge.url
+        # per a les imatges posades a la base de dades inicials
+        if imatge_local.split("/")[2] == 'CasaMevaRedim.jpg' or imatge_local.split("/")[2] == 'firaReusRedim.jpg' or imatge_local.split("/")[2] == 'mcdonaldsVallsRedim.jpg' or imatge_local.split("/")[2] == 'urvCampusSesceladesRedim.jpg':
+            imatge_local = "/media/photo/"+imatge_local.split("/")[2]
     else:
         imatge_local=''
     '''
