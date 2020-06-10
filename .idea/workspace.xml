@@ -2,33 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_imageLocal.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/CasaMevaRedim.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/firaReusRedim.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/mcdonaldsVallsRedim.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/fotos_locals/media/photo/urvCampusSesceladesRedim.jpg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Script/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Script/insert_data_categories.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_categories.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Script/insert_data_locals.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_locals.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Script/insert_data_municipis_Catalunya.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_municipis_Catalunya.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Script/insert_data_paraules_clau_GIS.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_paraules_clau_GIS.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Script/insert_data_punts_interes.py" beforeDir="false" afterPath="$PROJECT_DIR$/ScriptsSeed/insert_data_punts_interes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/Ajuntament-HZ.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/Anotació_2020-05-14_155530.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/Anotació_2020-05-14_155530_duXcMR2.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/CASA-FELIX.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/Montferrisantuari.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/ajuntament-de-vallmoll-29-01-20161.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/baixa.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/baixa_ntcrKLF.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/castell-de-rocamora.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/ermita-santuari-del-roser.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/fornas.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/jca-cinemes-16-10-2017.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/vallmoll-escola-FOTO-Marc-Llado-Quadrat-2-5-19.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/fotos_locals/media/photo/vallmoll1.jpg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -370,7 +345,10 @@
       <workItem from="1591172776847" duration="696000" />
       <workItem from="1591355192972" duration="1129000" />
       <workItem from="1591431533033" duration="4696000" />
-      <workItem from="1591518921674" duration="5201000" />
+      <workItem from="1591518921674" duration="6700000" />
+      <workItem from="1591604205423" duration="1331000" />
+      <workItem from="1591707489737" duration="3292000" />
+      <workItem from="1591789924114" duration="643000" />
     </task>
     <servers />
   </component>
@@ -386,25 +364,25 @@
     </state>
     <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591530172252" />
     <state x="739" y="265" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1587651637350" />
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1591531799673">
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom" timestamp="1591567897197">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591531799673" />
+    <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591567897197" />
     <state width="1877" height="282" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1584830362702" />
-    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1591531799673">
+    <state width="1877" height="282" key="GridCell.Tab.0.center" timestamp="1591567897197">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591531799673" />
+    <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591567897197" />
     <state width="1877" height="282" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1584830362702" />
-    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1591531799672">
+    <state width="1877" height="282" key="GridCell.Tab.0.left" timestamp="1591567897196">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591531799672" />
+    <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591567897196" />
     <state width="1877" height="282" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1584830362702" />
-    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1591531799673">
+    <state width="1877" height="282" key="GridCell.Tab.0.right" timestamp="1591567897197">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591531799673" />
+    <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591567897197" />
     <state width="1877" height="282" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1584830362702" />
     <state width="1877" height="348" key="GridCell.Tab.1.bottom" timestamp="1584745008747">
       <screen x="0" y="0" width="1920" height="1040" />
@@ -426,11 +404,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="463" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1587400824790" />
-    <state x="2588" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1591518929128">
-      <screen x="1920" y="0" width="1920" height="1040" />
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1591789933958">
+      <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591431683305" />
-    <state x="2588" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1591518929128" />
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591789933958" />
+    <state x="2588" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1591604213947" />
     <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1589536751753" />
     <state x="615" y="138" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588959434155">
       <screen x="0" y="0" width="1920" height="1040" />
