@@ -3,7 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="afe1aade-4ce5-42e3-8521-d732514bd46f" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/templates/puntsGeografics/informacioDetallada.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GeoInfoSystem/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/GeoInfoSystem/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -348,7 +349,15 @@
       <workItem from="1591518921674" duration="6700000" />
       <workItem from="1591604205423" duration="1331000" />
       <workItem from="1591707489737" duration="3292000" />
-      <workItem from="1591789924114" duration="643000" />
+      <workItem from="1591789924114" duration="1321000" />
+      <workItem from="1591862826643" duration="1211000" />
+      <workItem from="1591948231137" duration="8205000" />
+      <workItem from="1592036936574" duration="13746000" />
+      <workItem from="1592123855516" duration="5526000" />
+      <workItem from="1592137364926" duration="3974000" />
+      <workItem from="1592213942445" duration="1227000" />
+      <workItem from="1592322187194" duration="2442000" />
+      <workItem from="1592824044036" duration="568000" />
     </task>
     <servers />
   </component>
@@ -404,11 +413,11 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="463" y="165" key="SettingsEditor/0.0.1920.1040@0.0.1920.1040" timestamp="1587400824790" />
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1591789933958">
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog" timestamp="1592824044490">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1591789933958" />
-    <state x="2588" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1591604213947" />
+    <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1592824044490" />
+    <state x="2588" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040/1920.0.1920.1040@1920.0.1920.1040" timestamp="1592137378791" />
     <state x="668" y="349" key="com.intellij.ide.util.TipDialog/0.0.1920.1040@0.0.1920.1040" timestamp="1589536751753" />
     <state x="615" y="138" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1588959434155">
       <screen x="0" y="0" width="1920" height="1040" />
